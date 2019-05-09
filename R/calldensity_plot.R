@@ -1,5 +1,7 @@
 #' @title Call density plot
 #' @description This function requires the user to input a file with GPS points and a file with call detections
+#' @export
+#'
 
 calldensity_plot <- function(
   gps.df ="/Volumes/Dena Clink Toshiba 3 TB/SWIFT_sparse_array_Danum/SWIFT_sparse_array_Danum_2018.csv",

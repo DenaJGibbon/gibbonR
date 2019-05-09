@@ -13,7 +13,7 @@
 #' @param output.dir Specified location to write .wav files of sound events.
 #' @param n.window If "mfcc" option is chosen number of time windows to calculate MFCCs for each sound event
 #' @param n.cep If "mfcc" option is chosen number of MFCC cepstra to calculate
-
+#' @export
 
 audio_segmentGMM <- function(wav.file, window.len=512, window.type="hanning", min.freq=0.4, max.freq=2,
                           low.quant.val=0.15, high.quant.val=0.25, which.quant="intersection",density.plot=TRUE,

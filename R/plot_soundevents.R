@@ -1,6 +1,7 @@
 #' @title Call density plot
 #' @description This function requires the user to input a file with GPS points and a file with call detections
-
+#' @export
+#'
 plot_soundevents <- function(input.dir, nrow=3, ncol=2, from=1, n.soundevents=length(list.wav.files),
                              return.table=TRUE) {
 
