@@ -16,7 +16,7 @@
 
 
 
-detect_gibbonR <- function(feature.df, model.type, tune=FALSE,wav.name = borneo.ten.mins, target.signal="female.gibbon",
+detect_gibbonR <- function(feature.df, model.type, tune=FALSE,wav.name, target.signal="female.gibbon",
                            which.quant="intersection",min.freq=0.4, max.freq=2, n.windows=9,
                            density.plot=TRUE, low.quant.val=0.15, high.quant.val=0.25,num.cep=12,
                            min.sound.event.dur=4, max.sound.event.dur=10,output="wav", probability.thresh=0.75,output.dir
@@ -86,6 +86,7 @@ detect_gibbonR <- function(feature.df, model.type, tune=FALSE,wav.name = borneo.
     }
 
   # Convert .wav file to spectrogram
+  print("calculating spectrogram")
   swift.spectro <- seewave::spectro(temp.wav,plot=F)
 
   # Identify the frequency band of interest
@@ -96,6 +97,7 @@ detect_gibbonR <- function(feature.df, model.type, tune=FALSE,wav.name = borneo.
   col.sum <- colSums(swift.spectro$amp[min.freq.cols:max.freq.cols, ])
 
   # Calculate a two-mixture Gaussian process model
+  print("audio segementation in progress")
   fit <- mixtools::normalmixEM(col.sum, k=2)
 
   # Create a simulated distribution of the two mixture model
@@ -137,6 +139,7 @@ detect_gibbonR <- function(feature.df, model.type, tune=FALSE,wav.name = borneo.
   if(length(call.timing.list)>=1){
       timing.df <- data.frame()
     for (x in 1: length(call.timing.list)){
+      print(paste("processing sound event",x))
       call.time.sub <- call.timing.list[[x]]
       short.wav <- cutw(temp.wav, from=swift.spectro$time[min(call.time.sub)], to=swift.spectro$time[max(call.time.sub)],output = "Wave")
 

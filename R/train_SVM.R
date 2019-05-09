@@ -62,7 +62,7 @@ train_SVM <- function(feature.df, train.n=0.7, test.n=0.3, tune="TRUE", cost=c(0
         cross = cross
       )
  }
-  mod.pred <- predict(svm.model, mfcc.test[, 2:ncol(mfcc.train)])
+  mod.pred <- predict(svm.model, mfcc.test[, 2:ncol(mfcc.test)])
 
   confusion.mat <-
     table(pred = mod.pred, true = mfcc.test$class)

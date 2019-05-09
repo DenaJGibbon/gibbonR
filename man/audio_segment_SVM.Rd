@@ -5,11 +5,12 @@
 \title{Audio segmentation using support vector machines}
 \usage{
 audio_segment_SVM(wav.file, min.freq = 400, max.freq = 2000,
-  window.len = 0.25, n.cep = 12, tune = FALSE, cost.list = c(0.001,
-  0.01, 0.1, 1, 2, 10, 100, 1000), gamma.list = c(0.01, 0.1, 0.5, 1, 2),
-  cost.val = 1, gamma.val = 0.5, trainingdata,
-  target.signal = "gibbon", prob.signal = 0.8, min.signal.dur = 1,
-  writetodir = TRUE, output.dir)
+  win.hop.time = 0.25, n.cep = 12, tune = FALSE,
+  cost.list = c(0.001, 0.01, 0.1, 1, 2, 10, 100, 1000),
+  gamma.list = c(0.01, 0.1, 0.5, 1, 2), cost.val = 1,
+  gamma.val = 0.5, trainingdata, target.signal = "gibbon",
+  prob.signal = 0.8, min.signal.dur = 1, writetodir = TRUE,
+  output.dir)
 }
 \arguments{
 \item{wav.file}{A R wave object or file path to .wav object; the sound file with audio signal(s) of interest}
@@ -18,7 +19,7 @@ audio_segment_SVM(wav.file, min.freq = 400, max.freq = 2000,
 
 \item{max.freq}{Maximum frequency of the signal of interest in Hz}
 
-\item{window.len}{Window length (in sec); wintime and hoptime are equal so there is no overlap between successive windows}
+\item{win.hop.time}{Window length (in sec); wintime and hoptime are equal so there is no overlap between successive windows}
 
 \item{n.cep}{Number of cepstra to return when calculating Mel-frequency cepstral coefficients}
 

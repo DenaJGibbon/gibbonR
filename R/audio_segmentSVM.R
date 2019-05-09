@@ -4,7 +4,7 @@
 #' @param wav.file A R wave object or file path to .wav object; the sound file with audio signal(s) of interest
 #' @param min.freq Minimum frequency of the signal of interest in Hz
 #' @param max.freq Maximum frequency of the signal of interest in Hz
-#' @param window.len Window length (in sec); wintime and hoptime are equal so there is no overlap between successive windows
+#' @param win.hop.time Window length (in sec); wintime and hoptime are equal so there is no overlap between successive windows
 #' @param n.cep Number of cepstra to return when calculating Mel-frequency cepstral coefficients
 #' @param tune Logical; whether to use parameter tuning of the SVM. If set to "TRUE" will add substantial amount of processing time with a large dataset
 #' @param cost.list List of values to tune the cost parameter for SVM; If "TUNE" is set equal to "TRUE"
@@ -25,7 +25,7 @@
 #'
 
 audio_segment_SVM <- function(wav.file, min.freq=400, max.freq=2000,
-                              window.len = 0.25,n.cep=12,tune=FALSE,
+                              win.hop.time = 0.25,n.cep=12,tune=FALSE,
                               cost.list=c(0.001, 0.01, 0.1, 1, 2, 10, 100, 1000),
                               gamma.list=c(0.01, 0.1, 0.5, 1.0, 2.0),
                               cost.val = 1,
@@ -49,8 +49,8 @@ audio_segment_SVM <- function(wav.file, min.freq=400, max.freq=2000,
     temp.wav,
     minfreq = min.freq,
     maxfreq = max.freq,
-    wintime = window.len,
-    hoptime = window.len,
+    wintime = win.hop.time,
+    hoptime = win.hop.time,
     numcep = n.cep
   )
 
@@ -98,8 +98,8 @@ audio_segment_SVM <- function(wav.file, min.freq=400, max.freq=2000,
     model.output <-attr(svm.prob,"probabilities")
     signal.loc <-which(attr(model.output, "dimnames")[[2]] == target.signal)
 
-    temp.df <- cbind.data.frame(a,target.signal,model.output[signal.loc])
-    colnames(temp.df) <- c("time.window", "target.signal","probability")
+    temp.df <- cbind.data.frame(a,a*win.hop.time, target.signal,model.output[signal.loc])
+    colnames(temp.df) <- c("time.window", "time (s)", "target.signal","probability")
     detection.df <- rbind.data.frame(detection.df,temp.df)
   }
 
@@ -108,7 +108,7 @@ audio_segment_SVM <- function(wav.file, min.freq=400, max.freq=2000,
   runs <- rle(detection.df$probability > 0)
 
   #
-  signal.dur <- min.signal.dur/window.len
+  signal.dur <- min.signal.dur/win.hop.time
 
   myruns = which(runs$values == TRUE & runs$lengths >= signal.dur)
 
@@ -129,7 +129,7 @@ audio_segment_SVM <- function(wav.file, min.freq=400, max.freq=2000,
     for(b in 1:nrow(call.timing.df)){
 
       call.time.sub <- call.timing.df[b,]
-      call.time.sub <- (call.time.sub)*0.25
+      call.time.sub <- (call.time.sub)*win.hop.time
 
       short.wav <- seewave::cutw(temp.wav, from=call.time.sub$starts, to=call.time.sub$ends,output = "Wave")
 

@@ -4,12 +4,11 @@
 \alias{detect_gibbonR}
 \title{Function to train ML algorithm, do audio segmentation and classification on unannotated sound file}
 \usage{
-detect_gibbonR(feature.df, model.type, tune = FALSE,
-  wav.name = borneo.ten.mins, target.signal = "female.gibbon",
-  which.quant = "intersection", min.freq = 0.4, max.freq = 2,
-  n.windows = 9, density.plot = TRUE, low.quant.val = 0.15,
-  high.quant.val = 0.25, num.cep = 12, min.sound.event.dur = 4,
-  max.sound.event.dur = 10, output = "wav",
+detect_gibbonR(feature.df, model.type, tune = FALSE, wav.name,
+  target.signal = "female.gibbon", which.quant = "intersection",
+  min.freq = 0.4, max.freq = 2, n.windows = 9, density.plot = TRUE,
+  low.quant.val = 0.15, high.quant.val = 0.25, num.cep = 12,
+  min.sound.event.dur = 4, max.sound.event.dur = 10, output = "wav",
   probability.thresh = 0.75, output.dir)
 }
 \arguments{

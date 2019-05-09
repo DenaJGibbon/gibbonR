@@ -50,7 +50,7 @@ train_LDA <- function(feature.df, train.n=0.7, test.n=0.3, set.seed=1, CV) {
     ## Set number of females for prior
     n.class <- length(unique(feature.df$class))
 
-    ###Run LDA on the data subset using RFE
+    ###Run LDA on the data
     lda.output <- MASS::lda(
       class  ~ .,
       data=feature.df,

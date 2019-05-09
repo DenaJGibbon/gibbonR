@@ -21,9 +21,10 @@ density.plot=TRUE, low.quant.val=0.15, high.quant.val=0.25,num.cep=12,
 min.sound.event.dur=4, max.sound.event.dur=10,output="wav", probability.thresh=0.75, wav.output="TRUE", output.dir=NULL
 ) {
 
-  if((unique(feature.df$class) != target.signal)) stop("Training and target classes do not match! Check to make sure target.signal exists in training dataset")
+  #if((unique(feature.df$class) != target.signal)) stop("Training and target classes do not match! Check to make sure target.signal exists in training dataset")
   if((wav.output=="TRUE" & output.dir=="")) stop("Specify output directory")
 
+  print("machine learning in progress...")
   ## Neural network
   if(model.type=="NNET"){
     ml.model.nnet <- caret::train(class ~ .,
@@ -161,6 +162,7 @@ timing.df <- data.frame()
   if(length(call.timing.list)>=1){
 
     for (x in 1: length(call.timing.list)){
+      print(paste("processing sound event",x))
       call.time.sub <- call.timing.list[[x]]
       short.wav <- seewave::cutw(temp.wav, from=swift.spectro$time[min(call.time.sub)], to=swift.spectro$time[max(call.time.sub)],output = "Wave")
 
@@ -185,6 +187,7 @@ timing.df <- data.frame()
 
       if(model.type=="NNET" ){
         nnet.prob <- predict(ml.model.nnet,mfcc.vector, type="prob")
+        print(nnet.prob)
         signal.loc <-which(names(nnet.prob)==target.signal)
         signal.probability <- nnet.prob[signal.loc]
         temp.nnet.df <- signal.probability
@@ -204,6 +207,8 @@ timing.df <- data.frame()
 
       if(model.type=="SVM" ){
         svm.prob <- predict(ml.model.svm,mfcc.vector, probability = T)
+        svm.prediction <- predict(ml.model.svm,mfcc.vector)
+        print(droplevels(svm.prediction))
         model.output <-attr(svm.prob,"probabilities")
         signal.loc <-which(attr(model.output, "dimnames")[[2]] == target.signal)
         signal.probability <- model.output[signal.loc]
@@ -225,6 +230,7 @@ timing.df <- data.frame()
 
       if(model.type=="GMM" ){
         gmm.mod.predict <- predict(ml.model.gmm,mfcc.vector)
+        print(droplevels(gmm.mod.predict$classification))
         model.output <- gmm.mod.predict$z
         signal.loc <-which(attr(model.output, "dimnames")[[2]] == target.signal)
         signal.probability <- model.output[signal.loc]

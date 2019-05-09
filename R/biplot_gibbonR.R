@@ -4,6 +4,7 @@
 #' @return
 #' @seealso \code{\link{MASS}} which this function wraps
 #' @seealso \code{\link{ggplot2}} which this function wraps
+#' @import ggplot2
 #' @export
 #' @examples
 #'
@@ -60,10 +61,10 @@ return(lda.plot)
       theme(axis.text.y = element_text(size=20))+
       theme(axis.title.x = element_text(size=20))+
       theme(axis.title.y = element_text(size=20))+
-      viridis::scale_color_viridis(discrete=T,end=0.9)+
-      theme(panel.grid.major = element_blank(),panel.grid.minor = element_blank(),axis.line=element_blank())
+      viridis::scale_color_viridis(discrete=T,end=0.9)
+      lda.plot <- lda.plot + theme_bw()
 
-    return(lda.plot)
+    return(lda.plot=lda.plot)
   }
 }
 
@@ -81,10 +82,9 @@ return(lda.plot)
       theme(axis.text.y = element_text(size=20))+
       theme(axis.title.x = element_text(size=20))+
       theme(axis.title.y = element_text(size=20))+
-      viridis::scale_color_viridis(discrete=T,end=0.9)+
-      theme(panel.grid.major = element_blank(),panel.grid.minor = element_blank(),axis.line=element_blank())
-
-    return(pca.plot)
+      viridis::scale_color_viridis(discrete=T,end=0.9)
+      pca.plot <- pca.plot + theme_bw()
+    return(pca.plot=pca.plot)
   }
 
 }

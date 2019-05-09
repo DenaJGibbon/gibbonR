@@ -13,7 +13,7 @@
 #' @param output.dir Specified location to write .wav files of sound events.
 #' @param n.window If "mfcc" option is chosen number of time windows to calculate MFCCs for each sound event
 #' @param n.cep If "mfcc" option is chosen number of MFCC cepstra to calculate
-#' @export
+#' @import ggplot2
 
 audio_segmentGMM <- function(wav.file, window.len=512, window.type="hanning", min.freq=0.4, max.freq=2,
                           low.quant.val=0.15, high.quant.val=0.25, which.quant="intersection",density.plot=TRUE,
@@ -55,16 +55,18 @@ audio_segmentGMM <- function(wav.file, window.len=512, window.type="hanning", mi
     dens.diff <- long.density$y-not.long.density$y
 
 
-    # Determine the cut off for "noise"; options include the intersection of the two distributions, or a specified quantile value for the noise or signal density distributions
-    intersection <- long.density$x[which(diff(dens.diff > 0) != 0)]
+    # Calculate the boundary between the signal and the noise based on the intersection, or quantiles of user input
+    intersection <- long.density$x[which(diff(dens.diff > 0) != 0)][2]
     low.quant <- qnorm(low.quant.val,fit$mu[1], fit$sigma[1])
     high.quant <- qnorm(high.quant.val,fit$mu[2], fit$sigma[2])
 
+    # Combine into a dataframe
+    vals.df <- cbind.data.frame(intersection,low.quant,high.quant)
+
     # Plot density
 
-     dens.plot <- ggplot2::ggplot(combined.df, aes(vals, fill=labels))+ geom_density( alpha=0.45) + geom_vline(xintercept=max(intersection))+
-       scale_fill_manual(values=c("red", "blue"))+
-       geom_vline(xintercept=low.quant, linetype=5) + geom_vline(xintercept=high.quant, linetype=5) + theme_bw() + xlab("Log-energy") + ylab("Density")+
+     dens.plot <- ggplot2::ggplot(combined.df, aes(vals, fill=labels))+ geom_density( alpha=0.45) + geom_vline(xintercept=max(vals.df[which.quant]))+
+       scale_fill_manual(values=c("red", "blue")) + theme_bw() + xlab("Log-energy") + ylab("Density")+
      theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + guides(fill=guide_legend(title=""))+
        theme(axis.text.x = element_text(size=16)) + theme(axis.text.y = element_text(size=16))+ theme(axis.title.y = element_text(size=16))+ theme(axis.title.x = element_text(size=16))+
        theme(legend.text = element_text(size=16))
@@ -72,8 +74,6 @@ audio_segmentGMM <- function(wav.file, window.len=512, window.type="hanning", mi
      print(dens.plot)
     }
 
-    # Combine noise cutoff values into a dataframe
-    vals.df <- cbind.data.frame(intersection,low.quant,high.quant)
 
     # Determine which values are above specified cutoff
     list.sub <- which(col.sum > max(vals.df[which.quant]))

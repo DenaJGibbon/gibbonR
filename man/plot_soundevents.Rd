@@ -2,11 +2,11 @@
 % Please edit documentation in R/plot_soundevents.R
 \name{plot_soundevents}
 \alias{plot_soundevents}
-\title{Call density plot}
+\title{Create multiple spectrograms to inspect sound events}
 \usage{
 plot_soundevents(input.dir, nrow = 3, ncol = 2, from = 1,
   n.soundevents = length(list.wav.files), return.table = TRUE)
 }
 \description{
-This function requires the user to input a file with GPS points and a file with call detections
+Create multiple spectrograms to inspect sound events
 }

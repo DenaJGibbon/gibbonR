@@ -78,7 +78,7 @@ calc_MFCC <- function(list.wav.files, n.window,n.cep=12,min.freq=400, max.freq=2
     # Ensure only 8 time windows are used for MFCC and delta coefficients
     # Also append .wav duration
     mfcc.vector <-
-      c(as.vector(t(melfcc.output[1:(n.windows-1), 2:num.cep])), as.vector(t(deltas.output[1:(n.windows-1), 2:num.cep])),wav.dur)
+      c(as.vector(t(melfcc.output[1:(n.window-1), 2:n.cep])), as.vector(t(deltas.output[1:(n.window-1), 2:n.cep])),wav.dur)
 
     #Add MFCC values to list
     mfcc.vector.list[[j]] <- mfcc.vector
