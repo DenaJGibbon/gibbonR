@@ -2,8 +2,28 @@ Package: gibbonR
 Title: gibbonR: An R package for the detection and classification of acoustic signals using machine learning
 Version: 0.0.0.9000
 Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
+<<<<<<< HEAD
+Description: What the package does (one paragraph).
+=======
 Description: The field of bioacoustics is inherently multidisciplinary and relies on computer scientists, engineers, and ecologists. This package is directed towards ecologists who are interested in incorporating bioacoustics into their research, but may not have the skills or training.The goal for the creation of this package was to make commonly used signal processing techniques and various machine learning algorithms readily available for anyone interested in using bioacoustics in their research.
 Depends: R (>= 3.4.2)
+>>>>>>> 1f49246146aba5322608bb3260ca445762914be5
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
+Depends:
+    R (>= 3.4.2),
+    ggplot2,
+    tuneR,
+    seewave,
+    tuneR,
+    seewave,
+    mixtools,
+    neuralnet,
+    nnet,
+    mclust,
+    e1071,
+    stringr,
+    caret,
+    MASS
+RoxygenNote: 6.1.0.9000
