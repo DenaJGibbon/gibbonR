@@ -13,7 +13,7 @@ devtools::install_github("DenaJGibbon/gibbonR-package")
 
 Then load the library
 ```{r eval=FALSE}
-library(gibbonR.2019)
+library(gibbonR)
 ```
 
 # Loading the data
