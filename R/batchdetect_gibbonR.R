@@ -11,17 +11,22 @@
 #' @param output Either "spectro", "table" or "wav"
 #' @keywords
 #' @export
-#' @examples
-#' train_ML()
+#' @import e1071
+#' @import mclust
+#' @examples caret
+#'
 #'
 
 batchdetect_gibbonR <- function(input, feature.df, model.type, tune=FALSE, target.signal="female.gibbon",
 which.quant="intersection",min.freq=0.4, max.freq=2, n.windows=9,
-density.plot=TRUE, low.quant.val=0.15, high.quant.val=0.25,num.cep=12,
+density.plot=TRUE, low.quant.val=0.15, high.quant.val=0.25,num.cep=12, pattern.split= '.rda',
 min.sound.event.dur=4, max.sound.event.dur=10,output="wav", probability.thresh=0.75, wav.output="TRUE", output.dir=NULL
 ) {
 
-  #if((unique(feature.df$class) != target.signal)) stop("Training and target classes do not match! Check to make sure target.signal exists in training dataset")
+  if(is.element(target.signal,unique(feature.df$class))==FALSE){
+    stop("Training data does not contain target signal")
+  }
+
   if((wav.output=="TRUE" & output.dir=="")) stop("Specify output directory")
 
   print("machine learning in progress...")
@@ -30,7 +35,7 @@ min.sound.event.dur=4, max.sound.event.dur=10,output="wav", probability.thresh=0
     ml.model.nnet <- caret::train(class ~ .,
                            data= feature.df,
                            method="nnet",
-                           trControl = trainControl(method = "CV", number = 10,classProbs =  TRUE)
+                           trControl = caret::trainControl(method = "CV", number = 5,classProbs =  TRUE)
     )
   }
 
@@ -107,9 +112,10 @@ timing.df <- data.frame()
       temp.name <- list.file.input.short[[a]]
     }
 
-  temp.name <- stringr::str_split_fixed(temp.name,pattern = '.wav',n=2)[1]
+
+  temp.name <- stringr::str_split_fixed(temp.name,pattern = pattern.split,n=2)[1]
   # Convert .wav file to spectrogram
-  print(paste("Computing spectrogram",a))
+  print(paste("Computing spectrogram",a, temp.name))
   swift.spectro <- seewave::spectro(temp.wav,plot=F)
 
   # Identify the frequency band of interest
@@ -154,10 +160,10 @@ timing.df <- data.frame()
   call.timing.list <- as.list(call.timing[which(sapply(call.timing, length) > sound.event.index)])
 
   # If user indicated maximum duration create list of sound events under certain duration
-  if(max.sound.event.dur != ""){
+  #if(max.sound.event.dur != "NULL"){
     sound.event.index.max <- which.min(abs(swift.spectro$time-max.sound.event.dur))
     call.timing.list <- call.timing.list[which(sapply(call.timing.list, length) < sound.event.index.max)]
-  }
+  #}
 
   if(length(call.timing.list)>=1){
 

@@ -20,7 +20,8 @@
 #' @seealso calc_MFCC()
 #' @export
 #' @examples
-#' audio_segment_SVM()
+#' @import stringr
+#'
 #'
 #'
 
@@ -38,6 +39,10 @@ audio_segment_SVM <- function(wav.file, min.freq=400, max.freq=2000,
                               output.dir
                               ) {
 
+  if(is.element(target.signal,unique(trainingdata$class))==FALSE){
+    stop("Training data does not contain target signal")
+  }
+
   # If full file path is given instead of .wav read in as .wav file
   if(class(wav.file)[1]=="Wave"){
     temp.wav <- wav.file } else {
@@ -45,6 +50,7 @@ audio_segment_SVM <- function(wav.file, min.freq=400, max.freq=2000,
     }
 
   # Calculate MFCCs
+  print("Calculating MFCCs")
   melfcc.output <- tuneR::melfcc(
     temp.wav,
     minfreq = min.freq,
@@ -54,6 +60,7 @@ audio_segment_SVM <- function(wav.file, min.freq=400, max.freq=2000,
     numcep = n.cep
   )
 
+  print("Calculating SVM")
   if (tune=="TRUE"){
     tune.rad.segmentation <-
       e1071::tune(
@@ -80,8 +87,8 @@ audio_segment_SVM <- function(wav.file, min.freq=400, max.freq=2000,
       trainingdata$class,
       kernel = "radial",
       type="C-classification",
-      gamma = gamma,
-      cost = cost,
+      gamma = gamma.val,
+      cost = cost.val,
       cross = 5,
       probability=TRUE
     )
@@ -89,6 +96,8 @@ audio_segment_SVM <- function(wav.file, min.freq=400, max.freq=2000,
 
   number.time.windows <- nrow(melfcc.output)
   detection.df <- data.frame()
+
+  print("Calculating sound events")
   for(a in 1:number.time.windows){
     print(paste("processing",a))
     temp.mfcc.vector <- as.data.frame(t(melfcc.output[a,]))
@@ -122,10 +131,11 @@ audio_segment_SVM <- function(wav.file, min.freq=400, max.freq=2000,
   call.timing.df <- cbind.data.frame(starts,ends)
   call.timing.df
 
-  if(writetodir =="TRUE"){
+  sound.event.df <- data.frame()
     if(nrow(call.timing.df)==0){
       print("No sound events match specified criteria")
     } else{
+
     for(b in 1:nrow(call.timing.df)){
 
       call.time.sub <- call.timing.df[b,]
@@ -134,11 +144,14 @@ audio_segment_SVM <- function(wav.file, min.freq=400, max.freq=2000,
       short.wav <- seewave::cutw(temp.wav, from=call.time.sub$starts, to=call.time.sub$ends,output = "Wave")
 
       print(paste("processing", b))
+      if(writetodir =="TRUE"){
       tuneR::writeWave(short.wav, filename = paste(output.dir, "/",
                                                    "sound.event","_", b, "_", call.time.sub$starts, "_", call.time.sub$ends, ".wav", sep=""),extensible = F)
-
-    }
-    }
+      }
+      temp.sound.event.df <- cbind.data.frame(call.time.sub$starts,call.time.sub$ends,target.signal)
+      colnames(temp.sound.event.df) <- c("time.start.sec","time.stop.sec","target.signal")
+      sound.event.df <- rbind.data.frame(sound.event.df,temp.sound.event.df)
+      }
   }
-  return(list(svm.accuracy=svm.model$tot.accuracy, detection.df =detection.df ))
+  return(list(svm.accuracy=svm.model$tot.accuracy,detection.df=detection.df, sound.event.df =sound.event.df ))
 }

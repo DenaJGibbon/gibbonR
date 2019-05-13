@@ -24,9 +24,6 @@ calc_MFCC(list.wav.files, n.window, n.cep = 12, min.freq = 400,
 \description{
 Calculate MFCCs from .wav files
 }
-\examples{
-calc_MFCC()
-}
 \seealso{
 \code{\link{tuneR}} which this function wraps
 }

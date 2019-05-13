@@ -1,4 +1,4 @@
-#' Audio segmentation using Gaussian mixture models (GMM)
+#' @title  Audio segmentation using Gaussian mixture models (GMM)
 #' @description This function calculates a bi-Gaussian mixture model to identify signal from noise in the recording of interest.
 #' @param wav.file A R wave object; the sound file with audio signal(s) of interest
 #' @param window.len Window length (in samples); default is 512.
@@ -13,7 +13,10 @@
 #' @param output.dir Specified location to write .wav files of sound events.
 #' @param n.window If "mfcc" option is chosen number of time windows to calculate MFCCs for each sound event
 #' @param n.cep If "mfcc" option is chosen number of MFCC cepstra to calculate
+#' @export
 #' @import ggplot2
+#' @import tuneR
+#' @import seewave
 
 audio_segmentGMM <- function(wav.file, window.len=512, window.type="hanning", min.freq=0.4, max.freq=2,
                           low.quant.val=0.15, high.quant.val=0.25, which.quant="intersection",density.plot=TRUE,
@@ -65,11 +68,11 @@ audio_segmentGMM <- function(wav.file, window.len=512, window.type="hanning", mi
 
     # Plot density
 
-     dens.plot <- ggplot2::ggplot(combined.df, aes(vals, fill=labels))+ geom_density( alpha=0.45) + geom_vline(xintercept=max(vals.df[which.quant]))+
-       scale_fill_manual(values=c("red", "blue")) + theme_bw() + xlab("Log-energy") + ylab("Density")+
-     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + guides(fill=guide_legend(title=""))+
-       theme(axis.text.x = element_text(size=16)) + theme(axis.text.y = element_text(size=16))+ theme(axis.title.y = element_text(size=16))+ theme(axis.title.x = element_text(size=16))+
-       theme(legend.text = element_text(size=16))
+     dens.plot <- ggplot2::ggplot(combined.df, ggplot2::aes(vals, fill=labels))+ ggplot2::geom_density( alpha=0.45) + ggplot2::geom_vline(xintercept=max(vals.df[which.quant]))+
+       ggplot2::scale_fill_manual(values=c("red", "blue")) + ggplot2::theme_bw() + ggplot2::xlab("Log-energy") + ggplot2::ylab("Density")+
+       ggplot2::theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + ggplot2::guides(fill=guide_legend(title=""))+
+       ggplot2::theme(axis.text.x = element_text(size=16)) + ggplot2::theme(axis.text.y = element_text(size=16))+ ggplot2::theme(axis.title.y = element_text(size=16))+ ggplot2::theme(axis.title.x = element_text(size=16))+
+       ggplot2::theme(legend.text = element_text(size=16))
      if(density.plot==TRUE){
      print(dens.plot)
     }
@@ -97,7 +100,7 @@ audio_segmentGMM <- function(wav.file, window.len=512, window.type="hanning", mi
       call.time.sub <- call.timing.list[[x]]
       short.wav <- seewave::cutw(wav.file, from=swift.spectro$time[min(call.time.sub)], to=swift.spectro$time[max(call.time.sub)],output = "Wave")
       print(paste("processing", x))
-      writeWave(short.wav, filename = paste(output.dir, "/",
+      tuneR::writeWave(short.wav, filename = paste(output.dir, "/",
                                              "sound.event","_", x, "_", swift.spectro$time[min(call.time.sub)], "_", swift.spectro$time[max(call.time.sub)], ".wav", sep=""),extensible = F)
       temp.df <- cbind.data.frame(paste("sound.event","_", x,sep=""),swift.spectro$time[min(call.time.sub)],swift.spectro$time[max(call.time.sub)])
 

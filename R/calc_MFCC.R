@@ -7,9 +7,10 @@
 #' @param feature.red Whether to use SVM RFE to reduce number of features
 #' @return
 #' @seealso \code{\link{tuneR}} which this function wraps
-#' @export
+#' @import stringr
 #' @examples
-#' calc_MFCC()
+#' @export
+#'
 
 
 ## Define for function

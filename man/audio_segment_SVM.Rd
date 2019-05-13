@@ -48,11 +48,6 @@ audio_segment_SVM(wav.file, min.freq = 400, max.freq = 2000,
 \description{
 This function requires the user to input a training data file with calculated MFCCs.It then calculates MFCCs for a user-specified input .wav file and uses SVM to identify the "target signal" from the sound file.
 }
-\examples{
-audio_segment_SVM()
-
-
-}
 \seealso{
 calc_MFCC()
 }
