@@ -12,7 +12,7 @@
 
 
 
-train_LDA <- function(feature.df, train.n=0.7, test.n=0.3, set.seed=1, CV) {
+trainLDA <- function(feature.df, train.n=0.7, test.n=0.3, set.seed=1, CV) {
 
   # Set seed for reproducibility
   set.seed(set.seed)

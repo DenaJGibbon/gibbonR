@@ -13,7 +13,7 @@
 
 
 
-train_SVM <- function(feature.df, train.n=0.7, test.n=0.3, tune="TRUE", cost=c(0.001, 0.01, 0.1, 1, 2, 10, 100, 1000),
+trainSVM <- function(feature.df, train.n=0.7, test.n=0.3, tune="TRUE", cost=c(0.001, 0.01, 0.1, 1, 2, 10, 100, 1000),
                       gamma=c(0.01, 0.1, 0.5, 1.0, 2.0), kernel="radial", cross=5) {
 
   feature.df$ran.num <- runif(nrow(feature.df), 0, 1)

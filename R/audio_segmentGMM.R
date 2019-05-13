@@ -18,8 +18,9 @@
 #' @import tuneR
 #' @import seewave
 
-audio_segmentGMM <- function(wav.file, window.len=512, window.type="hanning", min.freq=0.4, max.freq=2,
-                          low.quant.val=0.15, high.quant.val=0.25, which.quant="intersection",density.plot=TRUE,
+audioSegmentGMM <- function(wav.file, window.len=512, window.type="hanning", min.freq=0.4, max.freq=2,
+                          low.quant.val=0.15, high.quant.val=0.25, which.quant="intersection",
+                          density.plot=TRUE,
                           min.signal.dur=3,
                           output.type="wav",
                           output.dir,

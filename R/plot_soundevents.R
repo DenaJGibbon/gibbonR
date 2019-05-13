@@ -2,7 +2,7 @@
 #' @description
 #' @export
 #'
-plot_soundevents <- function(input.dir, nrow=3, ncol=2, from=1, n.soundevents=length(list.wav.files),
+plotSoundevents <- function(input.dir, nrow=3, ncol=2, from=1, n.soundevents=length(list.wav.files),
                              return.table=TRUE) {
 
 list.wav.files <- list.files(input.dir, pattern = c(".wav",".WAV"),full.names = TRUE)
@@ -15,7 +15,7 @@ for(a in from:n.soundevents){
   print(paste("processing",a))
   temp.wav <- tuneR::readWave(list.wav.files[a])
   temp.spec <- signal::specgram(temp.wav@left, Fs=temp.wav@samp.rate, n=512, overlap = 0)
-  plot(temp.spec,xlab="Time (s)", ylab="Frequency (Hz)",col=viridis::viridis(512),main=paste("sound event",a))
+  plot(temp.spec,xlab="Time (s)", ylab="Frequency (Hz)",col=viridis::viridis(512),main=paste("sound event",a),useRaster = TRUE)
   sound.event <- paste("sound event",a)
   temp.df <- cbind.data.frame(sound.event,list.wav.files.short[a])
   colnames(temp.df) <- c("sound.event","file.name")

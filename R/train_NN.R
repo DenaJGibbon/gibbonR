@@ -8,7 +8,7 @@
 
 
 
-train_NN <- function(feature.df, train.n=0.7, test.n=0.3, cross=5 ) {
+trainNN <- function(feature.df, train.n=0.7, test.n=0.3, cross=5 ) {
 
   feature.df$ran.num <- runif(nrow(feature.df), 0, 1)
 
@@ -24,7 +24,7 @@ train_NN <- function(feature.df, train.n=0.7, test.n=0.3, cross=5 ) {
 
   nnet.output <- train(class ~ .,
                        data= mfcc.train,
-                       method="nnet",
+                       method="avNNet",
                        trControl = trainControl(method = "CV", number = cross)
   )
 

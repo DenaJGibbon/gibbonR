@@ -25,7 +25,7 @@
 #'
 #'
 
-audio_segment_SVM <- function(wav.file, min.freq=400, max.freq=2000,
+audioSegmentSVM <- function(wav.file, min.freq=400, max.freq=2000,
                               win.hop.time = 0.25,n.cep=12,tune=FALSE,
                               cost.list=c(0.001, 0.01, 0.1, 1, 2, 10, 100, 1000),
                               gamma.list=c(0.01, 0.1, 0.5, 1.0, 2.0),
@@ -148,8 +148,8 @@ audio_segment_SVM <- function(wav.file, min.freq=400, max.freq=2000,
       tuneR::writeWave(short.wav, filename = paste(output.dir, "/",
                                                    "sound.event","_", b, "_", call.time.sub$starts, "_", call.time.sub$ends, ".wav", sep=""),extensible = F)
       }
-      temp.sound.event.df <- cbind.data.frame(call.time.sub$starts,call.time.sub$ends,target.signal)
-      colnames(temp.sound.event.df) <- c("time.start.sec","time.stop.sec","target.signal")
+      temp.sound.event.df <- cbind.data.frame(target.signal,call.time.sub$starts,call.time.sub$ends)
+      colnames(temp.sound.event.df) <- c("sound.event","start.time","end.time")
       sound.event.df <- rbind.data.frame(sound.event.df,temp.sound.event.df)
       }
   }

@@ -17,9 +17,9 @@
 #'
 
 
-classify_gibbonR <- function(feature.df, model.type, tune=FALSE,input.dir, plot=TRUE,
-                          min.freq=400, max.freq=2000, n.windows=9,
-                           num.cep=12,
+classifyGibbonR <- function(feature.df, model.type, tune=FALSE,input.dir, plot=TRUE,
+                          min.freq=400, max.freq=2000, n.window=9,
+                           n.cep=12,
                            min.sound.event.dur=4, max.sound.event.dur=10,output="wav", probability.thresh=0.75,output.dir
 ) {
 
@@ -29,7 +29,7 @@ classify_gibbonR <- function(feature.df, model.type, tune=FALSE,input.dir, plot=
     ml.model.nnet <- caret::train(class ~ .,
                            data= feature.df,
                            method="nnet",
-                           trControl = trainControl(method = "CV", number = 5,classProbs =  TRUE)
+                           trControl = trainControl(method = "CV",number=5)
     )
   }
 
@@ -149,6 +149,7 @@ classify_gibbonR <- function(feature.df, model.type, tune=FALSE,input.dir, plot=
   model.out.df <- data.frame()
   if(model.type=="NNET" ){
     for(x in 1:nrow(mfcc.data.frame)){
+      print(paste("processing",x))
       mfcc.vector <- mfcc.data.frame[x,2:ncol(mfcc.data.frame)]
       nnet.prob <- predict(ml.model.nnet,mfcc.vector, type="prob")
       model.pred <- nnet.prob[which.max(nnet.prob)]
@@ -162,6 +163,7 @@ classify_gibbonR <- function(feature.df, model.type, tune=FALSE,input.dir, plot=
 
   if(model.type=="SVM" ){
   for(x in 1:nrow(mfcc.data.frame)){
+    print(paste("processing",x))
     mfcc.vector <- mfcc.data.frame[x,2:ncol(mfcc.data.frame)]
     svm.prob <- predict(ml.model.svm,mfcc.vector, probability = T)
     model.output <-as.data.frame(attr(svm.prob,"probabilities"))
@@ -176,6 +178,7 @@ classify_gibbonR <- function(feature.df, model.type, tune=FALSE,input.dir, plot=
 
   if(model.type=="GMM" ){
     for(x in 1:nrow(mfcc.data.frame)){
+      print(paste("processing",x))
       mfcc.vector <- mfcc.data.frame[x,2:ncol(mfcc.data.frame)]
       gmm.prob <- predict(ml.model.gmm,mfcc.vector, probability = T)
       model.pred.val <- gmm.prob$classification
@@ -192,11 +195,12 @@ classify_gibbonR <- function(feature.df, model.type, tune=FALSE,input.dir, plot=
   if(plot=="TRUE"){
 
     for(a in 1:length(input.dir.list.files)){
-      print(paste("processing",a))
+      print(paste("plotting",a))
       temp.wav <- tuneR::readWave(input.dir.list.files[a])
       temp.spec <- signal::specgram(temp.wav@left, Fs=temp.wav@samp.rate, n=512, overlap = 0)
       modelprediction <- as.character(model.out.df[a,]$model.prediction)
-      plot(temp.spec,xlab="Time (s)", ylab="Frequency (Hz)",col=viridis::viridis(512),main=modelprediction,useRaster = TRUE)
+      main.title <- paste(modelprediction,a)
+      plot(temp.spec,xlab="Time (s)", ylab="Frequency (Hz)",col=viridis::viridis(512),main=main.title,useRaster = TRUE)
     }
   }
   return(list(classification.df=model.out.df))

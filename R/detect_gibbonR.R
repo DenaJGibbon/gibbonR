@@ -10,24 +10,32 @@
 #' @param sound.event.dur Minimum time (in seconds)
 #' @param output Either "spectro", "table" or "wav"
 #' @keywords
+#' @import seewave
+#' @import tuneR
+#' @import caret
 #' @export
 #' @examples
 #'
 
 
 
-detect_gibbonR <- function(feature.df, model.type, tune=FALSE,wav.name, target.signal="female.gibbon",
+detectGibbonR <- function(feature.df, model.type, tune=FALSE,wav.name, target.signal="female.gibbon",
                            which.quant="intersection",min.freq=0.4, max.freq=2, n.windows=9,
                            density.plot=TRUE, low.quant.val=0.15, high.quant.val=0.25,num.cep=12,
                            min.sound.event.dur=4, max.sound.event.dur=10,output="wav", probability.thresh=0.75,output.dir
                            ) {
 
+  if(is.element(target.signal,unique(feature.df$class))==FALSE){
+  stop("Training data does not contain target signal")
+  }
+
+  print("machine learning in progress...")
   ## Neural network
   if(model.type=="NNET"){
     ml.model.nnet <- train(class ~ .,
                          data= feature.df,
-                         method="nnet",
-                         trControl = trainControl(method = "CV", number = 10,classProbs =  TRUE)
+                         method="avNNet",
+                         trControl = trainControl(method = "CV", number = 5,classProbs =  TRUE)
     )
   }
 
@@ -97,7 +105,7 @@ detect_gibbonR <- function(feature.df, model.type, tune=FALSE,wav.name, target.s
   col.sum <- colSums(swift.spectro$amp[min.freq.cols:max.freq.cols, ])
 
   # Calculate a two-mixture Gaussian process model
-  print("audio segementation in progress")
+  print("Audio segmentation in process")
   fit <- mixtools::normalmixEM(col.sum, k=2)
 
   # Create a simulated distribution of the two mixture model
@@ -131,27 +139,29 @@ detect_gibbonR <- function(feature.df, model.type, tune=FALSE,wav.name, target.s
   call.timing.list <- as.list(call.timing[which(sapply(call.timing, length) > sound.event.index)])
 
   # If user indicated maximum duration create list of sound events under certain duration
-  if(max.sound.event.dur != "NULL"){
-    sound.event.index.max <- which.min(abs(swift.spectro$time-max.sound.event.dur))
-    call.timing.list <- call.timing.list[which(sapply(call.timing.list, length) < sound.event.index.max)]
-  }
+  #if(max.sound.event.dur != "NULL"){
+  sound.event.index.max <- which.min(abs(swift.spectro$time-max.sound.event.dur))
+  call.timing.list <- call.timing.list[which(sapply(call.timing.list, length) < sound.event.index.max)]
+  #}
 
-  if(length(call.timing.list)>=1){
+  if(length(call.timing.list)==0){
+    print("No sound events detected")
+  } else{
       timing.df <- data.frame()
     for (x in 1: length(call.timing.list)){
-      print(paste("processing sound event",x))
+      print(paste("processing sound event",x, "out of", length(call.timing.list) ))
       call.time.sub <- call.timing.list[[x]]
-      short.wav <- cutw(temp.wav, from=swift.spectro$time[min(call.time.sub)], to=swift.spectro$time[max(call.time.sub)],output = "Wave")
+      short.wav <- seewave::cutw(temp.wav, from=swift.spectro$time[min(call.time.sub)], to=swift.spectro$time[max(call.time.sub)],output = "Wave")
 
-      wav.dur <- duration(short.wav)
+      wav.dur <- seewave::duration(short.wav)
       win.time <- wav.dur / n.windows
 
       # Calculate MFCCs
-      melfcc.output <- melfcc(short.wav, minfreq = min.freq*1000, hoptime = win.time, maxfreq = max.freq*1000, numcep = num.cep,
+      melfcc.output <- tuneR::melfcc(short.wav, minfreq = min.freq*1000, hoptime = win.time, maxfreq = max.freq*1000, numcep = num.cep,
                               wintime = win.time)
 
       # Calculate delta cepstral coefficients
-      deltas.output <- deltas(melfcc.output)
+      deltas.output <- tuneR::deltas(melfcc.output)
 
       # Ensure only same number of time windows are used for MFCC and delta coefficients
       # Also append .wav duration
@@ -169,12 +179,12 @@ detect_gibbonR <- function(feature.df, model.type, tune=FALSE,wav.name, target.s
         temp.nnet.df <- signal.probability
 
         if(temp.nnet.df[1,] >= probability.thresh){
-          writeWave(short.wav, filename = paste(output.dir, "/", target.signal,"_", model.type, "_", signal.probability, "_",
+          tuneR::writeWave(short.wav, filename = paste(output.dir, "/", target.signal,"_", model.type, "_", signal.probability, "_",
                                                 swift.spectro$time[min(call.time.sub)], "_",
                                                 swift.spectro$time[max(call.time.sub)], ".wav", sep=""),extensible = F)
           #
-          temp.df <- cbind.data.frame(x,target.signal,swift.spectro$time[min(call.time.sub)],swift.spectro$time[max(call.time.sub)])
-          colnames(temp.df) <- c("detect.num", "signal", "start.time","end.time")
+          temp.df <- cbind.data.frame(x,target.signal,swift.spectro$time[min(call.time.sub)],swift.spectro$time[max(call.time.sub)],signal.probability)
+          colnames(temp.df) <- c("detect.num", "signal", "start.time","end.time","signal.probability")
           timing.df <- rbind.data.frame(timing.df,temp.df)
         }
       }
@@ -187,13 +197,13 @@ detect_gibbonR <- function(feature.df, model.type, tune=FALSE,wav.name, target.s
       temp.svm.df <- cbind.data.frame(target.signal,signal.probability)
 
       if(temp.svm.df$signal.probability >= probability.thresh){
-        writeWave(short.wav, filename = paste(output.dir, "/", target.signal,"_", model.type, "_", signal.probability, "_",
+        tuneR::writeWave(short.wav, filename = paste(output.dir, "/", target.signal,"_", model.type, "_", signal.probability, "_",
                                               swift.spectro$time[min(call.time.sub)], "_",
                                               swift.spectro$time[max(call.time.sub)], ".wav", sep=""),extensible = F)
         #
-         temp.df <- cbind.data.frame(x,target.signal,swift.spectro$time[min(call.time.sub)],swift.spectro$time[max(call.time.sub)])
-         colnames(temp.df) <- c("detect.num", "signal", "start.time","end.time")
-         timing.df <- rbind.data.frame(timing.df,temp.df)
+        temp.df <- cbind.data.frame(x,target.signal,swift.spectro$time[min(call.time.sub)],swift.spectro$time[max(call.time.sub)],signal.probability)
+        colnames(temp.df) <- c("detect.num", "signal", "start.time","end.time","signal.probability")
+        timing.df <- rbind.data.frame(timing.df,temp.df)
          }
 
       }
@@ -206,18 +216,19 @@ detect_gibbonR <- function(feature.df, model.type, tune=FALSE,wav.name, target.s
         temp.gmm.df <- cbind.data.frame(target.signal,signal.probability)
         temp.gmm.df
         if(temp.gmm.df$signal.probability >= probability.thresh){
-          writeWave(short.wav, filename = paste(output.dir, "/", target.signal,"_", model.type, "_", signal.probability,"_",
+          tuneR::writeWave(short.wav, filename = paste(output.dir, "/", target.signal,"_", model.type, "_", signal.probability,"_",
                                                 swift.spectro$time[min(call.time.sub)], "_",
                                                 swift.spectro$time[max(call.time.sub)], ".wav", sep=""),extensible = F)
           #
-          temp.df <- cbind.data.frame(x,target.signal,swift.spectro$time[min(call.time.sub)],swift.spectro$time[max(call.time.sub)])
-          colnames(temp.df) <- c("detect.num", "signal", "start.time","end.time")
+          temp.df <- cbind.data.frame(x,target.signal,swift.spectro$time[min(call.time.sub)],swift.spectro$time[max(call.time.sub)],signal.probability)
+          colnames(temp.df) <- c("detect.num", "signal", "start.time","end.time","signal.probability")
           timing.df <- rbind.data.frame(timing.df,temp.df)
         }
 
       }
     }
+      return(list(timing.df=timing.df))
   }
-  return(list(timing.df=timing.df))
+
 }
 

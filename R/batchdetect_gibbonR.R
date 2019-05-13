@@ -13,11 +13,13 @@
 #' @export
 #' @import e1071
 #' @import mclust
+#' @import tuneR
+#' @import seewave
 #' @examples caret
 #'
 #'
 
-batchdetect_gibbonR <- function(input, feature.df, model.type, tune=FALSE, target.signal="female.gibbon",
+batchDetectGibbonR <- function(input, feature.df, model.type, tune=FALSE, target.signal="female.gibbon",
 which.quant="intersection",min.freq=0.4, max.freq=2, n.windows=9,
 density.plot=TRUE, low.quant.val=0.15, high.quant.val=0.25,num.cep=12, pattern.split= '.rda',
 min.sound.event.dur=4, max.sound.event.dur=10,output="wav", probability.thresh=0.75, wav.output="TRUE", output.dir=NULL
@@ -34,7 +36,7 @@ min.sound.event.dur=4, max.sound.event.dur=10,output="wav", probability.thresh=0
   if(model.type=="NNET"){
     ml.model.nnet <- caret::train(class ~ .,
                            data= feature.df,
-                           method="nnet",
+                           method="avNNet",
                            trControl = caret::trainControl(method = "CV", number = 5,classProbs =  TRUE)
     )
   }

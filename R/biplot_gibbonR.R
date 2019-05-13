@@ -9,7 +9,7 @@
 #' @examples
 #'
 
-biplot_gibbonR <- function(mfcc.dataframe, classification.type, class.labs) {
+biplotGibbonR <- function(mfcc.dataframe, classification.type, class.labs) {
 
 
   if (any(is.na(mfcc.dataframe))==TRUE)
@@ -37,8 +37,9 @@ lda.plot <- ggplot(newdata, aes(lda.LD1, lda.LD2, colour = class)) +
   theme(axis.title.x = element_text(size=20))+
   theme(axis.title.y = element_text(size=20))+
   viridis::scale_color_viridis(discrete=T,end=0.9)+
-  theme(panel.grid.major = element_blank(),panel.grid.minor = element_blank(),axis.line=element_blank())
-
+  theme(panel.grid.major = element_blank(),panel.grid.minor = element_blank(),axis.line=element_blank())+
+  guides(colour=FALSE)
+  lda.plot <- lda.plot +theme_bw()
 return(lda.plot)
   }
 
@@ -61,7 +62,7 @@ return(lda.plot)
       theme(axis.text.y = element_text(size=20))+
       theme(axis.title.x = element_text(size=20))+
       theme(axis.title.y = element_text(size=20))+
-      viridis::scale_color_viridis(discrete=T,end=0.9)
+      viridis::scale_color_viridis(discrete=T,end=0.9,name="Class")
       lda.plot <- lda.plot + theme_bw()
 
     return(lda.plot=lda.plot)
@@ -82,7 +83,7 @@ return(lda.plot)
       theme(axis.text.y = element_text(size=20))+
       theme(axis.title.x = element_text(size=20))+
       theme(axis.title.y = element_text(size=20))+
-      viridis::scale_color_viridis(discrete=T,end=0.9)
+      viridis::scale_color_viridis(discrete=T,end=0.9,name="Class")
       pca.plot <- pca.plot + theme_bw()
     return(pca.plot=pca.plot)
   }

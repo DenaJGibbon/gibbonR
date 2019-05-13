@@ -1,9 +1,12 @@
 #' @title Call density plot
 #' @description This function requires the user to input a file with GPS points and a file with call detections
+#' @import sp
+#' @import gstat
+#' @import ggplot2
 #' @export
 #'
 
-calldensity_plot <- function(
+calldensityPlot <- function(
   gps.df ="/Volumes/Dena Clink Toshiba 3 TB/SWIFT_sparse_array_Danum/SWIFT_sparse_array_Danum_2018.csv",
   calltiming.df = calltiming.df,begin=0.1,end=0.9,option="A"
 ) {
@@ -38,7 +41,7 @@ sp::coordinates(interpolation.df) = ~x+y
 grd <- expand.grid(x = seq(from = x.range[1], to = x.range[2], by = 0.00001), y = seq(from = y.range[1],
                                                                                       to = y.range[2], by = 0.00001))  # expand points to grid
 sp::coordinates(grd) <- ~x + y
-gridded(grd) <- TRUE
+sp::gridded(grd) <- TRUE
 
 idw <- gstat::idw(formula = n.detect ~ 1, locations = interpolation.df,
            newdata = grd)  # apply idw model for the data
