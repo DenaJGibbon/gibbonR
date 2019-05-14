@@ -16,7 +16,7 @@
 ## Define for function
 
 
-calc_MFCC <- function(list.wav.files, n.window,n.cep=12,min.freq=400, max.freq=2000,
+calcMFCC <- function(list.wav.files, n.window,n.cep=12,min.freq=400, max.freq=2000,
                       win.avg="TRUE", win.hop.time=0.25, feature.red = "FALSE") {
 
   if(win.avg=="FALSE"){
