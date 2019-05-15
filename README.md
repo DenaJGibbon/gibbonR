@@ -1,13 +1,4 @@
 ---
-title: "gibbonR: An R package for classification, detection and visualization of acoustic signals using machine learning"
-author: "Dena J. Clink"
-date: "`r Sys.Date()`"
-output: rmarkdown::pdf_document
-vignette: >
-  %\VignetteIndexEntry{Vignette Title}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
