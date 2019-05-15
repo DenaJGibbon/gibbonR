@@ -31,3 +31,5 @@ library(gibbonR)
 ```
 
 # SEE THE VIGNETTE FOR DETAILED EXAMPLES
+
+https://github.com/DenaJGibbon/gibbonR-package/blob/master/gibbonr_vignette.pdf
