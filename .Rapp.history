@@ -4,8 +4,14 @@ library(roxygen2)#
 # Add documentation to function#
 setwd("/Users/denasmacbook/Desktop")
 create("gibbonR.github")
-library("devtools")
-library(roxygen2)
-setwd("/Users/denasmacbook/Desktop/gibbonR.github")
-document()
+library("devtools")#
+#devtools::install_github("klutometis/roxygen",force = TRUE)#
+library(roxygen2)#
+# Add documentation to function#
+#setwd("/Users/denasmacbook/Desktop")#
+#create("gibbonR.github")#
+#
+setwd("/Users/denasmacbook/Desktop/gibbonR.github")#
+document()#
 install("/Users/denasmacbook/Desktop/gibbonR.github")
+document()
