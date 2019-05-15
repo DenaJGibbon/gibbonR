@@ -7,15 +7,15 @@
 #'
 
 calldensityPlot <- function(
-  gps.df ="/Volumes/Dena Clink Toshiba 3 TB/SWIFT_sparse_array_Danum/SWIFT_sparse_array_Danum_2018.csv",
-  calltiming.df = calltiming.df,begin=0.1,end=0.9,option="A"
+  gps.df,
+  calltiming.df = calltiming.df,begin=0,end=1,option="D"
 ) {
 
   if(!"recorder.id" %in% names(calltiming.df)) stop("recorder.id does not exist")
   if(!"date" %in% names(calltiming.df)) stop("date does not exist")
   if(!"time" %in% names(calltiming.df)) stop("time does not exist")
 
-gps.pts <- read.csv(gps.df)
+gps.pts <-gps.df
 
 calltiming.df <- calltiming.df[,c("recorder.id","date","time")]
 
@@ -51,7 +51,6 @@ names(idw.output)[1:3] <- c("long", "lat", "var1.pred")  # give names to the mod
 
 vid.cols <- viridis::viridis(length(recorder.index),begin=begin,end=end,option=option)
 call.density.plot <- ggplot2::ggplot() + geom_tile(data = idw.output, aes(x = long, y = lat, fill=var1.pred)) +
-  #geom_text(aes(interpolation.df.for.pts$x, interpolation.df.for.pts$y, label = interpolation.df.for.pts$name)) +
   geom_point(data = interpolation.df.for.pts, aes(x = x, y = y), shape = 16, size=3, colour = "black")+
   scale_fill_gradient(low=max(vid.cols),high=min(vid.cols)) +
   xlab("Longitude")+ ylab("Latitude")+

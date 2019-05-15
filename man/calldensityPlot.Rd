@@ -4,10 +4,8 @@
 \alias{calldensityPlot}
 \title{Call density plot}
 \usage{
-
-  calldensityPlot(gps.df = "/Volumes/Dena Clink Toshiba 3 TB/SWIFT_sparse_array_Danum/SWIFT_sparse_array_Danum_2018.csv",
-  calltiming.df = calltiming.df, begin = 0.1, end = 0.9,
-  option = "A")
+calldensityPlot(gps.df, calltiming.df = calltiming.df, begin = 0,
+  end = 1, option = "D")
 }
 \description{
 This function requires the user to input a file with GPS points and a file with call detections
