@@ -2,7 +2,7 @@
 #' @param feature.df A set of features estimated for each call where the first column designates class membership.
 #' @param train.n Proportion of data used to train; defaults to 0.7
 #' @param test.n Proportion of data used to test; defaults to 0.3
-#' @import mclust
+#' @import
 #' @export
 #' @examples
 #'
