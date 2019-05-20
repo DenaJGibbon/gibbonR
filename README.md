@@ -20,8 +20,7 @@ First you need to install the package using the following lines of code:
 
 ``` r
 install.packages(c("coda","mvtnorm","devtools","loo"))
-library(devtools)
-devtools::install_github("DenaJGibbon/gibbonR")
+devtools::install_github("DenaJGibbon/gibbonR-package")
 ```
 
 Then load the library
