@@ -7,7 +7,10 @@
 #' @import ggplot2
 #' @export
 #' @examples
-#'
+
+data(""multi.class.list"")
+
+
 
 biplotGibbonR <- function(mfcc.dataframe, classification.type, class.labs) {
 
