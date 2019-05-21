@@ -8,33 +8,29 @@
 
 
 
-trainNN <- function(feature.df, train.n=0.7, test.n=0.3, cross=5 ) {
-
-  feature.df$ran.num <- runif(nrow(feature.df), 0, 1)
-
-  #Assign random number
-  mfcc.train <- feature.df[feature.df$ran.num < train.n, ]
-  #Drop random number
-  mfcc.train$ran.num <- NULL
-  #Assign random number
-  mfcc.test <- feature.df[feature.df$ran.num >= test.n, ]
-  #Drop random number
-  mfcc.test$ran.num <- NULL
-
-
-  nnet.output <- train(class ~ .,
-                       data= mfcc.train,
-                       method="avNNet",
-                       trControl = trainControl(method = "CV", number = cross)
-  )
-
-
-  nnet.predict <- predict(nnet.output, mfcc.test[,2:ncol(mfcc.test)])
-
-  nnet.predict.table <- table(nnet.predict, mfcc.test$class)
-
-  # total percent correct
-  sum(diag(prop.table(nnet.predict.table)))
-
-  return(list(conf.mat=nnet.predict.table,correct.prob = sum(diag(prop.table(nnet.predict.table)))))
+trainNN <- function(feature.df, train.n = 0.7, test.n = 0.3, cross = 5) {
+    
+    feature.df$ran.num <- runif(nrow(feature.df), 0, 1)
+    
+    # Assign random number
+    mfcc.train <- feature.df[feature.df$ran.num < train.n, ]
+    # Drop random number
+    mfcc.train$ran.num <- NULL
+    # Assign random number
+    mfcc.test <- feature.df[feature.df$ran.num >= test.n, ]
+    # Drop random number
+    mfcc.test$ran.num <- NULL
+    
+    
+    nnet.output <- train(class ~ ., data = mfcc.train, method = "avNNet", trControl = trainControl(method = "CV", number = cross))
+    
+    
+    nnet.predict <- predict(nnet.output, mfcc.test[, 2:ncol(mfcc.test)])
+    
+    nnet.predict.table <- table(nnet.predict, mfcc.test$class)
+    
+    # total percent correct
+    sum(diag(prop.table(nnet.predict.table)))
+    
+    return(list(conf.mat = nnet.predict.table, correct.prob = sum(diag(prop.table(nnet.predict.table)))))
 }
