@@ -19,7 +19,7 @@ anyone interested in using bioacoustics in their research.
 First you need to install the package using the following lines of code:
 
 ``` r
-install.packages(c("coda","mvtnorm","devtools","loo"))
+install.packages(c("devtools"))
 devtools::install_github("DenaJGibbon/gibbonR-package")
 ```
 
