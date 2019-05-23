@@ -19,8 +19,9 @@
 #' @import tuneR
 #' @import seewave
 
+
 audioSegmentGMM <- function(wav.file, window.len = 512, window.type = "hanning", min.freq = 0.4, max.freq = 2, low.quant.val = 0.15, high.quant.val = 0.25, which.quant = "intersection", density.plot = TRUE,
-    min.signal.dur = 3, output.type = "wav", output.dir, n.window = 10, n.cep = 12) {
+    min.signal.dur = 3, output.type = "wav", output.dir=getwd(), n.window = 10, n.cep = 12) {
 
     if (output.type == "wav" & output.dir == "") {
         stop("Must specify output directory")
