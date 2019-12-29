@@ -1,7 +1,7 @@
 NOTE: This package is under development. Please check back soon for important updates!
 
 
-gibbonR: An R package for classification, detection and visualization of
+gibbonfindR: An R package for classification, detection and visualization of
 acoustic signals using machine learning
 ================
 Dena J. Clink & Holger Klinck  
