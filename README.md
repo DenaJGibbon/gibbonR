@@ -5,7 +5,7 @@ gibbonR: An R package for classification, detection and visualization of
 acoustic signals using machine learning
 ================
 Dena J. Clink & Holger Klinck  
-2019-05-15
+2019-12-19
 
 # PACKAGE DESCRIPTION
 
@@ -17,21 +17,3 @@ the creation of this package was to make commonly used signal processing
 techniques and various machine learning algorithms readily available for
 anyone interested in using bioacoustics in their research.
 
-# GETTING STARTED
-
-First you need to install the package using the following lines of code:
-
-``` r
-install.packages("devtools")
-devtools::install_github("DenaJGibbon/gibbonR-package")
-```
-
-Then load the library
-
-``` r
-library(gibbonR)
-```
-
-# SEE THE VIGNETTE FOR DETAILED EXAMPLES
-
-https://github.com/DenaJGibbon/gibbonR-package/blob/master/gibbonr_vignette.pdf
