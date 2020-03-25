@@ -5,7 +5,7 @@ gibbonfindR: An R package for classification, detection and visualization of
 acoustic signals using machine learning
 ================
 Dena J. Clink & Holger Klinck  
-2019-12-19
+2020-03-25
 
 # PACKAGE DESCRIPTION
 
