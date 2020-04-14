@@ -1,4 +1,4 @@
-**IMPORTANT UPDATE: An updated version of this package will be released on April 15, 2020.**
+**IMPORTANT UPDATE: An updated version of this package will be released on May 1, 2020.**
 
 
 gibbonfindR: An R package for classification, detection and visualization of
