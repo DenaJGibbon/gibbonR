@@ -5,7 +5,7 @@ gibbonR: An R package for classification, detection and visualization of
 acoustic signals using machine learning
 ================
 Dena J. Clink & Holger Klinck  
-2020-03-25
+2020-07-01
 
 # PACKAGE DESCRIPTION
 
