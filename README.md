@@ -1,4 +1,4 @@
-**IMPORTANT UPDATE: An updated version of this package will be released soon**
+**IMPORTANT UPDATE: An updated version of this package will be released soon!**
 
 
 gibbonR: An R package for classification, detection and visualization of
