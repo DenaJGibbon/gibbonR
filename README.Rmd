@@ -1,5 +1,6 @@
 ---
 output: github_document
+date: "`r format(Sys.time(), '%B %d %Y')`"
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -19,8 +20,7 @@ knitr::opts_chunk$set(
 gibbonR: An R package for classification, detection and visualization of
 acoustic signals using machine learning
 ================
-Dena J. Clink & Holger Klinck  
-Sys. Date()
+Dena J. Clink & Holger Klinck 
 
 ### Package description
 
@@ -37,6 +37,7 @@ library(ggpubr)
 mainImage <- magick::image_read('man/gibbonR_flowchart.png')
 (mainImage)
 ```
+
 ### How to cite
 
 This package is currently in development, with submission to rOpenSci planned shortly. In the interim, please cite the arXiv preprint:
