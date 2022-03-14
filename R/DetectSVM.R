@@ -19,8 +19,7 @@
 #' @param output.dir File path where SVM identified sound events will be written.
 #' @seealso calc_MFCC()
 #' @export
-#' @examples
-#' @import stringr
+#' @examples Coming soon
 
 
 DetectSVM <-
@@ -45,14 +44,14 @@ DetectSVM <-
     if (is.element(target.signal, unique(trainingdata$class)) == FALSE) {
       stop("Training data does not contain target signal")
     }
-    
+
     # If full file path is given instead of .wav read in as .wav file
     if (class(wav.file)[1] == "Wave") {
       temp.wav <- wav.file
     } else {
       temp.wav <- tuneR::readWave(wav.file)
     }
-    
+
     # Calculate MFCCs
     print("Calculating MFCCs")
     melfcc.output <-
@@ -64,7 +63,7 @@ DetectSVM <-
         hoptime = win.hop.time,
         numcep = num.cep
       )
-    
+
     print("Calculating SVM")
     if (tune == "TRUE") {
       tune.rad.segmentation <-
@@ -95,11 +94,11 @@ DetectSVM <-
         cross = 5,
         probability = TRUE
       )
-    
-    
+
+
     number.time.windows <- nrow(melfcc.output)
     detection.df <- data.frame()
-    
+
     print("Calculating sound events")
     for (a in 1:number.time.windows) {
       print(paste("processing", a, "out of",number.time.windows, 'time windows' ))
@@ -108,39 +107,39 @@ DetectSVM <-
         colnames(trainingdata[, 2:ncol(trainingdata)])
       svm.prob <-
         predict(svm.model, temp.mfcc.vector, probability = TRUE)
-      
+
       model.output <- attr(svm.prob, "probabilities")
       signal.loc <-
         which(attr(model.output, "dimnames")[[2]] == target.signal)
-      
+
       temp.df <-
         cbind.data.frame(a, a * win.hop.time, target.signal, model.output[signal.loc])
       colnames(temp.df) <-
         c("time.window", "time (s)", "target.signal", "probability")
       detection.df <- rbind.data.frame(detection.df, temp.df)
     }
-    
+
     detection.df$probability[detection.df$probability < prob.signal] <-
       0
-    
+
     runs <- rle(detection.df$probability > 0)
-    
+
     #
     signal.dur <- min.signal.dur / win.hop.time
-    
+
     myruns = which(runs$values == TRUE & runs$lengths >= signal.dur)
-    
+
     runs.lengths.cumsum = cumsum(runs$lengths)
     ends = runs.lengths.cumsum[myruns]
-    
+
     newindex = ifelse(myruns > 1, myruns - 1, 0)
     starts = runs.lengths.cumsum[newindex] + 1
     if (0 %in% newindex)
       starts = c(1, starts)
-    
+
     call.timing.df <- cbind.data.frame(starts, ends)
 
-    
+
     RavenSelectionTableDF <- data.frame()
     if (nrow(call.timing.df) == 0) {
       print("No sound events match specified criteria")
@@ -148,7 +147,7 @@ DetectSVM <-
       for (b in 1:nrow(call.timing.df)) {
         call.time.sub <- call.timing.df[b,]
         call.time.sub <- (call.time.sub) * win.hop.time
-        
+
         short.wav <-
           seewave::cutw(
             temp.wav,
@@ -156,7 +155,7 @@ DetectSVM <-
             to = call.time.sub$ends,
             output = "Wave"
           )
-        
+
         print(paste("writing", b, "out of",nrow(call.timing.df), "sound files" ))
         if (writetodir == "TRUE") {
           tuneR::writeWave(
@@ -177,40 +176,40 @@ DetectSVM <-
             extensible = F
           )
         }
-        
+
         temp.RavenSelectionTableDF <-
           cbind.data.frame(target.signal,
                            call.time.sub$starts,
                            call.time.sub$ends)
         colnames(temp.RavenSelectionTableDF) <-
           c("target.signal", "start.time", "end.time")
-       
-          
+
+
         Selection <- b
         View <- rep('Spectrogram 1',nrow(temp.RavenSelectionTableDF))
         Channel <- rep(1,nrow(temp.RavenSelectionTableDF))
         MinFreq <- rep(min.freq, nrow(temp.RavenSelectionTableDF))
         MaxFreq <- rep(max.freq, nrow(temp.RavenSelectionTableDF))
-        
-  
+
+
         temp.RavenSelectionTableDF <- cbind.data.frame(Selection,View,Channel,call.time.sub$starts,
                                                 call.time.sub$ends,MinFreq,MaxFreq,target.signal)
-          
 
-          
-          colnames(temp.RavenSelectionTableDF) <-c("Selection", "View", "Channel", "Begin Time (s)", "End Time (s)", 
+
+
+          colnames(temp.RavenSelectionTableDF) <-c("Selection", "View", "Channel", "Begin Time (s)", "End Time (s)",
                                               "Low Freq (Hz)", "High Freq (Hz)",'signal')
-          
-          
+
+
           RavenSelectionTableDF <-
             rbind.data.frame(RavenSelectionTableDF, temp.RavenSelectionTableDF)
-          
+
       }
        if(write.csv.output==TRUE){
         csv.file.name <- paste(output.dir, '/', wav.file,'_timing.df.txt',sep='')
-        write.table(x = RavenSelectionTableDF, sep = "\t", file = csv.file.name, 
+        write.table(x = RavenSelectionTableDF, sep = "\t", file = csv.file.name,
                     row.names = FALSE, quote = FALSE)
-        
+
       }
       print(paste("'Here are results for soundfile", wav.file))
       print(RavenSelectionTableDF)
@@ -222,4 +221,4 @@ DetectSVM <-
         RavenSelectionTableDF = RavenSelectionTableDF
       )
     )
-} 
+}

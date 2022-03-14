@@ -14,18 +14,11 @@
 #' @param min.sound.event.dur Minimum time (in seconds) for sound events to be considered
 #' @param output Either 'spectro', 'table' or 'wav'
 #' @param probability.thresh.svm Probability threshold (provided by machine learning algorithm) to be considered as target signal
-#' @param probability.thresh.rf
+#' @param probability.thresh.rf Description
 #' @param wav.out Logical; if "TRUE" then writes each sound event as a wave file to directory
 #' @param output.dir Specified output directory; set to current working directory
 #' @export
-#' @import e1071
-#' @import mclust
-#' @import tuneR
-#' @import seewave
-#' @import tuneR
-#' @import stringr
-#' @examples caret
-#'
+
 
 
 
@@ -46,12 +39,12 @@ DetectAndClassify <- function(input, feature.df,model.type.list=c("SVM"), tune =
                               swift.time=TRUE,time.start=6,time.stop=12,
                               write.csv.output=TRUE,verbose=TRUE,
                               random.sample='NA') {
-  
+
   if (is.element(target.signal, unique(feature.df$class)) == FALSE) {
     stop("Training data does not contain target signal")
   }
 
-  
+
   if ((wav.output == "TRUE" & output.dir == ""))
     stop("Specify output directory")
 
@@ -62,7 +55,7 @@ DetectAndClassify <- function(input, feature.df,model.type.list=c("SVM"), tune =
     print("SVM in progress...")
     start_time <- Sys.time()
     if (tune == TRUE) {
-      
+
       ## SVM classification
 
       tune.rad <- e1071::tune(svm, feature.df[, 2:ncol(feature.df)], feature.df$class, kernel = "radial", tunecontrol = tune.control(cross = 5), ranges = list(cost = c(0.001, 0.01, 0.1, 1, 2,
@@ -86,23 +79,23 @@ DetectAndClassify <- function(input, feature.df,model.type.list=c("SVM"), tune =
     print("RF in progress...")
     tryCatch({
     start_time <- Sys.time()
-    
+
     ml.model.rf <- randomForest::randomForest(x=feature.df[, 2:ncol(feature.df)], y = feature.df$class)
-    
+
     y_pred <-  predict(ml.model.rf, newdata = feature.df[, 2:ncol(feature.df)])
-    
+
     # Confusion Matrix
     confusion_mtx = table(feature.df$class, y_pred)
-    
+
     print(paste('RF accuracy',sum(diag(prop.table(confusion_mtx)))*100))
-    
+
     end_time <- Sys.time()
     print(end_time - start_time)
      }, error = function(e) {
       cat("ERROR :", conditionMessage(e), "\n")
     })
-  }  
-  
+  }
+
   contains.wav <- str_detect(input, '.wav')
 
   if (contains.wav == "FALSE") {
@@ -132,7 +125,7 @@ DetectAndClassify <- function(input, feature.df,model.type.list=c("SVM"), tune =
   }
 
   model.results.list <- list()
-  
+
   for( i in 1:length(list.file.input)){
 
   contains.slash <- str_detect(list.file.input[i], pattern = "/")
@@ -182,15 +175,15 @@ DetectAndClassify <- function(input, feature.df,model.type.list=c("SVM"), tune =
 
   # Determine which columns are above specified cutoff
   list.sub <- which(col.sum > noise.value)
-  
+
   if(time.window.number !=1){
   # Find length differences between columns that match the specified cutoff
   detection.differences <- unlist(lapply(1: (length(list.sub)-1),
                                               function(i) c(list.sub[i+1]-list.sub[i]
                                               )))
-  # 
+  #
   detection.separation.list <- which( detection.differences >= time.window.number )
-  
+
   # Add one to remove
   detection.separation.list <- c(1,detection.separation.list+1)
   call.timing <- list()
@@ -199,12 +192,12 @@ DetectAndClassify <- function(input, feature.df,model.type.list=c("SVM"), tune =
     finish.index <- detection.separation.list[x+1]
     call.timing[[x]] <-  list.sub[start.index]:list.sub[finish.index]
   }
-  
-  
+
+
   } else {
     call.timing <- split(list.sub, cumsum(c(1, diff(list.sub)) != 1))
   }
-  
+
   # Calculate minimum signal duration to be considered signal
   number.time.windows.1sec <- min(which(swift.spectro$time > 1))
   signal.dur <- number.time.windows.1sec * min.signal.dur
@@ -219,18 +212,18 @@ DetectAndClassify <- function(input, feature.df,model.type.list=c("SVM"), tune =
   }
 
   if (length(call.timing.list) >= 1) {
-    
+
     subsamps <- lapply(1:length(call.timing.list),
                         function(i) extractWave(short.sound.files[[j]],
                                                 from=swift.spectro$time[min(call.timing.list[[i]])],
                                                 to=swift.spectro$time[max(call.timing.list[[i]])], xunit = c("time"),plot=F,output="Wave"))
-    
+
     calltimes <- lapply(1:length(call.timing.list),
                        function(i) cbind.data.frame(
                                                from=swift.spectro$time[min(call.timing.list[[i]])],
                                                to=swift.spectro$time[max(call.timing.list[[i]])]))
-    
-    
+
+
     mfcc.list <- list()
     temp.model.results.list.svm <- list()
     temp.model.results.list.rf <- list()
@@ -239,15 +232,15 @@ DetectAndClassify <- function(input, feature.df,model.type.list=c("SVM"), tune =
       print(paste("Processing", x, 'out of',length(subsamps), 'for', j,'out of',length(short.sound.files),'sound files'  ))
       }
       calltimes.subset <- calltimes[[x]]
-      
+
       start.time <- calltimes.subset$from
       end.time <- calltimes.subset$to
-      
+
       if(j >1){
         start.time <- short.wav.duration* (j-1) + start.time
         end.time <- short.wav.duration* (j-1) + end.time
       }
-      
+
       short.wav <- subsamps[[x]]
       wav.dur <- duration(short.wav)
       win.time <- wav.dur/n.windows
@@ -265,18 +258,18 @@ DetectAndClassify <- function(input, feature.df,model.type.list=c("SVM"), tune =
 
 
       mfcc.vector <- as.data.frame(t(mfcc.vector))
-      
+
       if( length(colnames(mfcc.vector)) != length(colnames(feature.df[, 2:ncol(feature.df)])) ){
         print('Training dataset columns do not match test dataset')
         break
       }
 
       colnames(mfcc.vector) <- colnames(feature.df[, 2:ncol(feature.df)])
-  
+
 
       if ("SVM" %in% model.type.list== TRUE) {
         svm.prob <- predict(ml.model.svm, mfcc.vector, probability = T)
-       
+
         model.output <- attr(svm.prob, "probabilities")
         signal.loc <- which(attr(model.output, "dimnames")[[2]] == target.signal)
         signal.probability <- model.output[signal.loc]
@@ -298,13 +291,13 @@ DetectAndClassify <- function(input, feature.df,model.type.list=c("SVM"), tune =
 
       if ("RF" %in% model.type.list== TRUE) {
         RF.prob <- predict(ml.model.rf, mfcc.vector,type='prob')
-        
+
         model.output <- colnames(RF.prob)
         signal.loc <- which( model.output== target.signal)
         signal.probability <- RF.prob[,signal.loc]
         temp.RF.df <- cbind.data.frame(target.signal, signal.probability)
         if (temp.RF.df$signal.probability >= probability.thresh.rf) {
-          
+
           if (wav.output == "TRUE") {
             tuneR::writeWave(subsamps[[x]], filename = paste(output.dir, "/", temp.name, "_", target.signal, "_", "RF", "_", start.time,
                                                              "_", end.time, "_", round(signal.probability,3),  ".wav", sep = ""), extensible = F)
@@ -315,62 +308,62 @@ DetectAndClassify <- function(input, feature.df,model.type.list=c("SVM"), tune =
           colnames(temp.df) <- c("file.name", "detect.num","model.type", "signal", "probability", "start.time", "end.time")
           temp.model.results.list.rf[[x]] <- temp.df
         }
-        
-      }
-      
 
-  
+      }
+
+
+
   if (exists("temp.model.results.list.svm")==TRUE  | exists("temp.model.results.list.rf")==TRUE ){
-    
+
      if ("SVM" %in% model.type.list== TRUE & "RF" %in% model.type.list== TRUE ){
-       
+
        if (exists("temp.model.results.list.svm")==TRUE  & exists("temp.model.results.list.rf")==TRUE ){
          temp.model.results.list.svm <- temp.model.results.list.svm[lengths(temp.model.results.list.svm) != 0]
          temp.model.results.list.rf <- temp.model.results.list.rf[lengths(temp.model.results.list.rf) != 0]
-         
+
          temp.model.results.list <- append(temp.model.results.list.svm,temp.model.results.list.rf)
        }
-       
+
        if (exists("temp.model.results.list.svm")==FALSE  & exists("temp.model.results.list.rf")==TRUE ){
          temp.model.results.list.rf <- temp.model.results.list.rf[lengths(temp.model.results.list.rf) != 0]
          temp.model.results.list <- temp.model.results.list.rf
        }
-       
+
        if (exists("temp.model.results.list.svm")==TRUE  & exists("temp.model.results.list.rf")==FALSE ){
          temp.model.results.list.svm <- temp.model.results.list.svm[lengths(temp.model.results.list.svm) != 0]
          temp.model.results.list <- temp.model.results.list.svm
        }
-       
+
      }
-    
+
     if ("SVM" %in% model.type.list== TRUE & "RF" %in% model.type.list== FALSE & exists("temp.model.results.list.svm")==TRUE){
       temp.model.results.list.svm <- temp.model.results.list.svm[lengths(temp.model.results.list.svm) != 0]
       temp.model.results.list <-temp.model.results.list.svm
     }
-    
+
     if ("SVM" %in% model.type.list== FALSE & "RF" %in% model.type.list== TRUE & exists("temp.model.results.list.rf")==TRUE ){
       temp.model.results.list.rf <- temp.model.results.list.rf[lengths(temp.model.results.list.rf) != 0]
       temp.model.results.list <- temp.model.results.list.rf
     }
-    
-    
+
+
   }
- 
+
     }
-    
+
     model.results.list[[j]] <-  do.call(rbind.data.frame, temp.model.results.list)
   }
   }
-  
+
    model.results.list <- model.results.list[lengths(model.results.list) != 0]
-  
-  
+
+
   if(exists("model.results.list")==TRUE & length(model.results.list)>0){
   print('Creating datasheet')
- 
+
   timing.df <-  do.call(rbind.data.frame, model.results.list)
-  
-  
+
+
   RavenSelectionTableDF <- data.frame()
   # Add minimum separation
   for(k in 1:length(model.type.list)){
@@ -379,64 +372,64 @@ DetectAndClassify <- function(input, feature.df,model.type.list=c("SVM"), tune =
     detection.time.differences <- unlist(lapply(1: (nrow(timing.df.subset)-1),
            function(i) c(timing.df.subset$start.time[i+1]-timing.df.subset$end.time[i]
                                         )))
-    
+
   detection.separation.list <- which( detection.time.differences < maximum.separation )
- 
-  detection.timing <- split(detection.separation.list, cumsum(c(1, diff(detection.separation.list)) != 1))  
-  
+
+  detection.timing <- split(detection.separation.list, cumsum(c(1, diff(detection.separation.list)) != 1))
+
   if(length(detection.timing)>1){
   for(j in 1:length(detection.timing )){
     temp.df <- detection.timing[[j]]
     detection.timing[[j]]<-  c(temp.df, max(temp.df) +1)
   }
-  
+
   DetectionDFtemp <- timing.df.subset[-c(unlist(detection.timing)),]
-  
- 
+
+
   for(l in 1: length(detection.timing)) {
    temp.subset <- detection.timing[[l]]
-   
+
    temprow1 <-  timing.df.subset[min(temp.subset):max(temp.subset),]
-  
+
      probability <- median(temprow1$probability)
      start.time <- min(temprow1$start.time)
      end.time <- max(temprow1$end.time)
      newselection <- cbind.data.frame(temprow1[1,1:4],probability,start.time,end.time)
      DetectionDFtemp <- rbind.data.frame(DetectionDFtemp,newselection)
-  }    
+  }
   }
   else {
     DetectionDFtemp <- timing.df.subset
   }
-  
+
   RavenSelectionTableDF <- rbind.data.frame(RavenSelectionTableDF,DetectionDFtemp )
   }
-  
+
   RavenSelectionTableDF <- RavenSelectionTableDF[order(RavenSelectionTableDF$start.time),]
-  
+
   Selection <- seq(1,nrow(RavenSelectionTableDF))
   View <- rep('Spectrogram 1',nrow(RavenSelectionTableDF))
   Channel <- rep(1,nrow(RavenSelectionTableDF))
   MinFreq <- rep(min.freq, nrow(RavenSelectionTableDF))
   MaxFreq <- rep(max.freq, nrow(RavenSelectionTableDF))
-  
+
   if(nrow(RavenSelectionTableDF) >0 ){
   RavenSelectionTableDF <- cbind.data.frame(Selection,View,Channel,MinFreq,MaxFreq,RavenSelectionTableDF)
-  
+
   RavenSelectionTableDF <-  RavenSelectionTableDF[,c("Selection", "View", "Channel",  "start.time", "end.time","MinFreq", "MaxFreq", "file.name",
                                        'model.type','probability','signal')]
-  
-  colnames(RavenSelectionTableDF) <-c("Selection", "View", "Channel", "Begin Time (s)", "End Time (s)", 
+
+  colnames(RavenSelectionTableDF) <-c("Selection", "View", "Channel", "Begin Time (s)", "End Time (s)",
                                "Low Freq (Hz)", "High Freq (Hz)",
                                "File Name",'model.type','probability','signal')
-  
-  
- 
+
+
+
   if(write.csv.output==TRUE){
     csv.file.name <- paste(output.dir, '/', temp.name,'_timing.df.txt',sep='')
-    write.table(x = RavenSelectionTableDF, sep = "\t", file = csv.file.name, 
+    write.table(x = RavenSelectionTableDF, sep = "\t", file = csv.file.name,
                 row.names = FALSE, quote = FALSE)
-    
+
   }
    print(paste("'Here are results for soundfile", temp.name, i, 'out of', length(list.file.input)))
    print(RavenSelectionTableDF)

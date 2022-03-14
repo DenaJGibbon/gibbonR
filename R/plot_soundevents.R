@@ -1,15 +1,15 @@
 #' @title Create multiple spectrograms to inspect sound events
-#' @description
+#' @description Coming soon
 #' @export
 #'
-plotSoundevents <- function(input.dir, nrow = 3, ncol = 2, from = 1, n.soundevents = length(list.wav.files), window.size = 1024, min.freq = 400, max.freq = 2500, class.label = "sound event", label.wav.name = TRUE, 
+plotSoundevents <- function(input.dir, nrow = 3, ncol = 2, from = 1, n.soundevents = length(list.wav.files), window.size = 1024, min.freq = 400, max.freq = 2500, class.label = "sound event", label.wav.name = TRUE,
     return.table = TRUE) {
-    
+
     list.wav.files <- list.files(input.dir, pattern = c(".wav", ".WAV"), full.names = TRUE)
     list.wav.files.short <- list.files(input.dir, pattern = c(".wav", ".WAV"), full.names = FALSE)
-    
+
     par(mfrow = c(nrow, ncol))
-    
+
     spectro.df <- list()
     for (a in from:n.soundevents) {
         print(paste("processing", a))
@@ -24,8 +24,8 @@ plotSoundevents <- function(input.dir, nrow = 3, ncol = 2, from = 1, n.soundeven
         colnames(temp.df) <- c("sound.event", "file.name")
         spectro.df <- rbind.data.frame(spectro.df, temp.df)
     }
-    
-    if (return.table == "TRUE") 
+
+    if (return.table == "TRUE")
         return(list(sound.event.table = spectro.df))
 }
 

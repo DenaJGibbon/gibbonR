@@ -4,11 +4,20 @@
 \alias{plotSoundevents}
 \title{Create multiple spectrograms to inspect sound events}
 \usage{
-plotSoundevents(input.dir, nrow = 3, ncol = 2, from = 1,
-  n.soundevents = length(list.wav.files), window.size = 1024,
-  min.freq = 400, max.freq = 2500, class.label = "sound event",
-  label.wav.name = TRUE, return.table = TRUE)
+plotSoundevents(
+  input.dir,
+  nrow = 3,
+  ncol = 2,
+  from = 1,
+  n.soundevents = length(list.wav.files),
+  window.size = 1024,
+  min.freq = 400,
+  max.freq = 2500,
+  class.label = "sound event",
+  label.wav.name = TRUE,
+  return.table = TRUE
+)
 }
 \description{
-Create multiple spectrograms to inspect sound events
+Coming soon
 }
