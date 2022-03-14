@@ -17,10 +17,8 @@ the creation of this package was to make commonly used signal processing
 techniques and various machine learning algorithms readily available in R for
 anyone interested in using bioacoustics in their research.
 
-### Summary 
-
-# Flow chart of R functions
-```{r eval=TRUE, warning=FALSE, echo=TRUE}
+### Flow chart of R functions
+```{r eval=TRUE, warning=FALSE, echo=FALSE}
 library(DiagrammeR)
 grViz("digraph flowchart {
       # node definitions with substituted label text
