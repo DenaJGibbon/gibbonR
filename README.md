@@ -5,9 +5,11 @@ March 14 2022
 **IMPORTANT UPDATE: An updated version of this package will be released
 soon\!**
 
-gibbonR: An R package for classification, detection and visualization of
-acoustic signals using machine learning ================ Dena J. Clink &
-Holger Klinck
+# gibbonR: An R package for classification, detection and visualization of acoustic signals using machine learning
+
+Dena J. Clink & Holger Klinck  
+K. Lisa Yang Center for Conservation Bioacoustics, Cornell Lab of
+Ornithology, Cornell University
 
 ### Package description
 
@@ -18,6 +20,8 @@ their research, but may not have the skills or training. The goal for
 the creation of this package was to make commonly used signal processing
 techniques and various machine learning algorithms readily available in
 R for anyone interested in using bioacoustics in their research.
+
+### Summary of package functions
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
