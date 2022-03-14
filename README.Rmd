@@ -32,7 +32,7 @@ the creation of this package was to make commonly used signal processing
 techniques and various machine learning algorithms readily available in R for
 anyone interested in using bioacoustics in their research.
 
-### Summary of package functions
+### Summary of package use and functions
 
 ```{r echo=FALSE,warning=FALSE,message=FALSE,error=FALSE, fig.keep='all'}
 library(ggpubr)
