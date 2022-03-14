@@ -1,3 +1,18 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
 **IMPORTANT UPDATE: An updated version of this package will be released soon!**
 
 
@@ -17,63 +32,11 @@ the creation of this package was to make commonly used signal processing
 techniques and various machine learning algorithms readily available in R for
 anyone interested in using bioacoustics in their research.
 
-### Flow chart of R functions
-```{r eval=TRUE, warning=FALSE, echo=FALSE}
-library(DiagrammeR)
-grViz("digraph flowchart {
-      # node definitions with substituted label text
-      graph [layout = dot]
-      node [fontname = Helvetica, shape = rectangle]        
-      tab1 [label = '@@1']
-      tab2 [label = '@@2']
-      tab3 [label = '@@3']
-      tab4 [label = '@@4']
-      tab5 [label = '@@5']
-      tab6 [label = '@@6']
-      tab7 [label = '@@7']
-      tab8 [label = '@@8']
-      tab9 [label = '@@9']
-      tab10 [label = '@@10']
-      tab11 [label = '@@11']
-      tab12 [label = '@@12']
-      
-      
-      # edge definitions with the node IDs
-      tab1 -> tab2 -> tab3;
-     
-      tab3 -> {tab4 tab5 tab6}
-      tab6 -> tab7 
-      tab6 -> tab8
-      tab4 -> tab9
-      tab5 -> tab9
-      tab7 -> tab9
-      tab8 -> tab9
-      tab9 ->tab10
-      tab9 ->tab11
-      tab10 -> tab12
-      tab11 -> tab12
-      
-      {rank = same; tab4; tab5; tab6}
-      }
-     
-      
-      [1]: '1. Create labelled training dataset'
-      [2]:  paste0('2. Extract features','\\n ','[MFCCfunction]')
-      [3]: '3. Identify sound events in long-term recording'
-      [4]: paste0('3a. Detect with band-limited energy detector','\\n ','[DetectBLED]')
-      [5]: paste0('3b. Detect with support-vector machine','\\n ','[DetectSVM]')
-      [6]: paste0('3c. Detect and classify sound events', '\\n ','[DetectAndClassify] ')
-      [7]: paste0('4a. Use random forest algorithm',':\\n ','[model.type= RF]')
-      [8]: paste0('4b. Use support vector machine algorithm','\\n ','[model.type= SVM]')
-      [9]: '5. Validate output using a human observer'
-      [10]: paste0('5a. Validate using gibbonR package','\\n ','[ValidateML]')
-      [11]: paste0('5b. Validate using external software','\\n ','(e.g. Raven Pro)')
-      [12]: paste0('6. Calculate performance metrics','\\n ','[PerformanceML]')
-      ")
-
+```{r echo=FALSE,warning=FALSE,message=FALSE,error=FALSE, fig.keep='all'}
+library(ggpubr)
+mainImage <- magick::image_read('man/gibbonR_flowchart.png')
+(mainImage)
 ```
-
-
 ### How to cite
 
 This package is currently in development, with submission to rOpenSci planned shortly. In the interim, please cite the arXiv preprint:
