@@ -14,9 +14,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-**IMPORTANT UPDATE: An updated version of this package will be released soon!**
-
-
 # gibbonR: An R package for classification, detection and visualization of acoustic signals using machine learning
 
 Dena J. Clink & Holger Klinck \
@@ -39,6 +36,12 @@ library(ggpubr)
 mainImage <- magick::image_read('man/gibbonR_flowchart.png')
 (mainImage)
 ```
+
+### Installation
+Coming soon!  
+
+### Tutorial
+Coming soon!  
 
 ### How to cite
 
