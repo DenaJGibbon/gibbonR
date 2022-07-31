@@ -37,8 +37,6 @@
 #' @import randomForest
 #' @import tuneR
 #' @import seewave
-#' @import tuneR
-#' @import
 #' @examples caret
 #'
 
