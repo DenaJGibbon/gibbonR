@@ -6,7 +6,6 @@
 \usage{
 DetectBLED(
   input,
-  feature.df,
   min.freq = 200,
   max.freq = 6000,
   noise.quantile.val = 0.75,
@@ -16,6 +15,7 @@ DetectBLED(
   min.signal.dur = 1,
   max.sound.event.dur = 6,
   output = "wav",
+  file.type = "list",
   wav.output = "TRUE",
   output.dir = getwd(),
   swift.time = TRUE,
@@ -29,8 +29,6 @@ DetectBLED(
 \arguments{
 \item{input}{Either full path to directory containing .wav files or a list with file name as first element and .wav as second element}
 
-\item{feature.df}{Dataframe of features from labeled sound files; first column must be class labels}
-
 \item{min.freq}{Minimum frequency (Hz) of signal of interest}
 
 \item{max.freq}{Maximum frequency (Hz) of signal of interest}
@@ -40,6 +38,8 @@ DetectBLED(
 \item{output}{Either 'spectro', 'table' or 'wav'}
 
 \item{output.dir}{Specified output directory; set to current working directory}
+
+\item{feature.df}{Dataframe of features from labeled sound files; first column must be class labels}
 
 \item{model.type}{Choice of 'NNET', 'SVM', or 'GMM'}
 
@@ -65,6 +65,6 @@ DetectBLED(
 Function to train ML algorithm, do audio segmentation and classification on multiple sound files
 }
 \examples{
-Coming soon
+caret
 
 }
