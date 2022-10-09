@@ -41,7 +41,7 @@ trainingdata$class <- as.factor(trainingdata$class)
 trainingdata$class <- as.factor(trainingdata$class)
 
 
-ml.model.svm <- e1071::svm(trainingdata[, 2:ncol(trainingdata)], trainingdata$class, kernel = "radial", #gamma = tune.rad$best.parameters$gamma, cost = tune.rad$best.parameters$cost, 
+ml.model.svm <- e1071::svm(trainingdata[, 2:ncol(trainingdata)], trainingdata$class, kernel = "radial", 
                            cross = 25,
                            probability = TRUE)
 
@@ -63,12 +63,12 @@ print(ml.model.rf)
 TrainingDataFolderLocation <- "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/TrainingDataFromRavenSelectionTables"
 
 # Directory with annotated selection tables
-AnnotatedSelectionTables <- list.files("/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/SelectionTables/GibbonSelectionTables/",
+AnnotatedSelectionTables <- list.files("/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/SelectionTables/GibbonTrainingSelectionTables/",
                                        full.names = T)
 
 # Directory with corresponding .wav files
-AnnotatedWaveFiles <- list.files("/Users/denaclink/Library/CloudStorage/Box-Box/gibbonRSampleFiles/GibbonFiles/",full.names = T)
-AnnotatedWaveFilesShort <- list.files("/Users/denaclink/Library/CloudStorage/Box-Box/gibbonRSampleFiles/GibbonFiles/",full.names = F)
+AnnotatedWaveFiles <- list.files("/Users/denaclink/Library/CloudStorage/Box-Box/gibbonRSampleFiles/GibbonTrainingFiles/",full.names = T)
+AnnotatedWaveFilesShort <- list.files("/Users/denaclink/Library/CloudStorage/Box-Box/gibbonRSampleFiles/GibbonTrainingFiles/",full.names = F)
 AnnotatedWaveFilesShort <- str_split_fixed(AnnotatedWaveFilesShort,pattern = '.wav', n=2)[,1]
 
 # Loop to cut out the corresponding annotations into short clips
@@ -90,7 +90,7 @@ for(i in 1: length(AnnotatedSelectionTables)){
   # Write wave files to folder
   for(k in 1:length(ShortSoundClips)){
     TempClip <- ShortSoundClips[[k]]
-    WavFileName <- paste(TrainingDataFolderLocation,'/gibbon_', k, '.wav',sep="")
+    WavFileName <- paste(TrainingDataFolderLocation,'/female.gibbon_', k, '.wav',sep="")
     writeWave(TempClip,WavFileName,extensible = F)
   }
   
@@ -140,7 +140,75 @@ for(i in 1:length(NoiseSelectionTables)){
 
 ```
 
+### Now read in clips based on Raven Selection tables and calculate MFCCs
+```{r echo = T, results = 'hide' }
+
+TrainingWavFilesDir <- 
+  "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/TrainingDataFromRavenSelectionTables/"
+
+trainingdata <- gibbonR::MFCCFunction(input.dir=TrainingWavFilesDir, min.freq = 400, max.freq = 1600,win.avg="TRUE")
+
+
+trainingdata$class <- as.factor(trainingdata$class)
+```
+
+### Compare Random Forest and Support Vector Machine for Supervised Classification
+```{r }
+
+trainingdata$class <- as.factor(trainingdata$class)
+
+
+ml.model.svm <- e1071::svm(trainingdata[, 2:ncol(trainingdata)], trainingdata$class, kernel = "radial", 
+                           cross = 25,
+                           probability = TRUE)
+
+print(paste('SVM accuracy',ml.model.svm$tot.accuracy))
+
+
+ml.model.rf <- randomForest::randomForest(x=trainingdata[, 2:ncol(trainingdata)], y = trainingdata$class)
+
+
+print(ml.model.rf)
+
+
+```
 
 # Part 2. Run the detector/classifier
+```{r }
 
+  TrainingDataMFCC <- MFCCFunction(input.dir= TrainingDataFolderLocation, min.freq = 400, max.freq = 1600,win.avg="TRUE")
+  
+  TrainingDataMFCC$class <- as.factor(TrainingDataMFCC$class)
+  
+  TestFileDirectory <- '/Users/denaclink/Library/CloudStorage/Box-Box/gibbonRSampleFiles/GibbonTestFiles'
+  
+  OutputDirectory <-  "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/DetectAndClassifyOutput"
+  
+  DetectAndClassify(input=TestFileDirectory,
+                    file.type='directory',
+                    feature.df=TrainingDataMFCC,
+                    model.type.list=c('SVM','RF'),
+                    tune = TRUE,
+                    short.wav.duration=300,
+                    target.signal = c("female.gibbon"),
+                    min.freq = 400, max.freq = 1600,
+                    noise.quantile.val=0.15,
+                    time.window.number =3,
+                    n.windows = 9, num.cep = 12,
+                    spectrogram.window =160,
+                    pattern.split = ".wav",
+                    min.signal.dur = 3,
+                    max.sound.event.dur = 25,
+                    maximum.separation =1,
+                    output = "wav",
+                    probability.thresh.svm = 0.75,
+                    probability.thresh.rf = 0.75,
+                    wav.output = "TRUE",
+                    output.dir =OutputDirectory,
+                    swift.time=TRUE,time.start=5,time.stop=10,
+                    write.csv.output=FALSE,verbose=TRUE,
+                    random.sample='NA')
+  
+
+```
 
