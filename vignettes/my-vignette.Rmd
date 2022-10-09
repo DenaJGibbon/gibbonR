@@ -14,6 +14,41 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r }
 library(gibbonR)
 ```
+
+
+# Training data
+In 'gibbonR' there are two ways that you can format your training data. The first can be a set of labelled .wav clips with the class indicated in the name of the file (e.g., 'gibbon_01.wav' and 'noise_01.wav'). The second is to have a folder of selection tables created in Raven Pro (K. Lisa Yang Center for Conservation Bioacoustics) and a folder with the associated '.wav' files. For the second approach there must be an annotation column indicating the call type and it is assumed that all signals of interest are annotated, and the rest of the files contain only background noise.  
+
+
+```{r }
+
+TrainingWavFilesDir <- 'data/MultipleSoundClasses/'
+
+trainingdata <- gibbonR::MFCCFunction(input.dir= TrainingWavFilesDir, min.freq = 400, max.freq = 1600)
+
+trainingdata$class <- as.factor(trainingdata$class)
+
+
+
+ml.model.svm <- e1071::svm(trainingdata[, 2:ncol(trainingdata)], trainingdata$class, kernel = "radial", #gamma = tune.rad$best.parameters$gamma, cost = tune.rad$best.parameters$cost, 
+                           cross = 25,
+                           probability = TRUE)
+
+print(paste('SVM accuracy',ml.model.svm$tot.accuracy))
+
+
+ml.model.rf <- randomForest::randomForest(x=trainingdata[, 2:ncol(trainingdata)], y = trainingdata$class)
+
+
+print(ml.model.rf)
+
+
+
+```
+
+
+
+

@@ -20,7 +20,7 @@ MFCCFunction <-
     call.timing.list.short <- list.files(input.dir,full.names = F,pattern='.wav')
 
     subsamps <- lapply(1:length(call.timing.list),
-                       function(i) readWave(call.timing.list[[i]]))
+                       function(i) tuneR::readWave(call.timing.list[[i]]))
 
     if(win.avg=="FALSE"){
 
@@ -60,7 +60,7 @@ MFCCFunction <-
       print(paste("processing sound event", x, 'out of',length(subsamps) ))
 
       short.wav <- subsamps[[x]]
-      wav.dur <- duration(short.wav)
+      wav.dur <- seewave::duration(short.wav)
       win.time <- wav.dur/n.windows
 
       # Calculate MFCCs
