@@ -2,9 +2,7 @@
 
 export(DetectAndClassify)
 export(DetectBLED)
-export(DetectSVM)
 export(MFCCFunction)
-export(plotSoundevents)
 import(e1071)
 import(mclust)
 import(seewave)
