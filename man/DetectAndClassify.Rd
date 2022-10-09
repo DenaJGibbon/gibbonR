@@ -10,6 +10,7 @@ DetectAndClassify(
   model.type.list = c("SVM"),
   tune = FALSE,
   target.signal = "female.gibbon",
+  file.type = "list",
   model.svm = NULL,
   short.wav.duration = 300,
   min.freq = 400,
@@ -53,26 +54,18 @@ DetectAndClassify(
 
 \item{num.cep}{Number of cepstra coefficients to calculate for MFCCs}
 
-\item{pattern.split}{Pattern to find and remove to create file name; currently set to ".rda"}
+\item{pattern.split}{Pattern to find and remove to create file name; currently set to ".wav"}
 
 \item{output}{Either 'spectro', 'table' or 'wav'}
 
 \item{probability.thresh.svm}{Probability threshold (provided by machine learning algorithm) to be considered as target signal}
 
-\item{probability.thresh.rf}{Description}
-
 \item{output.dir}{Specified output directory; set to current working directory}
-
-\item{model.type}{Choice of 'NNET', 'SVM', or 'GMM'}
-
-\item{which.quant}{Specifies how to calculate noise values from GMM}
-
-\item{wav.name}{Can be either full file path to .wav file location or R .wav object}
-
-\item{min.sound.event.dur}{Minimum time (in seconds) for sound events to be considered}
-
-\item{wav.out}{Logical; if "TRUE" then writes each sound event as a wave file to directory}
 }
 \description{
 Function to train ML algorithm, do audio segmentation and classification on multiple sound files
+}
+\examples{
+caret
+
 }
