@@ -20,7 +20,7 @@ MFCCFunction <-
     call.timing.list.short <- list.files(input.dir,full.names = F,pattern='.wav')
 
     subsamps <- lapply(1:length(call.timing.list),
-                       function(i) tuneR::readWave(call.timing.list[[i]]))
+                       function(i) readWave(call.timing.list[[i]]))
 
     if(win.avg=="FALSE"){
 
