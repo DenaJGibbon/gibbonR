@@ -166,7 +166,7 @@ DetectBLED <- function(input,
         if( j==1){
           lapply(1:length(subsamps),
                  function(i) writeWave(subsamps[[i]],
-                                       filename = paste(output.dir,temp.name,
+                                       filename = paste(output.dir,'noise_', temp.name,
                                                         swift.spectro$t[min(call.timing.list[[i]])],
                                                         swift.spectro$t[max(call.timing.list[[i]])],
                                                         '.wav',sep='_'),extensible=FALSE))
