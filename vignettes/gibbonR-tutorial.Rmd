@@ -1,11 +1,9 @@
 ---
 title: "gibbonR: An R package for the automated detection and classification of female gibbon calls from long-term acoustic recordings"
-output: rmarkdown::html_vignette
-toc: true
-vignette: >
-  %\VignetteIndexEntry{my-vignette}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+output:
+  html_document:
+    toc: true
+    toc_float: true
 ---
 
 ```{r, include = FALSE}
@@ -15,12 +13,12 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r }
+```{r, echo=T,warning=FALSE}
 library(gibbonR)
 ```
 
 
-# Training data
+# Part 1. Prepare Training Data
 In 'gibbonR' there are two ways that you can format your training data. The first can be a set of labelled .wav clips with the class indicated in the name of the file (e.g., 'gibbon_01.wav' and 'noise_01.wav'). The second is to have a folder of selection tables created in Raven Pro (K. Lisa Yang Center for Conservation Bioacoustics) and a folder with the associated '.wav' files. For the second approach there must be an annotation column indicating the call type and it is assumed that all signals of interest are annotated, and the rest of the files contain only background noise.  
 
 ## Part 1A. Training Data with Labeled .wav clips
@@ -60,7 +58,7 @@ print(ml.model.rf)
 
 ## Part 1B. Training Data with Raven Selection Tables
 ### Prepare training data from labeled annotations
-```{r }
+```{r,eval=F }
 # Specify the folder where the training data will be saved
 TrainingDataFolderLocation <- "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/TrainingDataFromRavenSelectionTables"
 
@@ -100,5 +98,49 @@ for(i in 1: length(AnnotatedSelectionTables)){
 }
 
 ```
+
+### Prepare noise training data from files without target signal
+```{r eval=F}
+# Specify the folder where the training data will be saved
+TrainingDataFolderLocation <- "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/TrainingDataFromRavenSelectionTables/"
+
+# Directory with annotated selection tables
+NoiseSelectionTables <- list.files("/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/SelectionTables/NoiseSelectionTables/",
+                                       full.names = T)
+
+# Directory with corresponding .wav files
+NoiseWaveFiles <- list.files("/Users/denaclink/Library/CloudStorage/Box-Box/gibbonRSampleFiles/NoiseFiles/",full.names = T)
+NoiseWaveFilesShort <- list.files("/Users/denaclink/Library/CloudStorage/Box-Box/gibbonRSampleFiles/NoiseFiles/",full.names = F)
+NoiseWaveFilesShort <- str_split_fixed(NoiseWaveFilesShort,pattern = '.wav', n=2)[,1]
+
+for(i in 1:length(NoiseSelectionTables)){
+  
+  # Find the corresponding soundfile
+  SoundFileIndex <- which(str_detect(NoiseSelectionTables[i],NoiseWaveFilesShort))
+
+  DetectBLED(input=NoiseWaveFiles[SoundFileIndex],
+           min.freq = 400, 
+           max.freq = 1600,
+           noise.quantile.val=0.3,
+           file.type='wav',
+           spectrogram.window =512,
+           pattern.split = ".wav", 
+           min.signal.dur = 3,
+           max.sound.event.dur = 12, 
+           output = "wav",
+           wav.output = "TRUE", 
+           output.dir = TrainingDataFolderLocation,
+           swift.time=TRUE,
+           time.start=06,
+           time.stop=11,
+           write.csv.output=TRUE,
+           verbose=TRUE,
+           random.sample=FALSE)
+}
+
+```
+
+
+# Part 2. Run the detector/classifier
 
 
