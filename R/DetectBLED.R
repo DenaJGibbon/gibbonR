@@ -34,6 +34,7 @@ DetectBLED <- function(input,
                        noise.quantile.val=0.75,
                        spectrogram.window =1600,
                        subsample.dur =300,
+                       training.label='noise',
                        pattern.split = ".wav", min.signal.dur = 1,
                        max.sound.event.dur = 6, output = "wav",
                        file.type='list',
@@ -166,19 +167,21 @@ DetectBLED <- function(input,
         if( j==1){
           lapply(1:length(subsamps),
                  function(i) writeWave(subsamps[[i]],
-                                       filename = paste(output.dir,'noise_', temp.name,
+                                       filename = paste(output.dir,training.label, '_',
+                                                        paste(temp.name,
                                                         swift.spectro$t[min(call.timing.list[[i]])],
                                                         swift.spectro$t[max(call.timing.list[[i]])],
-                                                        '.wav',sep='_'),extensible=FALSE))
+                                                        '.wav',sep='_'), sep=''),extensible=FALSE))
         }
 
         if( j > 1){
           lapply(1:length(subsamps),
                  function(i) writeWave(subsamps[[i]],
-                                       filename = paste(output.dir,'noise_',temp.name,
+                                       filename =  paste(output.dir,training.label,'_',
+                                                         paste(temp.name,
                                                         (swift.spectro$t[min(call.timing.list[[i]])]+(subsample.dur* (j-1) )),
                                                         (swift.spectro$t[max(call.timing.list[[i]])]+(subsample.dur* (j-1) )),
-                                                        '.wav',sep='_'),extensible=FALSE))
+                                                        '.wav',sep='_'), sep=''),extensible=FALSE))
         } else{
           print('No sound events detected')
         }
