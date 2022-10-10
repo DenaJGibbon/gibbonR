@@ -177,7 +177,10 @@ print(ml.model.rf)
 
 ## Part 2a. Feature extraction
 ```{r }
-  TrainingDataMFCC <- MFCCFunction(input.dir= TrainingDataFolderLocation, min.freq = 400, max.freq = 1600,win.avg="TRUE")
+# Specify the folder where the training data will be saved
+TrainingDataFolderLocation <- "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/TrainingDataFromRavenSelectionTables/"
+  
+TrainingDataMFCC <- MFCCFunction(input.dir= TrainingDataFolderLocation, min.freq = 400, max.freq = 1600,win.avg="TRUE")
   
   TrainingDataMFCC$class <- as.factor(TrainingDataMFCC$class)
 ```
@@ -206,8 +209,8 @@ print(ml.model.rf)
                     max.sound.event.dur = 25,
                     maximum.separation =1,
                     output = "wav",
-                    probability.thresh.svm = 0.75,
-                    probability.thresh.rf = 0.75,
+                    probability.thresh.svm = 0.15,
+                    probability.thresh.rf = 0.15,
                     wav.output = "TRUE",
                     output.dir =OutputDirectory,
                     swift.time=TRUE,time.start=5,time.stop=10,
@@ -252,12 +255,11 @@ for(x in 1:length(Annotatedfiles)){
 
 ```
 
-## Part 3b. Calculate performance metrics using 'ROCR'
+## Part 3b. Identify true and false positives
 ```{r }
-OutputDirectory <-  "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/DetectAndClassifyOutput"
+  OutputDirectory <-  "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/DetectAndClassifyOutput"
     
   all.combinedprecision.recall.randomiter <- data.frame()
-  output.dir <- RandomIterFolders[k]
   range.secs.start <- 6
   range.secs.end <- 6
   
@@ -318,23 +320,69 @@ OutputDirectory <-  "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/Dete
         all.detections.subset$class.label <- '-1'
       }
    
-    
-    # if(all.detections.subset$class.label == '1'){
-    #   
-    #  temp.wav <- readWave(list.ml[[x]])
-    #  wav.name <- paste('Test/',str_split_fixed(list.ml[[x]],pattern = '/',n=10)[,10],
-    #                    sep='')
-    # 
-    #  writeWave(temp.wav,wav.name,extensible = F)
-    #   
-    # }
-    
-    all.detections.subset$trainingdata <- ListTrainingDirectories[k]
-    #print(detections.ml.adj)
     recall.snr.all.df <- rbind.data.frame(recall.snr.all.df,all.detections.subset)
   }
   
-  all.combinedprecision.recall.randomiter <- rbind.data.frame(all.combinedprecision.recall.randomiter,recall.snr.all.df)
-  write.csv(all.combinedprecision.recall.randomiter,paste(range.secs.start,'secsrange_', 'randomiterforROCALLupdateF.csv',sep=''),row.names = F)
-} 
+
+```
+## Part 3c. Calculate performance metrics using 'ROCR'
+
+```{r }
+library(ROCR)
+
+auc.df <- data.frame()
+performance.df <- data.frame()
+
+  
+  ml.index <- unique(recall.snr.all.df$ml.algorithm)
+  for(m in 1:length(ml.index)){
+  
+    temp.subset <-
+    subset(recall.snr.all.df,
+           ml.algorithm==ml.index[m])
+  
+  predictions <- as.numeric(temp.subset$probability)
+  labels <- (temp.subset$class.label)
+  pred <- prediction(predictions, labels)
+  perf <- performance(pred, "rec", "prec")
+  perfauc <- performance(pred, "aucpr")
+  Precision <- perf@x.values[[1]]
+  Recall <- perf@y.values[[1]]
+  Threshold <- perf@alpha.values[[1]]
+  AUC <- perfauc@y.values[[1]]
+  perfF1 <- performance(pred, "f")
+  F1 <-  perfF1@y.values[[1]]
+  print(AUC)
+  ml.algorithm <- ml.index[m]
+  tempauc <- cbind.data.frame(AUC,ml.algorithm)
+  auc.df <- rbind.data.frame(auc.df,tempauc)
+  
+  temp.performance <- cbind.data.frame(Precision,Recall,Threshold,F1,ml.algorithm)
+  performance.df <- rbind.data.frame(performance.df,temp.performance)
+  
+  perf <- performance(pred, "prec", "rec")
+
+  plot(perf,
+     avg= "threshold",
+     colorize=TRUE,
+     lwd= 3,
+     main= paste(ml.index[m],'Precision/Recall'))
+  
+plot(perf,
+     lty=3,
+     col="grey78",
+     add=TRUE)
+
+  }  
+
+```
+
+## Part 3d. Plot performance metrics
+
+```{r }
+# AUCbox <- ggboxplot(data=auc.df,
+#           x='TrainingData',y='AUC',fill='TrainingData',facet.by = 'ml.algorithm')+ theme(axis.text.x = element_text(angle = 45,  hjust=1))+
+#   theme(legend.position="none")+scale_fill_manual(values= matlab::jet.colors(9) )
+# AUCbox
+  
 ```
