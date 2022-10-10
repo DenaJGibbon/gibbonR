@@ -174,12 +174,17 @@ print(ml.model.rf)
 ```
 
 # Part 2. Run the detector/classifier
-```{r }
 
+## Part 2a. Feature extraction
+```{r }
   TrainingDataMFCC <- MFCCFunction(input.dir= TrainingDataFolderLocation, min.freq = 400, max.freq = 1600,win.avg="TRUE")
   
   TrainingDataMFCC$class <- as.factor(TrainingDataMFCC$class)
+```
   
+## Part 2b. Run DetectClassify  
+```{r }
+
   TestFileDirectory <- '/Users/denaclink/Library/CloudStorage/Box-Box/gibbonRSampleFiles/GibbonTestFiles'
   
   OutputDirectory <-  "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/DetectAndClassifyOutput"
@@ -212,3 +217,124 @@ print(ml.model.rf)
 
 ```
 
+# Part 3. Calculate performance metrics
+
+## Part 3a. Prepare data for performance metrics
+```{r }
+# Set location of test file selection tables
+input.dir.text.files <- "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/SelectionTables/GibbonTestSelectionTables"
+
+Annotatedfiles <- list.files(input.dir.text.files,full.names = T)
+
+ListOfAnnotatedFilesShort <- list.files(input.dir.text.files,full.names = F)
+
+nslash <- str_count(Annotatedfiles,pattern = '/')[1]+1
+snames <- str_split_fixed(Annotatedfiles,pattern = '/',n=nslash)[,nslash]
+
+all.detections <- data.frame()
+for(x in 1:length(Annotatedfiles)){
+  temp.table <- read.delim2(Annotatedfiles[x],fill = T,header =T)
+  file.name <- str_split_fixed(snames[x],pattern = '[.]',n=2)[,1]
+  recorder <- str_split_fixed(file.name,pattern='_',n=3)[,1]
+  date <- str_split_fixed(file.name,pattern='_',n=3)[,2]
+  time <- str_split_fixed(file.name,pattern='_',n=3)[,3]
+  
+  if(nrow(temp.table >0)){
+    temp.table.updated <- cbind.data.frame(file.name,recorder,date,time,temp.table)
+  } else {
+    temp.row <- as.data.frame(t(rep('NA',ncol(temp.table))))
+    colnames(temp.row) <- colnames(temp.table)
+    temp.table.updated <- cbind.data.frame(file.name,recorder,date,time,temp.row)
+    
+  }
+  all.detections <- rbind.data.frame(all.detections,temp.table.updated)
+}
+
+```
+
+## Part 3b. Calculate performance metrics using 'ROCR'
+```{r }
+OutputDirectory <-  "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/DetectAndClassifyOutput"
+    
+  all.combinedprecision.recall.randomiter <- data.frame()
+  output.dir <- RandomIterFolders[k]
+  range.secs.start <- 6
+  range.secs.end <- 6
+  
+  ### Detections using band-limited energy summation
+  gibbondetects <- OutputDirectory
+  list.ml <-  list.files(gibbondetects, full.names = T, pattern='.wav')
+
+  
+  # Need to focus on gibbons for this validation
+  nslash <- str_count(list.ml[[1]],'/')+1
+  list.ml.signals <- str_split_fixed(list.ml,pattern = '/',n=nslash)[,nslash]
+  
+  list.ml.signals <- str_split_fixed(list.ml.signals,pattern = '_',n=5)[,4]
+  
+  
+  list.ml <- 
+    list.ml[which(list.ml.signals=='female.gibbon')]
+  
+  
+  ml.detection.df <- data.frame()
+  
+  for(y in 1:length(list.ml)){
+    L.wav <- list.ml[[y]]
+    n.slash  <- str_count(L.wav, pattern = "/")[1] + 1
+    
+    det.file.name <- str_split_fixed(L.wav,"/",n=n.slash)[,n.slash]
+    det.file.name <- str_split_fixed(det.file.name,".wav",n=2)[,1]
+    
+    file.name <- paste(str_split_fixed(det.file.name,"_",n=5)[,1],str_split_fixed(det.file.name,"_",n=5)[,2],
+                       str_split_fixed(det.file.name,"_",n=5)[,3], sep='_')
+    det.date <- str_split_fixed(det.file.name,"_",n=5)[,2]
+    det.time <- str_split_fixed(det.file.name,"_",n=5)[,3]
+    det.swift <- str_split_fixed(det.file.name,"_",n=5)[,1]
+    det.time.start <- as.numeric(str_split_fixed(det.file.name,"_",n=9)[,6])
+    det.time.end <- as.numeric(str_split_fixed(det.file.name,"_",n=9)[,7])
+    probability <- str_split_fixed(det.file.name,"_",n=8)[,8]
+    ml.algorithm <- str_split_fixed(det.file.name,"_",n=7)[,5]
+    
+    detections.df <- cbind.data.frame(file.name,det.swift, det.date, det.time,det.time.start,det.time.end,probability,ml.algorithm)
+    
+    ml.detection.df <- rbind.data.frame(ml.detection.df,detections.df)
+  }
+  
+  
+  recall.snr.all.df <- data.frame()
+  for(x in 1:nrow(ml.detection.df)){
+    all.detections.subset <- ml.detection.df[x,]
+    validate.detect.subset <-subset(all.detections,file.name==as.character(all.detections.subset$file.name))
+    validate.detect.subset$Begin.Time..s. <- as.numeric(validate.detect.subset$Begin.Time..s.)
+    min.start.time <- as.numeric(all.detections.subset$det.time.start)-range.secs.start
+    max.start.time <- as.numeric(all.detections.subset$det.time.start)+range.secs.end
+    
+    detections.ml <- subset(validate.detect.subset, Begin.Time..s.>min.start.time & Begin.Time..s.< max.start.time)
+    
+      if(nrow(detections.ml)>0){
+      all.detections.subset$class.label <- '1'
+      } else{
+        all.detections.subset$class.label <- '-1'
+      }
+   
+    
+    # if(all.detections.subset$class.label == '1'){
+    #   
+    #  temp.wav <- readWave(list.ml[[x]])
+    #  wav.name <- paste('Test/',str_split_fixed(list.ml[[x]],pattern = '/',n=10)[,10],
+    #                    sep='')
+    # 
+    #  writeWave(temp.wav,wav.name,extensible = F)
+    #   
+    # }
+    
+    all.detections.subset$trainingdata <- ListTrainingDirectories[k]
+    #print(detections.ml.adj)
+    recall.snr.all.df <- rbind.data.frame(recall.snr.all.df,all.detections.subset)
+  }
+  
+  all.combinedprecision.recall.randomiter <- rbind.data.frame(all.combinedprecision.recall.randomiter,recall.snr.all.df)
+  write.csv(all.combinedprecision.recall.randomiter,paste(range.secs.start,'secsrange_', 'randomiterforROCALLupdateF.csv',sep=''),row.names = F)
+} 
+```
