@@ -60,7 +60,7 @@ MFCCFunction <-
     #Class <- stringr::str_split_fixed(call.timing.list.short,pattern = '_',n=2)[,1]
     Class <- stringr::str_split_fixed(call.timing.list.short,pattern = '_',n=3)[,2]
     for(x in 1:length(subsamps)){
-      print(paste("processing sound event", x, 'out of',length(subsamps) ))
+      #print(paste("processing sound event", x, 'out of',length(subsamps) ))
 
       short.wav <- subsamps[[x]]
       wav.dur <- seewave::duration(short.wav)

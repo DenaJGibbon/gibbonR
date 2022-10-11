@@ -22,7 +22,6 @@ knitr::opts_chunk$set(
 library(gibbonR)
 ```
 
-
 # Part 1. Prepare Training Data
 In 'gibbonR' there are two ways that you can format your training data. The first can be a set of labelled .wav clips with the class indicated in the name of the file (e.g., 'gibbon_01.wav' and 'noise_01.wav'). The second is to have a folder of selection tables created in Raven Pro (K. Lisa Yang Center for Conservation Bioacoustics) and a folder with the associated '.wav' files. For the second approach there must be an annotation column indicating the call type and it is assumed that all signals of interest are annotated, and the rest of the files contain only background noise.  
 
@@ -128,6 +127,7 @@ for(i in 1:length(NoiseSelectionTables)){
            pattern.split = ".wav", 
            min.signal.dur = 3,
            max.sound.event.dur = 12, 
+           output = "wav",
            wav.output = "TRUE", 
            output.dir = TrainingDataFolderLocation,
            swift.time=TRUE,
@@ -208,7 +208,6 @@ TrainingDataMFCC <- MFCCFunction(input.dir= TrainingDataFolderLocation, min.freq
                     min.signal.dur = 3,
                     max.sound.event.dur = 25,
                     maximum.separation =1,
-                    output = "wav",
                     probability.thresh.svm = 0.15,
                     probability.thresh.rf = 0.15,
                     wav.output = "TRUE",
@@ -393,5 +392,4 @@ library(apcluster)
 AffinityBiplotAddSpectrograms(input.dir.Focal="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/",output.dir.Focal="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/Thumbnails/",class='fixed', q.fixed=0.1,add.spectrograms=TRUE,min.freq=400,max.freq=1600,main="UMAP Plot")
   
 ```
-
 
