@@ -87,7 +87,6 @@ for(y in 1:length(Focal.exemplars)) {
   yrange <- (abs(range(plot.for.AcousticSignals$Dim.2)[1])+abs(range(plot.for.AcousticSignals$Dim.2)[2]))/40
   color.vals <- matlab::jet.colors (length(unique(plot.for.AcousticSignals$class)))
 
-  print(y)
   figure1.png <- magick::image_trim(magick::image_read(paste(output.dir.Focal,y,'Focal.png',sep='')))
   figure1.png <- magick::image_modulate(figure1.png,brightness = 300)
 
