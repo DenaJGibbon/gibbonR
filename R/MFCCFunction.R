@@ -30,7 +30,7 @@ MFCCFunction <-
       mfcc.output.df <- data.frame()
       ####Loop to calculate MFCC for each .wav file in the directory
       for (j in 1:length(subsamps)) {
-        print(paste("processing",j))
+        #print(paste("processing",j))
         wav.name <- call.timing.list.short[[j]]
         wav.file <- subsamps[[j]]
 

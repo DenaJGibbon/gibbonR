@@ -128,7 +128,6 @@ for(i in 1:length(NoiseSelectionTables)){
            pattern.split = ".wav", 
            min.signal.dur = 3,
            max.sound.event.dur = 12, 
-           output = "wav",
            wav.output = "TRUE", 
            output.dir = TrainingDataFolderLocation,
            swift.time=TRUE,
