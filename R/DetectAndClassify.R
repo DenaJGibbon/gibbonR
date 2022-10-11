@@ -475,7 +475,7 @@ DetectAndClassify <- function(input, feature.df,model.type.list=c("SVM"), tune =
           end_time <- Sys.time()
           print(paste('System processed', round(seewave::duration(temp.wav)), 'seconds in', round(end_time - start_time), 'seconds',
                       'this translates to',
-                      (round(round(seewave::duration(temp.wav))/60/60)*3600/as.numeric(end_time - start_time)),'hours processed in 1 hour'
+                      round(round(seewave::duration(temp.wav))/60/60*3600 / as.numeric(end_time - start_time) , 1 ),'hours processed in 1 hour'
           ))
         }
       }

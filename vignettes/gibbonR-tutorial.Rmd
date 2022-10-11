@@ -325,7 +325,7 @@ for(x in 1:length(Annotatedfiles)){
   
 
 ```
-## Part 3c. Calculate performance metrics using 'ROCR'
+## Part 3c. Calculate and plot performance metrics using 'ROCR'
 
 ```{r }
 library(ROCR)
@@ -377,12 +377,18 @@ plot(perf,
 
 ```
 
-## Part 3d. Plot performance metrics
-
+# Part 4. Unsupervised clustering 
+## Part 4a. Create a UMAP plot colored by class
 ```{r }
-# AUCbox <- ggboxplot(data=auc.df,
-#           x='TrainingData',y='AUC',fill='TrainingData',facet.by = 'ml.algorithm')+ theme(axis.text.x = element_text(angle = 45,  hjust=1))+
-#   theme(legend.position="none")+scale_fill_manual(values= matlab::jet.colors(9) )
-# AUCbox
+
+UMAPBiplotAddSpectrograms(input.dir.Focal="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/",output.dir.Focal="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/Thumbnails/",add.spectrograms=TRUE,min.freq=400,max.freq=1600,main="UMAP Plot")
   
 ```
+## Part 4b. Create a UMAP plot colored by affinity propagation clustering
+```{r }
+library(apcluster)
+AffinityBiplotAddSpectrograms(input.dir.Focal="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/",output.dir.Focal="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/Thumbnails/",class='fixed', q.fixed=0.1,add.spectrograms=TRUE,min.freq=400,max.freq=1600,main="UMAP Plot")
+  
+```
+
+
