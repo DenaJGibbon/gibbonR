@@ -87,13 +87,13 @@ print(ml.model.rf)
 #>                      Number of trees: 500
 #> No. of variables tried at each split: 13
 #> 
-#>         OOB estimate of  error rate: 13.33%
+#>         OOB estimate of  error rate: 12%
 #> Confusion matrix:
 #>               female.gibbon leaf.monkey noise solo.gibbon class.error
-#> female.gibbon            17           0     2           1   0.1500000
-#> leaf.monkey               0          11     4           0   0.2666667
-#> noise                     0           1    18           1   0.1000000
-#> solo.gibbon               0           0     1          19   0.0500000
+#> female.gibbon            17           0     2           1        0.15
+#> leaf.monkey               0          12     3           0        0.20
+#> noise                     0           0    18           2        0.10
+#> solo.gibbon               0           0     1          19        0.05
 ```
 
 ## Part 1B. Training Data with Raven Selection Tables
@@ -218,11 +218,11 @@ print(ml.model.rf)
 #>                      Number of trees: 500
 #> No. of variables tried at each split: 13
 #> 
-#>         OOB estimate of  error rate: 3.77%
+#>         OOB estimate of  error rate: 7.55%
 #> Confusion matrix:
 #>               female.gibbon noise class.error
-#> female.gibbon            25     1  0.03846154
-#> noise                     1    26  0.03703704
+#> female.gibbon            24     2  0.07692308
+#> noise                     2    25  0.07407407
 ```
 
 # Part 2. Run the detector/classifier
@@ -324,7 +324,7 @@ TrainingDataMFCC <- MFCCFunction(input.dir= TrainingDataFolderLocation, min.freq
 #> [1] "Machine learning in progress..."
 #> [1] "SVM in progress..."
 #> [1] "SVM accuracy 98.1132075471698"
-#> Time difference of 1.663737 secs
+#> Time difference of 1.684304 secs
 #> [1] "RF in progress..."
 #> 
 #> Call:
@@ -338,12 +338,12 @@ TrainingDataMFCC <- MFCCFunction(input.dir= TrainingDataFolderLocation, min.freq
 #>               female.gibbon noise class.error
 #> female.gibbon            25     1  0.03846154
 #> noise                     2    25  0.07407407
-#> Time difference of 0.06400895 secs
+#> Time difference of 0.06321907 secs
 #> [1] "Classifying for target signal female.gibbon"
 #> [1] "Computing spectrogram for file S11_20180217_080003 1 out of 1"
 #> [1] "Running detector over sound files"
 #> [1] "Creating datasheet"
-#> [1] "System processed 7201 seconds in 15 seconds this translates to 490.2 hours processed in 1 hour"
+#> [1] "System processed 7201 seconds in 15 seconds this translates to 490.5 hours processed in 1 hour"
 ```
 
 # Part 3. Calculate performance metrics
@@ -501,12 +501,12 @@ plot(perf,
      add=TRUE)
 
   }  
-#> [1] 0.6187776
+#> [1] 0.6145943
 ```
 
 <img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
 
-    #> [1] 0.9414173
+    #> [1] 0.9392172
 
 <img src="man/figures/README-unnamed-chunk-14-2.png" width="100%" />
 
@@ -604,81 +604,6 @@ UMAPBiplotAddSpectrograms(input.dir.Focal="/Users/denaclink/Desktop/RStudio Proj
 #> [1] "Step 3 Creating Spectrograms"
 #> [1] "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/Thumbnails/ already exists"
 #> [1] "Step 4 Adding Spectrograms to Plot "
-#> [1] 1
-#> [1] 2
-#> [1] 3
-#> [1] 4
-#> [1] 5
-#> [1] 6
-#> [1] 7
-#> [1] 8
-#> [1] 9
-#> [1] 10
-#> [1] 11
-#> [1] 12
-#> [1] 13
-#> [1] 14
-#> [1] 15
-#> [1] 16
-#> [1] 17
-#> [1] 18
-#> [1] 19
-#> [1] 20
-#> [1] 21
-#> [1] 22
-#> [1] 23
-#> [1] 24
-#> [1] 25
-#> [1] 26
-#> [1] 27
-#> [1] 28
-#> [1] 29
-#> [1] 30
-#> [1] 31
-#> [1] 32
-#> [1] 33
-#> [1] 34
-#> [1] 35
-#> [1] 36
-#> [1] 37
-#> [1] 38
-#> [1] 39
-#> [1] 40
-#> [1] 41
-#> [1] 42
-#> [1] 43
-#> [1] 44
-#> [1] 45
-#> [1] 46
-#> [1] 47
-#> [1] 48
-#> [1] 49
-#> [1] 50
-#> [1] 51
-#> [1] 52
-#> [1] 53
-#> [1] 54
-#> [1] 55
-#> [1] 56
-#> [1] 57
-#> [1] 58
-#> [1] 59
-#> [1] 60
-#> [1] 61
-#> [1] 62
-#> [1] 63
-#> [1] 64
-#> [1] 65
-#> [1] 66
-#> [1] 67
-#> [1] 68
-#> [1] 69
-#> [1] 70
-#> [1] 71
-#> [1] 72
-#> [1] 73
-#> [1] 74
-#> [1] 75
 ```
 
 <img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" /> \##
