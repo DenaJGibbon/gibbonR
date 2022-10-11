@@ -380,7 +380,7 @@ plot(perf,
 # Part 4. Unsupervised clustering 
 ## Part 4a. Create a UMAP plot colored by class
 ```{r }
-
+library(gibbonR)
 UMAPBiplotAddSpectrograms(input.dir.Focal="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/",output.dir.Focal="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/Thumbnails/",add.spectrograms=TRUE,min.freq=400,max.freq=1600,main="UMAP Plot")
   
 ```
