@@ -2,15 +2,15 @@
 % Please edit documentation in R/DetectAndClassify.R
 \name{DetectAndClassify}
 \alias{DetectAndClassify}
-\title{Function to train ML algorithm, do audio segmentation and classification on multiple sound files}
+\title{This function identifies sound events using band-limited energy summation and then classifies the sound events using a trained support vector machine or random forest algorithm.}
 \usage{
 DetectAndClassify(
   input,
+  input.type = "list",
   feature.df,
   model.type.list = c("SVM"),
   tune = FALSE,
   target.signal = "female.gibbon",
-  file.type = "list",
   model.svm = NULL,
   short.wav.duration = 300,
   min.freq = 400,
@@ -24,7 +24,6 @@ DetectAndClassify(
   min.signal.dur = 4,
   maximum.separation = 1,
   max.sound.event.dur = 12,
-  output = "wav",
   probability.thresh.svm = 0.75,
   probability.thresh.rf = 0.75,
   wav.output = "TRUE",
@@ -56,14 +55,12 @@ DetectAndClassify(
 
 \item{pattern.split}{Pattern to find and remove to create file name; currently set to ".wav"}
 
-\item{output}{Either 'spectro', 'table' or 'wav'}
-
 \item{probability.thresh.svm}{Probability threshold (provided by machine learning algorithm) to be considered as target signal}
 
 \item{output.dir}{Specified output directory; set to current working directory}
 }
 \description{
-Function to train ML algorithm, do audio segmentation and classification on multiple sound files
+This function identifies sound events using band-limited energy summation and then classifies the sound events using a trained support vector machine or random forest algorithm.
 }
 \examples{
 caret
