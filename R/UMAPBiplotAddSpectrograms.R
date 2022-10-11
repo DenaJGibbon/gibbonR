@@ -6,6 +6,12 @@
 #' @param max.freq
 #' @param main
 #' @param pattern
+#' @param add.spectrograms
+#' @param class
+#' @param max.clusters
+#' @param Nclusters
+#' @param color
+#' @param recursive
 #'
 #' @return
 #' @export

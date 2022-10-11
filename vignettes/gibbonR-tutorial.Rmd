@@ -13,7 +13,12 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r, echo=T,warning=FALSE}
+# Getting started
+## You can install the development version from [GitHub](https://github.com/DenaJGibbon) with:
+```{r, echo=T,warning=FALSE, results='hide'}
+# install.packages("devtools")
+# devtools::install_github("DenaJGibbon/gibbonR")
+
 library(gibbonR)
 ```
 
@@ -24,8 +29,6 @@ In 'gibbonR' there are two ways that you can format your training data. The firs
 ## Part 1A. Training Data with Labeled .wav clips
 ### Read in clips and calculate MFCCs
 ```{r echo = T, results = 'hide' }
-library(gibbonR)
-
 TrainingWavFilesDir <- 
   "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/"
 
@@ -52,8 +55,6 @@ ml.model.rf <- randomForest::randomForest(x=trainingdata[, 2:ncol(trainingdata)]
 
 
 print(ml.model.rf)
-
-
 ```
 
 ## Part 1B. Training Data with Raven Selection Tables
@@ -193,7 +194,7 @@ TrainingDataMFCC <- MFCCFunction(input.dir= TrainingDataFolderLocation, min.freq
   OutputDirectory <-  "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/DetectAndClassifyOutput"
   
   DetectAndClassify(input=TestFileDirectory,
-                    file.type='directory',
+                    input.type='directory',
                     feature.df=TrainingDataMFCC,
                     model.type.list=c('SVM','RF'),
                     tune = TRUE,
@@ -381,11 +382,14 @@ plot(perf,
 ## Part 4a. Create a UMAP plot colored by class
 ```{r }
 library(gibbonR)
+library(ggpubr)
 UMAPBiplotAddSpectrograms(input.dir.Focal="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/",output.dir.Focal="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/Thumbnails/",add.spectrograms=TRUE,min.freq=400,max.freq=1600,main="UMAP Plot")
   
 ```
 ## Part 4b. Create a UMAP plot colored by affinity propagation clustering
 ```{r }
+library(gibbonR)
+library(ggpubr)
 library(apcluster)
 AffinityBiplotAddSpectrograms(input.dir.Focal="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/",output.dir.Focal="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/Thumbnails/",class='fixed', q.fixed=0.1,add.spectrograms=TRUE,min.freq=400,max.freq=1600,main="UMAP Plot")
   

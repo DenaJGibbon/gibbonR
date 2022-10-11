@@ -11,6 +11,7 @@ DetectBLED(
   noise.quantile.val = 0.75,
   spectrogram.window = 1600,
   subsample.dur = 300,
+  training.label = "noise",
   pattern.split = ".wav",
   min.signal.dur = 1,
   max.sound.event.dur = 6,
@@ -38,28 +39,6 @@ DetectBLED(
 \item{output}{Either 'spectro', 'table' or 'wav'}
 
 \item{output.dir}{Specified output directory; set to current working directory}
-
-\item{feature.df}{Dataframe of features from labeled sound files; first column must be class labels}
-
-\item{model.type}{Choice of 'NNET', 'SVM', or 'GMM'}
-
-\item{tune}{Logical; if want to use 'tune' function for SVM; NOTE: for large datasets adds significant computing time}
-
-\item{target.signal}{Labeled signal of interest from training data (feature.df)}
-
-\item{which.quant}{Specifies how to calculate noise values from GMM}
-
-\item{wav.name}{Can be either full file path to .wav file location or R .wav object}
-
-\item{n.windows}{Number of time windows to calculate for MFCCs}
-
-\item{num.cep}{Number of cepstra coefficients to calculate for MFCCs}
-
-\item{min.sound.event.dur}{Minimum time (in seconds) for sound events to be considered}
-
-\item{probability.thresh}{Probability threshold (provided by machine learning algorithm) to be considered as target signal}
-
-\item{wav.out}{Logical; if "TRUE" then writes each sound event as a wave file to directory}
 }
 \description{
 Function to train ML algorithm, do audio segmentation and classification on multiple sound files

@@ -4,7 +4,10 @@
 #' @param min.freq the minimum frequency (Hz) of the signal of interest
 #' @param max.freq the maximum frequency (Hz) of the signal of interest
 #' @param n.windows the number of time windows to divide the signal by
+#' @param win.avg
+#' @param win.hop.time
 #' @param num.cep the number of cepstra to calculate for each time window
+#'
 #' @return a datframe with a row for each .wav file
 #' @export
 #'

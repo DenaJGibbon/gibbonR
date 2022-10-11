@@ -1,21 +1,26 @@
 #' Function to train ML algorithm, do audio segmentation and classification on multiple sound files
+#'
 #' @param input Either full path to directory containing .wav files or a list with file name as first element and .wav as second element
-#' @param feature.df Dataframe of features from labeled sound files; first column must be class labels
-#' @param model.type Choice of 'NNET', 'SVM', or 'GMM'
-#' @param tune Logical; if want to use 'tune' function for SVM; NOTE: for large datasets adds significant computing time
-#' @param target.signal Labeled signal of interest from training data (feature.df)
-#' @param which.quant Specifies how to calculate noise values from GMM
-#' @param wav.name Can be either full file path to .wav file location or R .wav object
 #' @param min.freq Minimum frequency (Hz) of signal of interest
 #' @param max.freq Maximum frequency (Hz) of signal of interest
-#' @param n.windows Number of time windows to calculate for MFCCs
-#' @param num.cep Number of cepstra coefficients to calculate for MFCCs
 #' @param pattern.split Pattern to find and remove to create file name; currently set to ".rda"
-#' @param min.sound.event.dur Minimum time (in seconds) for sound events to be considered
 #' @param output Either 'spectro', 'table' or 'wav'
-#' @param probability.thresh Probability threshold (provided by machine learning algorithm) to be considered as target signal
-#' @param wav.out Logical; if "TRUE" then writes each sound event as a wave file to directory
+#' @param noise.quantile.val
+#' @param spectrogram.window
+#' @param subsample.dur
+#' @param training.label
+#' @param min.signal.dur
+#' @param max.sound.event.dur
+#' @param file.type
+#' @param wav.output
+#' @param swift.time
+#' @param time.start
+#' @param time.stop
+#' @param write.csv.output
+#' @param verbose
+#' @param random.sample
 #' @param output.dir Specified output directory; set to current working directory
+#'
 #' @export
 #' @import e1071
 #' @import mclust

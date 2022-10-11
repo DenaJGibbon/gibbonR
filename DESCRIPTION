@@ -1,8 +1,8 @@
 Package: gibbonR
 Title: gibbonR: An R package for the detection and classification of acoustic signals using machine learning
 Version: 1.0.1
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Authors@R: person("Dena", "Clink", email = "dena.clink@cornell.edu", role = c("aut", "cre"))
+Description: Detection, classification and visualization of acoustic signals.
 Depends: R (>= 3.4.2),
     stringr,
     e1071,

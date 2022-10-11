@@ -1,4 +1,4 @@
-#' Function to train ML algorithm, do audio segmentation and classification on multiple sound files
+#' This function identifies sound events using band-limited energy summation and then classifies the sound events using a trained support vector machine or random forest algorithm.
 #'
 #' @param input Either full path to directory containing .wav files or a list with file name as first element and .wav as second element
 #' @param feature.df Dataframe of features from labeled sound files; first column must be class labels
@@ -9,11 +9,10 @@
 #' @param n.windows Number of time windows to calculate for MFCCs
 #' @param num.cep Number of cepstra coefficients to calculate for MFCCs
 #' @param pattern.split Pattern to find and remove to create file name; currently set to ".wav"
-#' @param output Either 'spectro', 'table' or 'wav'
 #' @param probability.thresh.svm Probability threshold (provided by machine learning algorithm) to be considered as target signal
 #' @param probability.thresh.rf
 #' @param model.type.list
-#' @param file.type
+#' @param input.type
 #' @param model.svm
 #' @param short.wav.duration
 #' @param noise.quantile.val
@@ -44,9 +43,8 @@
 
 
 
-DetectAndClassify <- function(input, feature.df,model.type.list=c("SVM"), tune = FALSE,
+DetectAndClassify <- function(input, input.type='list', feature.df,model.type.list=c("SVM"), tune = FALSE,
                               target.signal = "female.gibbon",
-                              file.type='list',
                               model.svm =NULL,short.wav.duration=300,
                               min.freq = 400, max.freq = 2000,
                               noise.quantile.val=0.5,
@@ -54,7 +52,7 @@ DetectAndClassify <- function(input, feature.df,model.type.list=c("SVM"), tune =
                               n.windows = 9, num.cep = 12,
                               spectrogram.window =1600,
                               pattern.split = ".wav", min.signal.dur = 4,maximum.separation =1,
-                              max.sound.event.dur = 12, output = "wav",
+                              max.sound.event.dur = 12,
                               probability.thresh.svm = 0.75,
                               probability.thresh.rf = 0.75,
                               wav.output = "TRUE", output.dir = getwd(),
@@ -75,18 +73,18 @@ DetectAndClassify <- function(input, feature.df,model.type.list=c("SVM"), tune =
   contains.wav <- str_detect(input, '.wav')
 
 
-  if(file.type=='list' ){
+  if(input.type=='list' ){
     list.file.input <- unlist(input)
     nslash <- str_count(input,pattern = '/') +1
     list.file.input.short <- str_split_fixed(input,pattern = '/',nslash)[,nslash]
   }
 
-  if(file.type=='directory'){
+  if(input.type=='directory'){
     list.file.input <- list.files(input, full.names = TRUE, recursive = T)
     list.file.input.short <- list.files(input, full.names = FALSE, recursive = T)
   }
 
-  if(file.type=='wav'){
+  if(input.type=='wav'){
     list.file.input <- input
   }
 

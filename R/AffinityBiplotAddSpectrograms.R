@@ -6,6 +6,10 @@
 #' @param max.freq
 #' @param main
 #' @param pattern
+#' @param add.spectrograms
+#' @param class
+#' @param q.fixed
+#' @param max.clusters
 #'
 #' @return
 #' @export
