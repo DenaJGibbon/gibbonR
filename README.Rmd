@@ -1,6 +1,9 @@
 ---
-output: github_document
-date: "`r format(Sys.time(), '%B %d %Y')`"
+title: "gibbonR: An R package for the automated detection and classification of female gibbon calls from long-term acoustic recordings"
+output:
+  github_document:
+    toc: true
+    toc_depth: 2
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -13,9 +16,7 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 ```
-
-# gibbonR: An R package for the automated detection and classification of female gibbon calls from long-term acoustic recordings 
-
+### Authors
 Dena J. Clink & Holger Klinck \
 K. Lisa Yang Center for Conservation Bioacoustics, Cornell Lab of Ornithology, Cornell University
 

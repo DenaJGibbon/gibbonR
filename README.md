@@ -1,8 +1,34 @@
-October 12 2022
+gibbonR: An R package for the automated detection and classification of
+female gibbon calls from long-term acoustic recordings
+================
+
+-   [Getting started](#getting-started)
+    -   [You can install the development version from GitHub
+        with:](#you-can-install-the-development-version-from-github-with)
+-   [Part 1. Prepare Training Data](#part-1-prepare-training-data)
+    -   [Part 1A. Training Data with Labeled .wav
+        clips](#part-1a-training-data-with-labeled-wav-clips)
+    -   [Part 1B. Training Data with Raven Selection
+        Tables](#part-1b-training-data-with-raven-selection-tables)
+-   [Part 2. Run the
+    detector/classifier](#part-2-run-the-detectorclassifier)
+    -   [Part 2a. Feature extraction](#part-2a-feature-extraction)
+    -   [Part 2b. Run DetectClassify](#part-2b-run-detectclassify)
+-   [Part 3. Calculate performance
+    metrics](#part-3-calculate-performance-metrics)
+    -   [Part 3a. Prepare data for performance
+        metrics](#part-3a-prepare-data-for-performance-metrics)
+    -   [Part 3b. Identify true and false
+        positives](#part-3b-identify-true-and-false-positives)
+    -   [Part 3c. Calculate and plot performance metrics using
+        ‘ROCR’](#part-3c-calculate-and-plot-performance-metrics-using-rocr)
+-   [Part 4. Unsupervised clustering](#part-4-unsupervised-clustering)
+    -   [Part 4a. Create a UMAP plot colored by
+        class](#part-4a-create-a-umap-plot-colored-by-class)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# gibbonR: An R package for the automated detection and classification of female gibbon calls from long-term acoustic recordings
+### Authors
 
 Dena J. Clink & Holger Klinck  
 K. Lisa Yang Center for Conservation Bioacoustics, Cornell Lab of
@@ -90,10 +116,10 @@ print(ml.model.rf)
 #>         OOB estimate of  error rate: 12%
 #> Confusion matrix:
 #>               female.gibbon leaf.monkey noise solo.gibbon class.error
-#> female.gibbon            18           0     1           1         0.1
-#> leaf.monkey               0          12     3           0         0.2
-#> noise                     0           0    18           2         0.1
-#> solo.gibbon               0           1     1          18         0.1
+#> female.gibbon            18           0     1           1   0.1000000
+#> leaf.monkey               0          11     4           0   0.2666667
+#> noise                     0           0    19           1   0.0500000
+#> solo.gibbon               1           1     0          18   0.1000000
 ```
 
 ## Part 1B. Training Data with Raven Selection Tables
@@ -218,10 +244,10 @@ print(ml.model.rf)
 #>                      Number of trees: 500
 #> No. of variables tried at each split: 13
 #> 
-#>         OOB estimate of  error rate: 7.55%
+#>         OOB estimate of  error rate: 5.66%
 #> Confusion matrix:
 #>               female.gibbon noise class.error
-#> female.gibbon            24     2  0.07692308
+#> female.gibbon            25     1  0.03846154
 #> noise                     2    25  0.07407407
 ```
 
@@ -271,7 +297,7 @@ TrainingDataMFCC <- MFCCFunction(input.dir= TrainingDataFolderLocation, min.freq
 #> [1] "Machine learning in progress..."
 #> [1] "SVM in progress..."
 #> [1] "SVM accuracy 98.1132075471698"
-#> Time difference of 1.608267 secs
+#> Time difference of 1.660582 secs
 #> [1] "RF in progress..."
 #> 
 #> Call:
@@ -280,17 +306,17 @@ TrainingDataMFCC <- MFCCFunction(input.dir= TrainingDataFolderLocation, min.freq
 #>                      Number of trees: 500
 #> No. of variables tried at each split: 13
 #> 
-#>         OOB estimate of  error rate: 3.77%
+#>         OOB estimate of  error rate: 5.66%
 #> Confusion matrix:
 #>               female.gibbon noise class.error
 #> female.gibbon            25     1  0.03846154
-#> noise                     1    26  0.03703704
-#> Time difference of 0.0626049 secs
+#> noise                     2    25  0.07407407
+#> Time difference of 0.06224394 secs
 #> [1] "Classifying for target signal female.gibbon"
 #> [1] "Computing spectrogram for file S11_20180217_080003 1 out of 1"
 #> [1] "Running detector over sound files"
 #> [1] "Creating datasheet"
-#> [1] "System processed 7201 seconds in 15 seconds this translates to 493.7 hours processed in 1 hour"
+#> [1] "System processed 7201 seconds in 15 seconds this translates to 491.4 hours processed in 1 hour"
 ```
 
 # Part 3. Calculate performance metrics
@@ -448,12 +474,12 @@ plot(perf,
      add=TRUE)
 
   }  
-#> [1] 0.6089178
+#> [1] 0.6070289
 ```
 
 <img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
 
-    #> [1] 0.9399987
+    #> [1] 0.9415527
 
 <img src="man/figures/README-unnamed-chunk-14-2.png" width="100%" />
 
