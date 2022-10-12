@@ -1,4 +1,4 @@
-October 11 2022
+October 12 2022
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -90,10 +90,10 @@ print(ml.model.rf)
 #>         OOB estimate of  error rate: 12%
 #> Confusion matrix:
 #>               female.gibbon leaf.monkey noise solo.gibbon class.error
-#> female.gibbon            17           0     2           1        0.15
-#> leaf.monkey               0          12     3           0        0.20
-#> noise                     0           0    18           2        0.10
-#> solo.gibbon               0           0     1          19        0.05
+#> female.gibbon            18           0     1           1         0.1
+#> leaf.monkey               0          12     3           0         0.2
+#> noise                     0           0    18           2         0.1
+#> solo.gibbon               0           1     1          18         0.1
 ```
 
 ## Part 1B. Training Data with Raven Selection Tables
@@ -234,59 +234,6 @@ print(ml.model.rf)
 TrainingDataFolderLocation <- "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/TrainingDataFromRavenSelectionTables/"
   
 TrainingDataMFCC <- MFCCFunction(input.dir= TrainingDataFolderLocation, min.freq = 400, max.freq = 1600,win.avg="TRUE")
-#> [1] "processing sound event 1 out of 53"
-#> [1] "processing sound event 2 out of 53"
-#> [1] "processing sound event 3 out of 53"
-#> [1] "processing sound event 4 out of 53"
-#> [1] "processing sound event 5 out of 53"
-#> [1] "processing sound event 6 out of 53"
-#> [1] "processing sound event 7 out of 53"
-#> [1] "processing sound event 8 out of 53"
-#> [1] "processing sound event 9 out of 53"
-#> [1] "processing sound event 10 out of 53"
-#> [1] "processing sound event 11 out of 53"
-#> [1] "processing sound event 12 out of 53"
-#> [1] "processing sound event 13 out of 53"
-#> [1] "processing sound event 14 out of 53"
-#> [1] "processing sound event 15 out of 53"
-#> [1] "processing sound event 16 out of 53"
-#> [1] "processing sound event 17 out of 53"
-#> [1] "processing sound event 18 out of 53"
-#> [1] "processing sound event 19 out of 53"
-#> [1] "processing sound event 20 out of 53"
-#> [1] "processing sound event 21 out of 53"
-#> [1] "processing sound event 22 out of 53"
-#> [1] "processing sound event 23 out of 53"
-#> [1] "processing sound event 24 out of 53"
-#> [1] "processing sound event 25 out of 53"
-#> [1] "processing sound event 26 out of 53"
-#> [1] "processing sound event 27 out of 53"
-#> [1] "processing sound event 28 out of 53"
-#> [1] "processing sound event 29 out of 53"
-#> [1] "processing sound event 30 out of 53"
-#> [1] "processing sound event 31 out of 53"
-#> [1] "processing sound event 32 out of 53"
-#> [1] "processing sound event 33 out of 53"
-#> [1] "processing sound event 34 out of 53"
-#> [1] "processing sound event 35 out of 53"
-#> [1] "processing sound event 36 out of 53"
-#> [1] "processing sound event 37 out of 53"
-#> [1] "processing sound event 38 out of 53"
-#> [1] "processing sound event 39 out of 53"
-#> [1] "processing sound event 40 out of 53"
-#> [1] "processing sound event 41 out of 53"
-#> [1] "processing sound event 42 out of 53"
-#> [1] "processing sound event 43 out of 53"
-#> [1] "processing sound event 44 out of 53"
-#> [1] "processing sound event 45 out of 53"
-#> [1] "processing sound event 46 out of 53"
-#> [1] "processing sound event 47 out of 53"
-#> [1] "processing sound event 48 out of 53"
-#> [1] "processing sound event 49 out of 53"
-#> [1] "processing sound event 50 out of 53"
-#> [1] "processing sound event 51 out of 53"
-#> [1] "processing sound event 52 out of 53"
-#> [1] "processing sound event 53 out of 53"
   
   TrainingDataMFCC$class <- as.factor(TrainingDataMFCC$class)
 ```
@@ -324,7 +271,7 @@ TrainingDataMFCC <- MFCCFunction(input.dir= TrainingDataFolderLocation, min.freq
 #> [1] "Machine learning in progress..."
 #> [1] "SVM in progress..."
 #> [1] "SVM accuracy 98.1132075471698"
-#> Time difference of 1.684304 secs
+#> Time difference of 1.608267 secs
 #> [1] "RF in progress..."
 #> 
 #> Call:
@@ -333,17 +280,17 @@ TrainingDataMFCC <- MFCCFunction(input.dir= TrainingDataFolderLocation, min.freq
 #>                      Number of trees: 500
 #> No. of variables tried at each split: 13
 #> 
-#>         OOB estimate of  error rate: 5.66%
+#>         OOB estimate of  error rate: 3.77%
 #> Confusion matrix:
 #>               female.gibbon noise class.error
 #> female.gibbon            25     1  0.03846154
-#> noise                     2    25  0.07407407
-#> Time difference of 0.06321907 secs
+#> noise                     1    26  0.03703704
+#> Time difference of 0.0626049 secs
 #> [1] "Classifying for target signal female.gibbon"
 #> [1] "Computing spectrogram for file S11_20180217_080003 1 out of 1"
 #> [1] "Running detector over sound files"
 #> [1] "Creating datasheet"
-#> [1] "System processed 7201 seconds in 15 seconds this translates to 490.5 hours processed in 1 hour"
+#> [1] "System processed 7201 seconds in 15 seconds this translates to 493.7 hours processed in 1 hour"
 ```
 
 # Part 3. Calculate performance metrics
@@ -501,12 +448,12 @@ plot(perf,
      add=TRUE)
 
   }  
-#> [1] 0.6145943
+#> [1] 0.6089178
 ```
 
 <img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
 
-    #> [1] 0.9392172
+    #> [1] 0.9399987
 
 <img src="man/figures/README-unnamed-chunk-14-2.png" width="100%" />
 
@@ -525,81 +472,6 @@ library(ggpubr)
 #>     margin
 UMAPBiplotAddSpectrograms(input.dir.Focal="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/",output.dir.Focal="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/Thumbnails/",add.spectrograms=TRUE,min.freq=400,max.freq=1600,main="UMAP Plot")
 #> [1] "Step 1 Calculating MFCCs"
-#> [1] "processing sound event 1 out of 75"
-#> [1] "processing sound event 2 out of 75"
-#> [1] "processing sound event 3 out of 75"
-#> [1] "processing sound event 4 out of 75"
-#> [1] "processing sound event 5 out of 75"
-#> [1] "processing sound event 6 out of 75"
-#> [1] "processing sound event 7 out of 75"
-#> [1] "processing sound event 8 out of 75"
-#> [1] "processing sound event 9 out of 75"
-#> [1] "processing sound event 10 out of 75"
-#> [1] "processing sound event 11 out of 75"
-#> [1] "processing sound event 12 out of 75"
-#> [1] "processing sound event 13 out of 75"
-#> [1] "processing sound event 14 out of 75"
-#> [1] "processing sound event 15 out of 75"
-#> [1] "processing sound event 16 out of 75"
-#> [1] "processing sound event 17 out of 75"
-#> [1] "processing sound event 18 out of 75"
-#> [1] "processing sound event 19 out of 75"
-#> [1] "processing sound event 20 out of 75"
-#> [1] "processing sound event 21 out of 75"
-#> [1] "processing sound event 22 out of 75"
-#> [1] "processing sound event 23 out of 75"
-#> [1] "processing sound event 24 out of 75"
-#> [1] "processing sound event 25 out of 75"
-#> [1] "processing sound event 26 out of 75"
-#> [1] "processing sound event 27 out of 75"
-#> [1] "processing sound event 28 out of 75"
-#> [1] "processing sound event 29 out of 75"
-#> [1] "processing sound event 30 out of 75"
-#> [1] "processing sound event 31 out of 75"
-#> [1] "processing sound event 32 out of 75"
-#> [1] "processing sound event 33 out of 75"
-#> [1] "processing sound event 34 out of 75"
-#> [1] "processing sound event 35 out of 75"
-#> [1] "processing sound event 36 out of 75"
-#> [1] "processing sound event 37 out of 75"
-#> [1] "processing sound event 38 out of 75"
-#> [1] "processing sound event 39 out of 75"
-#> [1] "processing sound event 40 out of 75"
-#> [1] "processing sound event 41 out of 75"
-#> [1] "processing sound event 42 out of 75"
-#> [1] "processing sound event 43 out of 75"
-#> [1] "processing sound event 44 out of 75"
-#> [1] "processing sound event 45 out of 75"
-#> [1] "processing sound event 46 out of 75"
-#> [1] "processing sound event 47 out of 75"
-#> [1] "processing sound event 48 out of 75"
-#> [1] "processing sound event 49 out of 75"
-#> [1] "processing sound event 50 out of 75"
-#> [1] "processing sound event 51 out of 75"
-#> [1] "processing sound event 52 out of 75"
-#> [1] "processing sound event 53 out of 75"
-#> [1] "processing sound event 54 out of 75"
-#> [1] "processing sound event 55 out of 75"
-#> [1] "processing sound event 56 out of 75"
-#> [1] "processing sound event 57 out of 75"
-#> [1] "processing sound event 58 out of 75"
-#> [1] "processing sound event 59 out of 75"
-#> [1] "processing sound event 60 out of 75"
-#> [1] "processing sound event 61 out of 75"
-#> [1] "processing sound event 62 out of 75"
-#> [1] "processing sound event 63 out of 75"
-#> [1] "processing sound event 64 out of 75"
-#> [1] "processing sound event 65 out of 75"
-#> [1] "processing sound event 66 out of 75"
-#> [1] "processing sound event 67 out of 75"
-#> [1] "processing sound event 68 out of 75"
-#> [1] "processing sound event 69 out of 75"
-#> [1] "processing sound event 70 out of 75"
-#> [1] "processing sound event 71 out of 75"
-#> [1] "processing sound event 72 out of 75"
-#> [1] "processing sound event 73 out of 75"
-#> [1] "processing sound event 74 out of 75"
-#> [1] "processing sound event 75 out of 75"
 #> [1] "Step 2 Creating biplot"
 #> [1] "Step 3 Creating Spectrograms"
 #> [1] "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/Thumbnails/ already exists"
@@ -620,81 +492,6 @@ library(apcluster)
 #>     heatmap
 AffinityBiplotAddSpectrograms(input.dir.Focal="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/",output.dir.Focal="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/Thumbnails/",class='fixed', q.fixed=0.1,add.spectrograms=TRUE,min.freq=400,max.freq=1600,main="UMAP Plot")
 #> [1] "Step 1 Calculating MFCCs"
-#> [1] "processing sound event 1 out of 75"
-#> [1] "processing sound event 2 out of 75"
-#> [1] "processing sound event 3 out of 75"
-#> [1] "processing sound event 4 out of 75"
-#> [1] "processing sound event 5 out of 75"
-#> [1] "processing sound event 6 out of 75"
-#> [1] "processing sound event 7 out of 75"
-#> [1] "processing sound event 8 out of 75"
-#> [1] "processing sound event 9 out of 75"
-#> [1] "processing sound event 10 out of 75"
-#> [1] "processing sound event 11 out of 75"
-#> [1] "processing sound event 12 out of 75"
-#> [1] "processing sound event 13 out of 75"
-#> [1] "processing sound event 14 out of 75"
-#> [1] "processing sound event 15 out of 75"
-#> [1] "processing sound event 16 out of 75"
-#> [1] "processing sound event 17 out of 75"
-#> [1] "processing sound event 18 out of 75"
-#> [1] "processing sound event 19 out of 75"
-#> [1] "processing sound event 20 out of 75"
-#> [1] "processing sound event 21 out of 75"
-#> [1] "processing sound event 22 out of 75"
-#> [1] "processing sound event 23 out of 75"
-#> [1] "processing sound event 24 out of 75"
-#> [1] "processing sound event 25 out of 75"
-#> [1] "processing sound event 26 out of 75"
-#> [1] "processing sound event 27 out of 75"
-#> [1] "processing sound event 28 out of 75"
-#> [1] "processing sound event 29 out of 75"
-#> [1] "processing sound event 30 out of 75"
-#> [1] "processing sound event 31 out of 75"
-#> [1] "processing sound event 32 out of 75"
-#> [1] "processing sound event 33 out of 75"
-#> [1] "processing sound event 34 out of 75"
-#> [1] "processing sound event 35 out of 75"
-#> [1] "processing sound event 36 out of 75"
-#> [1] "processing sound event 37 out of 75"
-#> [1] "processing sound event 38 out of 75"
-#> [1] "processing sound event 39 out of 75"
-#> [1] "processing sound event 40 out of 75"
-#> [1] "processing sound event 41 out of 75"
-#> [1] "processing sound event 42 out of 75"
-#> [1] "processing sound event 43 out of 75"
-#> [1] "processing sound event 44 out of 75"
-#> [1] "processing sound event 45 out of 75"
-#> [1] "processing sound event 46 out of 75"
-#> [1] "processing sound event 47 out of 75"
-#> [1] "processing sound event 48 out of 75"
-#> [1] "processing sound event 49 out of 75"
-#> [1] "processing sound event 50 out of 75"
-#> [1] "processing sound event 51 out of 75"
-#> [1] "processing sound event 52 out of 75"
-#> [1] "processing sound event 53 out of 75"
-#> [1] "processing sound event 54 out of 75"
-#> [1] "processing sound event 55 out of 75"
-#> [1] "processing sound event 56 out of 75"
-#> [1] "processing sound event 57 out of 75"
-#> [1] "processing sound event 58 out of 75"
-#> [1] "processing sound event 59 out of 75"
-#> [1] "processing sound event 60 out of 75"
-#> [1] "processing sound event 61 out of 75"
-#> [1] "processing sound event 62 out of 75"
-#> [1] "processing sound event 63 out of 75"
-#> [1] "processing sound event 64 out of 75"
-#> [1] "processing sound event 65 out of 75"
-#> [1] "processing sound event 66 out of 75"
-#> [1] "processing sound event 67 out of 75"
-#> [1] "processing sound event 68 out of 75"
-#> [1] "processing sound event 69 out of 75"
-#> [1] "processing sound event 70 out of 75"
-#> [1] "processing sound event 71 out of 75"
-#> [1] "processing sound event 72 out of 75"
-#> [1] "processing sound event 73 out of 75"
-#> [1] "processing sound event 74 out of 75"
-#> [1] "processing sound event 75 out of 75"
 #> [1] "Step 2 Computing unsupervised clustering with fixed q"
 #> [1] "Step 3 Creating Spectrograms "
 #> [1] "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/Thumbnails/ already exists"
