@@ -44,6 +44,8 @@ the creation of this package was to make commonly used signal processing
 techniques and various machine learning algorithms readily available in
 R for anyone interested in using bioacoustics in their research.
 
+*Planned release of updated package October 31, 2022*
+
 # Getting started
 
 ## You can install the development version from [GitHub](https://github.com/DenaJGibbon) with:
@@ -113,13 +115,13 @@ print(ml.model.rf)
 #>                      Number of trees: 500
 #> No. of variables tried at each split: 13
 #> 
-#>         OOB estimate of  error rate: 12%
+#>         OOB estimate of  error rate: 9.33%
 #> Confusion matrix:
 #>               female.gibbon leaf.monkey noise solo.gibbon class.error
-#> female.gibbon            18           0     1           1   0.1000000
-#> leaf.monkey               0          11     4           0   0.2666667
-#> noise                     0           0    19           1   0.0500000
-#> solo.gibbon               1           1     0          18   0.1000000
+#> female.gibbon            18           0     1           1        0.10
+#> leaf.monkey               0          12     3           0        0.20
+#> noise                     0           0    19           1        0.05
+#> solo.gibbon               0           0     1          19        0.05
 ```
 
 ## Part 1B. Training Data with Raven Selection Tables
@@ -244,11 +246,11 @@ print(ml.model.rf)
 #>                      Number of trees: 500
 #> No. of variables tried at each split: 13
 #> 
-#>         OOB estimate of  error rate: 5.66%
+#>         OOB estimate of  error rate: 3.77%
 #> Confusion matrix:
 #>               female.gibbon noise class.error
 #> female.gibbon            25     1  0.03846154
-#> noise                     2    25  0.07407407
+#> noise                     1    26  0.03703704
 ```
 
 # Part 2. Run the detector/classifier
@@ -297,7 +299,7 @@ TrainingDataMFCC <- MFCCFunction(input.dir= TrainingDataFolderLocation, min.freq
 #> [1] "Machine learning in progress..."
 #> [1] "SVM in progress..."
 #> [1] "SVM accuracy 98.1132075471698"
-#> Time difference of 1.660582 secs
+#> Time difference of 1.580171 secs
 #> [1] "RF in progress..."
 #> 
 #> Call:
@@ -306,17 +308,17 @@ TrainingDataMFCC <- MFCCFunction(input.dir= TrainingDataFolderLocation, min.freq
 #>                      Number of trees: 500
 #> No. of variables tried at each split: 13
 #> 
-#>         OOB estimate of  error rate: 5.66%
+#>         OOB estimate of  error rate: 7.55%
 #> Confusion matrix:
 #>               female.gibbon noise class.error
-#> female.gibbon            25     1  0.03846154
+#> female.gibbon            24     2  0.07692308
 #> noise                     2    25  0.07407407
-#> Time difference of 0.06224394 secs
+#> Time difference of 0.06290507 secs
 #> [1] "Classifying for target signal female.gibbon"
 #> [1] "Computing spectrogram for file S11_20180217_080003 1 out of 1"
 #> [1] "Running detector over sound files"
 #> [1] "Creating datasheet"
-#> [1] "System processed 7201 seconds in 15 seconds this translates to 491.4 hours processed in 1 hour"
+#> [1] "System processed 7201 seconds in 14 seconds this translates to 500.4 hours processed in 1 hour"
 ```
 
 # Part 3. Calculate performance metrics
@@ -474,12 +476,12 @@ plot(perf,
      add=TRUE)
 
   }  
-#> [1] 0.6070289
+#> [1] 0.5894055
 ```
 
 <img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
 
-    #> [1] 0.9415527
+    #> [1] 0.9431831
 
 <img src="man/figures/README-unnamed-chunk-14-2.png" width="100%" />
 
