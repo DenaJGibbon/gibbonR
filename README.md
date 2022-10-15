@@ -2,6 +2,8 @@ gibbonR: An R package for the automated detection and classification of
 female gibbon calls from long-term acoustic recordings
 ================
 
+-   [Authors](#authors)
+-   [Package description](#package-description)
 -   [Tutorial](#tutorial)
 -   [Quick start guide](#quick-start-guide)
     -   [You can install the development version from GitHub
@@ -18,13 +20,13 @@ female gibbon calls from long-term acoustic recordings
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-### Authors
+# Authors
 
 Dena J. Clink & Holger Klinck  
 K. Lisa Yang Center for Conservation Bioacoustics, Cornell Lab of
 Ornithology, Cornell University
 
-### Package description
+# Package description
 
 The field of bioacoustics is inherently multidisciplinary and relies on
 computer scientists, engineers, and ecologists. This package is directed
@@ -97,13 +99,13 @@ print(ml.model.rf)
 #>                      Number of trees: 500
 #> No. of variables tried at each split: 13
 #> 
-#>         OOB estimate of  error rate: 13.33%
+#>         OOB estimate of  error rate: 12%
 #> Confusion matrix:
 #>               female.gibbon leaf.monkey noise solo.gibbon class.error
-#> female.gibbon            17           0     1           2   0.1500000
+#> female.gibbon            18           0     1           1   0.1000000
 #> leaf.monkey               0          11     4           0   0.2666667
 #> noise                     0           0    19           1   0.0500000
-#> solo.gibbon               0           2     0          18   0.1000000
+#> solo.gibbon               0           1     1          18   0.1000000
 ```
 
 # Part 2. Run the detector/classifier
@@ -152,7 +154,7 @@ TrainingDataMFCC <- MFCCFunction(input.dir= TrainingDataFolderLocation, min.freq
 #> [1] "Machine learning in progress..."
 #> [1] "SVM in progress..."
 #> [1] "SVM accuracy 98.1132075471698"
-#> Time difference of 1.617119 secs
+#> Time difference of 1.613401 secs
 #> [1] "RF in progress..."
 #> 
 #> Call:
@@ -161,17 +163,17 @@ TrainingDataMFCC <- MFCCFunction(input.dir= TrainingDataFolderLocation, min.freq
 #>                      Number of trees: 500
 #> No. of variables tried at each split: 13
 #> 
-#>         OOB estimate of  error rate: 3.77%
+#>         OOB estimate of  error rate: 7.55%
 #> Confusion matrix:
 #>               female.gibbon noise class.error
-#> female.gibbon            25     1  0.03846154
-#> noise                     1    26  0.03703704
-#> Time difference of 0.06255984 secs
+#> female.gibbon            24     2  0.07692308
+#> noise                     2    25  0.07407407
+#> Time difference of 0.06283998 secs
 #> [1] "Classifying for target signal female.gibbon"
 #> [1] "Computing spectrogram for file S11_20180217_080003 1 out of 1"
 #> [1] "Running detector over sound files"
 #> [1] "Creating datasheet"
-#> [1] "System processed 7201 seconds in 15 seconds this translates to 486.9 hours processed in 1 hour"
+#> [1] "System processed 7201 seconds in 15 seconds this translates to 493.3 hours processed in 1 hour"
 ```
 
 # Part 3. Data visualization
