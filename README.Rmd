@@ -53,7 +53,7 @@ library(gibbonR)
 ```
 
 
-## Part 1. Training Data with Labeled .wav clips
+# Part 1. Training Data with Labeled .wav clips
 ### Read in clips and calculate MFCCs
 ```{r echo = T, results = 'hide' }
 TrainingWavFilesDir <- 
@@ -98,7 +98,7 @@ TrainingDataMFCC$class <- as.factor(TrainingDataMFCC$class)
 ```
   
 ## Part 2b. Run DetectClassify  
-```{r }
+```{r eval=FALSE}
 
   TestFileDirectory <- '/Users/denaclink/Library/CloudStorage/Box-Box/gibbonRSampleFiles/GibbonTestFiles'
   
