@@ -95,7 +95,6 @@ TrainingDataMFCC <- MFCCFunction(input.dir= TrainingDataFolderLocation, min.freq
   
 TrainingDataMFCC$class <- as.factor(TrainingDataMFCC$class)
 
-head(TrainingDataMFCC)
 ```
   
 ## Part 2b. Run DetectClassify  
