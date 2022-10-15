@@ -9,9 +9,9 @@
 #' @param n.windows Number of time windows to calculate for MFCCs
 #' @param num.cep Number of cepstra coefficients to calculate for MFCCs
 #' @param pattern.split Pattern to find and remove to create file name; currently set to ".wav"
-#' @param probability.thresh.svm Probability threshold (provided by machine learning algorithm) to be considered as target signal
-#' @param probability.thresh.rf
-#' @param model.type.list
+#' @param probability.thresh.svm Probability threshold (provided by SVM) to be considered as target signal
+#' @param probability.thresh.rf Probability threshold (provided by RF) to be considered as target signal
+#' @param model.type.list Which machine learning model to use; SVM or RF
 #' @param input.type
 #' @param model.svm
 #' @param short.wav.duration

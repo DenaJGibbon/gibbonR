@@ -93,7 +93,9 @@ TrainingDataFolderLocation <- "/Users/denaclink/Desktop/RStudio Projects/gibbonR
   
 TrainingDataMFCC <- MFCCFunction(input.dir= TrainingDataFolderLocation, min.freq = 400, max.freq = 1600,win.avg="TRUE")
   
-  TrainingDataMFCC$class <- as.factor(TrainingDataMFCC$class)
+TrainingDataMFCC$class <- as.factor(TrainingDataMFCC$class)
+
+head(TrainingDataMFCC)
 ```
   
 ## Part 2b. Run DetectClassify  
