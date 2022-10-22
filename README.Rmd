@@ -61,7 +61,6 @@ TrainingWavFilesDir <-
 
 trainingdata <- gibbonR::MFCCFunction(input.dir=TrainingWavFilesDir, min.freq = 400, max.freq = 1600,win.avg="TRUE")
 
-
 trainingdata$class <- as.factor(trainingdata$class)
 ```
 
