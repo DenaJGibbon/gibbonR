@@ -104,7 +104,6 @@ TrainingDataMFCC$class <- as.factor(TrainingDataMFCC$class)
   OutputDirectory <-  "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/DetectAndClassifyOutput"
   
   DetectAndClassify(input=TestFileDirectory,
-                    input.type='directory',
                     feature.df=TrainingDataMFCC,
                     model.type.list=c('SVM','RF'),
                     tune = TRUE,
@@ -112,7 +111,7 @@ TrainingDataMFCC$class <- as.factor(TrainingDataMFCC$class)
                     target.signal = c("female.gibbon"),
                     min.freq = 400, max.freq = 1600,
                     noise.quantile.val=0.15,
-                    time.window.number =3,
+                    minimum.separation =3,
                     n.windows = 9, num.cep = 12,
                     spectrogram.window =160,
                     pattern.split = ".wav",
@@ -124,7 +123,7 @@ TrainingDataMFCC$class <- as.factor(TrainingDataMFCC$class)
                     wav.output = "TRUE",
                     output.dir =OutputDirectory,
                     swift.time=TRUE,time.start=5,time.stop=10,
-                    write.csv.output=FALSE,verbose=TRUE,
+                    write.table.output=FALSE,verbose=TRUE,
                     random.sample='NA')
   
 

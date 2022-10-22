@@ -70,7 +70,6 @@ TrainingWavFilesDir <-
 
 trainingdata <- gibbonR::MFCCFunction(input.dir=TrainingWavFilesDir, min.freq = 400, max.freq = 1600,win.avg="TRUE")
 
-
 trainingdata$class <- as.factor(trainingdata$class)
 ```
 
@@ -99,13 +98,13 @@ print(ml.model.rf)
 #>                      Number of trees: 500
 #> No. of variables tried at each split: 13
 #> 
-#>         OOB estimate of  error rate: 14.67%
+#>         OOB estimate of  error rate: 13.33%
 #> Confusion matrix:
 #>               female.gibbon leaf.monkey noise solo.gibbon class.error
 #> female.gibbon            17           0     2           1   0.1500000
 #> leaf.monkey               0          11     4           0   0.2666667
-#> noise                     0           0    17           3   0.1500000
-#> solo.gibbon               0           0     1          19   0.0500000
+#> noise                     0           0    19           1   0.0500000
+#> solo.gibbon               0           1     1          18   0.1000000
 ```
 
 # Part 2. Run the detector/classifier
@@ -129,7 +128,6 @@ TrainingDataMFCC$class <- as.factor(TrainingDataMFCC$class)
   OutputDirectory <-  "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/DetectAndClassifyOutput"
   
   DetectAndClassify(input=TestFileDirectory,
-                    input.type='directory',
                     feature.df=TrainingDataMFCC,
                     model.type.list=c('SVM','RF'),
                     tune = TRUE,
@@ -137,7 +135,7 @@ TrainingDataMFCC$class <- as.factor(TrainingDataMFCC$class)
                     target.signal = c("female.gibbon"),
                     min.freq = 400, max.freq = 1600,
                     noise.quantile.val=0.15,
-                    time.window.number =3,
+                    minimum.separation =3,
                     n.windows = 9, num.cep = 12,
                     spectrogram.window =160,
                     pattern.split = ".wav",
@@ -149,7 +147,7 @@ TrainingDataMFCC$class <- as.factor(TrainingDataMFCC$class)
                     wav.output = "TRUE",
                     output.dir =OutputDirectory,
                     swift.time=TRUE,time.start=5,time.stop=10,
-                    write.csv.output=FALSE,verbose=TRUE,
+                    write.table.output=FALSE,verbose=TRUE,
                     random.sample='NA')
   
 ```

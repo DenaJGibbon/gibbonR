@@ -138,7 +138,7 @@ DetectAndClassify <- function(input, input.type='list', feature.df,model.type.li
       ml.model.rf <- randomForest::randomForest(x=feature.df[, 2:ncol(feature.df)], y = feature.df$class)
 
 
-      print(ml.model.rf)
+      print(ml.model.rf$err.rate)
 
       end_time <- Sys.time()
       print(end_time - start_time)
