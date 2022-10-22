@@ -1,7 +1,7 @@
 #' This function identifies sound events using band-limited energy summation and then classifies the sound events using a trained support vector machine or random forest algorithm.
 #'
-#' @param input Either full path to directory containing .wav files or a list with file name as first element and .wav as second element
-#' @param feature.df Dataframe of features from labeled sound files; first column must be class labels
+#' @param input Either full path to directory containing .wav files, a list of .wav files, or a the path to a single .wav file
+#' @param feature.df Data frame of features from labeled sound files; first column must be class labels
 #' @param tune Logical; if want to use 'tune' function for SVM; NOTE: for large datasets adds significant computing time
 #' @param target.signal Labeled signal of interest from training data (feature.df)
 #' @param min.freq Minimum frequency (Hz) of signal of interest
@@ -12,27 +12,25 @@
 #' @param probability.thresh.svm Probability threshold (provided by SVM) to be considered as target signal
 #' @param probability.thresh.rf Probability threshold (provided by RF) to be considered as target signal
 #' @param model.type.list Which machine learning model to use; SVM or RF
-#' @param input.type
-#' @param model.svm
-#' @param short.wav.duration
-#' @param noise.quantile.val
-#' @param time.window.number
-#' @param spectrogram.window
-#' @param min.signal.dur
-#' @param maximum.separation
-#' @param max.sound.event.dur
-#' @param wav.output
-#' @param swift.time
-#' @param time.start
-#' @param time.stop
-#' @param write.csv.output
-#' @param verbose
-#' @param random.sample
+#' @param short.wav.duration Duration (s) to divide longer sound file to increase processing efficiency
+#' @param noise.quantile.val A quantile value between 0 to 1 for the band energy summation
+#' @param minimum.separation The minimum number of consecutive time windows that signals must be separated by to be considered a separate sound event
+#' @param maximum.separation The minimum number of consecutive time windows that signals must be separated by to be considered a separate sound event
+#' @param spectrogram.window Window length for spectrogram analysis (input to spectro fuction from 'seewave')
+#' @param min.signal.dur The minimum duration (s) sound events must be to be considered sound events
+#' @param max.sound.event.dur The maximum duration (s) sound events must be to be considered sound events; NOTE this only happens when writing text file
+#' @param wav.output Logical; output .wav files of detections in specified directory
+#' @param swift.time If file name is in structure recorder_YYYYMMDD_HHMMSS can subset files based on specific times
+#' @param time.start Time recordings start (hour)
+#' @param time.stop Time recordings stop (hour)
+#' @param write.table.output Logical; write Raven selection tables to directory
+#' @param verbose Logical; print out steps
+#' @param random.sample If a random subset of files in a directory are desired specify a value, otherwise 'NA'
 #' @param output.dir Specified output directory; set to current working directory
 #'
 #' @export
 #' @import e1071
-#' @import mclust
+#' @import randomForest
 #' @import tuneR
 #' @import seewave
 #' @import tuneR
@@ -45,10 +43,10 @@
 
 DetectAndClassify <- function(input, input.type='list', feature.df,model.type.list=c("SVM"), tune = FALSE,
                               target.signal = "female.gibbon",
-                              model.svm =NULL,short.wav.duration=300,
+                              short.wav.duration=300,
                               min.freq = 400, max.freq = 2000,
                               noise.quantile.val=0.5,
-                              time.window.number =5,
+                              minimum.separation =5,
                               n.windows = 9, num.cep = 12,
                               spectrogram.window =1600,
                               pattern.split = ".wav", min.signal.dur = 4,maximum.separation =1,
@@ -57,7 +55,7 @@ DetectAndClassify <- function(input, input.type='list', feature.df,model.type.li
                               probability.thresh.rf = 0.75,
                               wav.output = "TRUE", output.dir = getwd(),
                               swift.time=TRUE,time.start=6,time.stop=12,
-                              write.csv.output=TRUE,verbose=TRUE,
+                              write.table.output=TRUE,verbose=TRUE,
                               random.sample='NA') {
 
   target.signal.in.training <- as.factor(target.signal) %in% feature.df$class
@@ -73,18 +71,18 @@ DetectAndClassify <- function(input, input.type='list', feature.df,model.type.li
   contains.wav <- str_detect(input, '.wav')
 
 
-  if(input.type=='list' ){
+  if(typeof(input)=='list' ){
     list.file.input <- unlist(input)
     nslash <- str_count(input,pattern = '/') +1
     list.file.input.short <- str_split_fixed(input,pattern = '/',nslash)[,nslash]
   }
 
-  if(input.type=='directory'){
+  if(dir.exists(input)==TRUE){
     list.file.input <- list.files(input, full.names = TRUE, recursive = T)
     list.file.input.short <- list.files(input, full.names = FALSE, recursive = T)
   }
 
-  if(input.type=='wav'){
+  if(file.exists(input) && !dir.exists(input)==TRUE){
     list.file.input <- input
   }
 
@@ -204,13 +202,13 @@ DetectAndClassify <- function(input, input.type='list', feature.df,model.type.li
       # Determine which columns are above specified cutoff
       list.sub <- which(col.sum > noise.value)
 
-      if(time.window.number !=1){
+      if(minimum.separation !=1){
         # Find length differences between columns that match the specified cutoff
         detection.differences <- unlist(lapply(1: (length(list.sub)-1),
                                                function(i) c(list.sub[i+1]-list.sub[i]
                                                )))
         #
-        detection.separation.list <- which( detection.differences >= time.window.number )
+        detection.separation.list <- which( detection.differences >= minimum.separation )
 
         # Add one to remove
         detection.separation.list <- c(1,detection.separation.list+1)
@@ -460,7 +458,7 @@ DetectAndClassify <- function(input, input.type='list', feature.df,model.type.li
 
 
 
-          if(write.csv.output==TRUE){
+          if(write.table.output==TRUE){
             csv.file.name <- paste(output.dir, '/', temp.name,'_timing.df.txt',sep='')
             write.table(x = RavenSelectionTableDF, sep = "\t", file = csv.file.name,
                         row.names = FALSE, quote = FALSE)
