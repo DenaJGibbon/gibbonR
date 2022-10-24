@@ -100,13 +100,13 @@ print(ml.model.rf)
 #>                      Number of trees: 500
 #> No. of variables tried at each split: 13
 #> 
-#>         OOB estimate of  error rate: 12%
+#>         OOB estimate of  error rate: 13.33%
 #> Confusion matrix:
 #>               female.gibbon leaf.monkey noise solo.gibbon class.error
 #> female.gibbon            17           0     2           1   0.1500000
 #> leaf.monkey               0          11     4           0   0.2666667
-#> noise                     0           0    19           1   0.0500000
-#> solo.gibbon               0           1     0          19   0.0500000
+#> noise                     0           0    18           2   0.1000000
+#> solo.gibbon               0           0     1          19   0.0500000
 ```
 
 # Part 2. Run the detector/classifier
@@ -167,7 +167,7 @@ library(ggpubr)
 #> The following object is masked from 'package:randomForest':
 #> 
 #>     margin
-gibbonID(input.dir.Focal="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/",output.dir.Focal="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/Thumbnails/",add.spectrograms=TRUE,min.freq=400,max.freq=1600,class='no.clustering',main="UMAP Plot")
+gibbonID(input.dir="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/",output.dir="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/Thumbnails/",add.spectrograms=TRUE,min.freq=400,max.freq=1600,class='no.clustering')
 #> [1] "Step 1 Calculating MFCCs"
 #> [1] "Step 3 Creating Spectrograms "
 #> [1] "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/Thumbnails/ already exists"
@@ -187,7 +187,7 @@ library(apcluster)
 #> The following object is masked from 'package:stats':
 #> 
 #>     heatmap
-gibbonID(input.dir.Focal="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/",output.dir.Focal="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/Thumbnails/",class='affinity.fixed', q.fixed=0.1,add.spectrograms=TRUE,min.freq=400,max.freq=1600,main="UMAP Plot")
+gibbonID(input.dir="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/",output.dir="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/Thumbnails/",class='affinity.fixed', q.fixed=0.1,add.spectrograms=TRUE,min.freq=400,max.freq=1600)
 #> [1] "Step 1 Calculating MFCCs"
 #> [1] "Step 2 Computing unsupervised clustering with fixed q"
 #> [1] "Step 3 Creating Spectrograms "
