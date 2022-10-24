@@ -130,7 +130,8 @@ TrainingDataMFCC$class <- as.factor(TrainingDataMFCC$class)
 ```
 
 
-# Part 3. Data visualization
+# Part 3. Data visualization  
+
 ## Part 3a. Create a UMAP plot colored by class
 ```{r }
 library(gibbonR)
@@ -138,6 +139,7 @@ library(ggpubr)
 gibbonID(input.dir.Focal="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/",output.dir.Focal="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/Thumbnails/",add.spectrograms=TRUE,min.freq=400,max.freq=1600,class='no.clustering',main="UMAP Plot")
   
 ```
+
 ## Part 3b. Create a UMAP plot colored by affinity propagation clustering
 ```{r }
 library(gibbonR)

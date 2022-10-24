@@ -17,6 +17,8 @@ female gibbon calls from long-term acoustic recordings
 -   [Part 3. Data visualization](#part-3-data-visualization)
     -   [Part 3a. Create a UMAP plot colored by
         class](#part-3a-create-a-umap-plot-colored-by-class)
+    -   [Part 3b. Create a UMAP plot colored by affinity propagation
+        clustering](#part-3b-create-a-umap-plot-colored-by-affinity-propagation-clustering)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -98,13 +100,13 @@ print(ml.model.rf)
 #>                      Number of trees: 500
 #> No. of variables tried at each split: 13
 #> 
-#>         OOB estimate of  error rate: 13.33%
+#>         OOB estimate of  error rate: 12%
 #> Confusion matrix:
 #>               female.gibbon leaf.monkey noise solo.gibbon class.error
-#> female.gibbon            18           0     1           1   0.1000000
+#> female.gibbon            17           0     2           1   0.1500000
 #> leaf.monkey               0          11     4           0   0.2666667
-#> noise                     0           0    18           2   0.1000000
-#> solo.gibbon               0           0     2          18   0.1000000
+#> noise                     0           0    19           1   0.0500000
+#> solo.gibbon               0           1     0          19   0.0500000
 ```
 
 # Part 2. Run the detector/classifier
@@ -172,8 +174,9 @@ gibbonID(input.dir.Focal="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data
 #> [1] "Adding Spectrograms to Plot Step 3 of 3"
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" /> \##
-Part 3b. Create a UMAP plot colored by affinity propagation clustering
+<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
+
+## Part 3b. Create a UMAP plot colored by affinity propagation clustering
 
 ``` r
 library(gibbonR)
