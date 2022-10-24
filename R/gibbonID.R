@@ -1,23 +1,21 @@
-#' gibbonID
-#'
-#' @param input.dir.Focal
-#' @param output.dir.Focal
-#' @param min.freq
-#' @param max.freq
-#' @param main
-#' @param pattern
-#' @param add.spectrograms
-#' @param class
-#' @param q.fixed
-#' @param max.clusters
+#' gibbonID Function that extracts MFCCs as features from .wav files and plots them using UMAP. Points can be colored using affinity propagation clustering or by class labels.
+#' with the option to overlay spectrogram images.
+#' @param input.dir Directory where the .wav file clips are location
+#' @param output.dir Directory to save the spectrogram thumbnails.
+#' @param min.freq Minimum frequency (Hz) of signals of interest
+#' @param max.freq Maximum frequency (Hz) of signals of interest
+#' @param pattern Pattern to search fo rin input.dir; default is '.wav'
+#' @param add.spectrograms Logical; overlay spectrogram images
+#' @param class Option of 'affinity.adaptive', 'fixed.affinity' or 'no.clustering'; Specifies whether to do adaptive or fixed 'q' affinity propagation clustering, or to color points by class label.
+#' @param q.fixed If class=='fixed.affinity' specify value of 'q'. See ??apcluster for more details.
 #'
 #' @return
 #' @export
 #'
 #' @examples
-gibbonID <- function(input.dir.Focal,output.dir.Focal,min.freq,max.freq,main,pattern = '.wav',
+gibbonID <- function(input.dir,output.dir,min.freq,max.freq,pattern = '.wav',
                                           add.spectrograms=FALSE,
-                                      class='fixed', q.fixed=0.1, max.clusters=25)
+                                      class='fixed', q.fixed=0.1)
 {
 
 
@@ -101,7 +99,7 @@ gibbonID <- function(input.dir.Focal,output.dir.Focal,min.freq,max.freq,main,pat
                       color  = "class") +
     geom_point(size = 3) +
     scale_color_manual(values = matlab::jet.colors (length(unique(plot.for.AcousticSignals$class)))) +
-    theme_bw() + ggtitle(main) + xlab('UMAP: Dim 1')+ylab('UMAP: Dim 2')+ theme(legend.position = "none")+
+    theme_bw()+ xlab('UMAP: Dim 1')+ylab('UMAP: Dim 2')+ theme(legend.position = "none")+
     ggtitle(paste('N Clusters =', length( unique(AcousticSignalsMFCCs$class)) ))+
     theme(axis.text.x=element_blank(), #remove x axis labels
           axis.ticks.x=element_blank(), #remove x axis ticks

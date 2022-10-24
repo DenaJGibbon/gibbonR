@@ -2,27 +2,41 @@
 % Please edit documentation in R/gibbonID.R
 \name{gibbonID}
 \alias{gibbonID}
-\title{gibbonID}
+\title{gibbonID Function that extracts MFCCs as features from .wav files and plots them using UMAP. Points can be colored using affinity propagation clustering or by class labels.
+with the option to overlay spectrogram images.}
 \usage{
 gibbonID(
-  input.dir.Focal,
-  output.dir.Focal,
+  input.dir,
+  output.dir,
   min.freq,
   max.freq,
-  main,
   pattern = ".wav",
   add.spectrograms = FALSE,
   class = "fixed",
-  q.fixed = 0.1,
-  max.clusters = 25
+  q.fixed = 0.1
 )
 }
 \arguments{
-\item{max.clusters}{}
+\item{input.dir}{Directory where the .wav file clips are location}
+
+\item{output.dir}{Directory to save the spectrogram thumbnails.}
+
+\item{min.freq}{Minimum frequency (Hz) of signals of interest}
+
+\item{max.freq}{Maximum frequency (Hz) of signals of interest}
+
+\item{pattern}{Pattern to search fo rin input.dir; default is '.wav'}
+
+\item{add.spectrograms}{Logical; overlay spectrogram images}
+
+\item{class}{Option of 'affinity.adaptive', 'fixed.affinity' or 'no.clustering'; Specifies whether to do adaptive or fixed 'q' affinity propagation clustering, or to color points by class label.}
+
+\item{q.fixed}{If class=='fixed.affinity' specify value of 'q'. See ??apcluster for more details.}
 }
 \value{
 
 }
 \description{
-gibbonID
+gibbonID Function that extracts MFCCs as features from .wav files and plots them using UMAP. Points can be colored using affinity propagation clustering or by class labels.
+with the option to overlay spectrogram images.
 }
