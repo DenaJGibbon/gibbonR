@@ -23,7 +23,6 @@
 #'
 #' @export
 #' @import e1071
-#' @import mclust
 #' @import tuneR
 #' @import seewave
 #' @import tuneR

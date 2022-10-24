@@ -1,4 +1,4 @@
-#' UMAPBiplotAddSpectrograms
+#' gibbonID
 #'
 #' @param input.dir.Focal
 #' @param output.dir.Focal
@@ -15,7 +15,7 @@
 #' @export
 #'
 #' @examples
-AffinityBiplotAddSpectrograms <- function(input.dir.Focal,output.dir.Focal,min.freq,max.freq,main,pattern = '.wav',
+gibbonID <- function(input.dir.Focal,output.dir.Focal,min.freq,max.freq,main,pattern = '.wav',
                                           add.spectrograms=FALSE,
                                       class='fixed', q.fixed=0.1, max.clusters=25)
 {
@@ -29,7 +29,7 @@ AffinityBiplotAddSpectrograms <- function(input.dir.Focal,output.dir.Focal,min.f
                                              min.freq = min.freq, max.freq = max.freq,
                                              num.cep = 12)
 
-  if(class=='unsupervised'){
+  if(class=='affinity.adaptive'){
     print('Step 2 Computing unsupervised clustering')
 
     q.val.seq <- seq(from=0.1,to=0.9,by=0.1)
@@ -65,7 +65,7 @@ AffinityBiplotAddSpectrograms <- function(input.dir.Focal,output.dir.Focal,min.f
     AcousticSignalsMFCCs$class <- as.factor(AcousticSignalsAP@idx)
   }
 
-  if(class=='fixed'){
+  if(class=='affinity.fixed'){
     print('Step 2 Computing unsupervised clustering with fixed q')
 
     AcousticSignalsAP <-
@@ -77,6 +77,9 @@ AffinityBiplotAddSpectrograms <- function(input.dir.Focal,output.dir.Focal,min.f
 
   }
 
+  if(class=='no.clustering'){
+    AcousticSignalsMFCCs$class <- AcousticSignalsMFCCs$class
+  }
 
   AcousticSignals.umap <-
     umap::umap(AcousticSignalsMFCCs[,c(2:ncol(AcousticSignalsMFCCs))],

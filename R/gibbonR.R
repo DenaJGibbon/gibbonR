@@ -41,7 +41,7 @@
 
 
 
-DetectAndClassify <- function(input, input.type='list', feature.df,model.type.list=c("SVM"), tune = FALSE,
+gibbonR <- function(input, input.type='list', feature.df,model.type.list=c("SVM"), tune = FALSE,
                               target.signal = "female.gibbon",
                               short.wav.duration=300,
                               min.freq = 400, max.freq = 2000,
@@ -49,7 +49,8 @@ DetectAndClassify <- function(input, input.type='list', feature.df,model.type.li
                               minimum.separation =5,
                               n.windows = 9, num.cep = 12,
                               spectrogram.window =1600,
-                              pattern.split = ".wav", min.signal.dur = 4,maximum.separation =1,
+                              pattern.split = ".wav", min.signal.dur = 4,
+                              maximum.separation =1,
                               max.sound.event.dur = 12,
                               probability.thresh.svm = 0.75,
                               probability.thresh.rf = 0.75,
@@ -138,7 +139,7 @@ DetectAndClassify <- function(input, input.type='list', feature.df,model.type.li
       ml.model.rf <- randomForest::randomForest(x=feature.df[, 2:ncol(feature.df)], y = feature.df$class)
 
 
-      print(ml.model.rf$err.rate)
+      print(ml.model.rf)
 
       end_time <- Sys.time()
       print(end_time - start_time)
