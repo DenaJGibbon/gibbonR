@@ -19,7 +19,6 @@
 #' @param verbose Logical; print out steps
 #' @param random.sample If a random subset of files in a directory are desired specify a value, otherwise 'NA'
 #' @param output.dir Specified output directory; set to current working directory
-#'
 #' @export
 #' @import e1071
 #' @import tuneR
@@ -28,8 +27,6 @@
 #' @import stringr
 #' @examples
 #' \donttest DetectBLED(input=input.dir,min.freq = 400, max.freq = 1600,noise.quantile.val=0.3,spectrogram.window =512,pattern.split = ".wav", min.signal.dur = 3,max.sound.event.dur = 12, wav.output = "TRUE", output.dir = TrainingDataFolderLocation,swift.time=TRUE,time.start=06,time.stop=11,write.table.output=TRUE,verbose=TRUE,random.sample=FALSE)
-
-
 
 
 DetectBLED <- function(input,
