@@ -19,11 +19,11 @@ gibbonID <- function(input.dir,output.dir,min.freq,max.freq,pattern = '.wav',
 {
 
 
-  Focal.exemplars <- list.files(input.dir.Focal,full.names = T,pattern = pattern)
+  Focal.exemplars <- list.files(input.dir,full.names = T,pattern = pattern)
 
 
   print('Step 1 Calculating MFCCs')
-  AcousticSignalsMFCCs <- MFCCFunction(input.dir=input.dir.Focal,
+  AcousticSignalsMFCCs <- MFCCFunction(input.dir=input.dir,
                                              min.freq = min.freq, max.freq = max.freq,
                                              num.cep = 12)
 
@@ -111,15 +111,15 @@ gibbonID <- function(input.dir,output.dir,min.freq,max.freq,pattern = '.wav',
 
   print('Step 3 Creating Spectrograms ')
 
-  if (!dir.exists(output.dir.Focal)){
-    dir.create(output.dir.Focal)
-    print(paste('Created output dir',output.dir.Focal))
+  if (!dir.exists(output.dir)){
+    dir.create(output.dir)
+    print(paste('Created output dir',output.dir))
 
   for(b in 1:length(Focal.exemplars)) {
     #print(b)
     short.wav <- tuneR::readWave(Focal.exemplars[[b]])
 
-    png(filename = paste(output.dir.Focal,b,'Focal.png',sep=''), width=1000)
+    png(filename = paste(output.dir,b,'Focal.png',sep=''), width=1000)
     temp.spec <- signal::specgram(short.wav@left, Fs = short.wav@samp.rate, n = 1024, overlap = 0)
     plot(temp.spec, xlab = "", ylab = "", ylim = c(min.freq, max.freq), rev(gray(0:512 / 512)),
          axes=F,useRaster = TRUE)
@@ -128,7 +128,7 @@ gibbonID <- function(input.dir,output.dir,min.freq,max.freq,pattern = '.wav',
 
   }
     } else {
-    print(paste(output.dir.Focal,'already exists'))
+    print(paste(output.dir,'already exists'))
   }
 
 
@@ -143,7 +143,7 @@ gibbonID <- function(input.dir,output.dir,min.freq,max.freq,pattern = '.wav',
   for(y in 1:length(Focal.exemplars)) {
 
     #print(y, 'out of', length(Focal.exemplars))
-    figure1.png <- magick::image_trim(magick::image_read(paste(output.dir.Focal,y,'Focal.png',sep='')))
+    figure1.png <- magick::image_trim(magick::image_read(paste(output.dir,y,'Focal.png',sep='')))
     figure1.png <- magick::image_modulate(figure1.png,brightness = 300)
 
     figure1.png <- magick::image_border(figure1.png,col=color.vals[which(col.index==plot.for.AcousticSignals[y,]$class)])
