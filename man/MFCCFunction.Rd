@@ -2,7 +2,7 @@
 % Please edit documentation in R/MFCCFunction.R
 \name{MFCCFunction}
 \alias{MFCCFunction}
-\title{Function to calculate Mel-frequency cepstral coefficents over a list of focal recordings}
+\title{MFCCFunction}
 \usage{
 MFCCFunction(
   input.dir,
@@ -33,7 +33,7 @@ MFCCFunction(
 a data frame with a row of MFCCs for each .wav file
 }
 \description{
-Function to calculate Mel-frequency cepstral coefficents over a list of focal recordings
+Function to calculate Mel-frequency cepstral coefficents over a directory of focal recordings
 }
 \examples{
 \donttest{MFCCFunction(input.dir = "FocalRecordings",min.freq = 400,max.freq=2500)}

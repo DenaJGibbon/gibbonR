@@ -23,7 +23,7 @@
 #' @param swift.time If file name is in structure recorder_YYYYMMDD_HHMMSS can subset files based on specific times
 #' @param time.start Time recordings start (hour)
 #' @param time.stop Time recordings stop (hour)
-#' @param write.table.output Logical; write Raven selection tables to directory
+#' @param write.table.output Logical; write Raven selection tables to output directory
 #' @param verbose Logical; print out steps
 #' @param random.sample If a random subset of files in a directory are desired specify a value, otherwise 'NA'
 #' @param output.dir Specified output directory; set to current working directory

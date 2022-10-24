@@ -2,7 +2,7 @@
 % Please edit documentation in R/DetectBLED.R
 \name{DetectBLED}
 \alias{DetectBLED}
-\title{Function to train ML algorithm, do audio segmentation and classification on multiple sound files}
+\title{DetectBLED}
 \usage{
 DetectBLED(
   input,
@@ -15,14 +15,12 @@ DetectBLED(
   pattern.split = ".wav",
   min.signal.dur = 1,
   max.sound.event.dur = 6,
-  output = "wav",
-  file.type = "list",
   wav.output = "TRUE",
   output.dir = getwd(),
   swift.time = TRUE,
   time.start = 18,
   time.stop = 23,
-  write.csv.output = TRUE,
+  write.table.output = TRUE,
   verbose = TRUE,
   random.sample = 100
 )
@@ -34,16 +32,41 @@ DetectBLED(
 
 \item{max.freq}{Maximum frequency (Hz) of signal of interest}
 
+\item{noise.quantile.val}{A quantile value between 0 to 1 for the band energy summation}
+
+\item{spectrogram.window}{Window length for spectrogram analysis (input to spectro fuction from 'seewave')}
+
+\item{subsample.dur}{Duration (s) to divide longer sound file to increase processing efficiency}
+
+\item{training.label}{Label to append to saved .wav files}
+
 \item{pattern.split}{Pattern to find and remove to create file name; currently set to ".rda"}
 
-\item{output}{Either 'spectro', 'table' or 'wav'}
+\item{min.signal.dur}{The minimum duration (s) sound events must be to be considered sound events}
+
+\item{max.sound.event.dur}{The maximum duration (s) sound events must be to be considered sound events}
+
+\item{wav.output}{Logical; output wave file of sound events?}
 
 \item{output.dir}{Specified output directory; set to current working directory}
+
+\item{swift.time}{If file name is in structure recorder_YYYYMMDD_HHMMSS can subset files based on specific times}
+
+\item{time.start}{Time recordings start (hour)}
+
+\item{time.stop}{Time recordings stop (hour)}
+
+\item{write.table.output}{Logical; write Raven selection tables to output directory}
+
+\item{verbose}{Logical; print out steps}
+
+\item{random.sample}{If a random subset of files in a directory are desired specify a value, otherwise 'NA'}
+
+\item{output}{Either 'spectro', 'table' or 'wav'}
 }
 \description{
-Function to train ML algorithm, do audio segmentation and classification on multiple sound files
+Function to do band-limited energy summation to find sound events. This function only identifies sound events based on frequency and duration so is not expected to have high precision.
 }
 \examples{
-caret
-
+\donttest DetectBLED(input=input.dir,min.freq = 400, max.freq = 1600,noise.quantile.val=0.3,spectrogram.window =512,pattern.split = ".wav", min.signal.dur = 3,max.sound.event.dur = 12, wav.output = "TRUE", output.dir = TrainingDataFolderLocation,swift.time=TRUE,time.start=06,time.stop=11,write.table.output=TRUE,verbose=TRUE,random.sample=FALSE)
 }

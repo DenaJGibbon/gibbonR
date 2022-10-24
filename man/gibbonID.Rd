@@ -2,8 +2,7 @@
 % Please edit documentation in R/gibbonID.R
 \name{gibbonID}
 \alias{gibbonID}
-\title{gibbonID Function that extracts MFCCs as features from .wav files and plots them using UMAP. Points can be colored using affinity propagation clustering or by class labels.
-with the option to overlay spectrogram images.}
+\title{gibbonID}
 \usage{
 gibbonID(
   input.dir,
@@ -40,6 +39,5 @@ gibbonID(
 
 }
 \description{
-gibbonID Function that extracts MFCCs as features from .wav files and plots them using UMAP. Points can be colored using affinity propagation clustering or by class labels.
-with the option to overlay spectrogram images.
+Function that extracts MFCCs as features from .wav files and plots them using UMAP. Points can be colored using affinity propagation clustering or by class labels. With the option to overlay spectrogram images.
 }

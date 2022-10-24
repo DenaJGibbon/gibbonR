@@ -1,5 +1,5 @@
-#' Function to train ML algorithm, do audio segmentation and classification on multiple sound files
-#'
+#' DetectBLED
+#' @description Function to do band-limited energy summation to find sound events. This function only identifies sound events based on frequency and duration so is not expected to have high precision.
 #' @param input Either full path to directory containing .wav files or a list with file name as first element and .wav as second element
 #' @param min.freq Minimum frequency (Hz) of signal of interest
 #' @param max.freq Maximum frequency (Hz) of signal of interest
@@ -11,13 +11,13 @@
 #' @param training.label Label to append to saved .wav files
 #' @param min.signal.dur The minimum duration (s) sound events must be to be considered sound events
 #' @param max.sound.event.dur The maximum duration (s) sound events must be to be considered sound events
-#' @param wav.output
-#' @param swift.time
-#' @param time.start
-#' @param time.stop
-#' @param write.table.output
-#' @param verbose
-#' @param random.sample
+#' @param wav.output Logical; output wave file of sound events?
+#' @param swift.time If file name is in structure recorder_YYYYMMDD_HHMMSS can subset files based on specific times
+#' @param time.start Time recordings start (hour)
+#' @param time.stop Time recordings stop (hour)
+#' @param write.table.output Logical; write Raven selection tables to output directory
+#' @param verbose Logical; print out steps
+#' @param random.sample If a random subset of files in a directory are desired specify a value, otherwise 'NA'
 #' @param output.dir Specified output directory; set to current working directory
 #'
 #' @export
@@ -26,8 +26,8 @@
 #' @import seewave
 #' @import tuneR
 #' @import stringr
-#' @examples caret
-#'
+#' @examples
+#' \donttest DetectBLED(input=input.dir,min.freq = 400, max.freq = 1600,noise.quantile.val=0.3,spectrogram.window =512,pattern.split = ".wav", min.signal.dur = 3,max.sound.event.dur = 12, wav.output = "TRUE", output.dir = TrainingDataFolderLocation,swift.time=TRUE,time.start=06,time.stop=11,write.table.output=TRUE,verbose=TRUE,random.sample=FALSE)
 
 
 
@@ -218,13 +218,13 @@ DetectBLED <- function(input,
           csv.file.name <- paste(output.dir, '/', temp.name,'_timing.df.txt',sep='')
           write.table(x = RavenSelectionTableDF, sep = "\t", file = csv.file.name,
                       row.names = FALSE, quote = FALSE)
-          print(RavenSelectionTableDF)
         }
         rm(subsamps)
       }
     }
   }
-  rm(timing.df)
+  print(RavenSelectionTableDF)
+  rm(RavenSelectionTableDF)
   rm(swift.spectro)
   rm(temp.wav)
 }

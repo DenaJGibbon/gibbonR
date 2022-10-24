@@ -2,7 +2,7 @@
 % Please edit documentation in R/gibbonR.R
 \name{gibbonR}
 \alias{gibbonR}
-\title{This function identifies sound events using band-limited energy summation and then classifies the sound events using a trained support vector machine or random forest algorithm.}
+\title{gibbonR}
 \usage{
 gibbonR(
   input,
@@ -84,16 +84,20 @@ gibbonR(
 
 \item{time.stop}{Time recordings stop (hour)}
 
-\item{write.table.output}{Logical; write Raven selection tables to directory}
+\item{write.table.output}{Logical; write Raven selection tables to output directory}
 
 \item{verbose}{Logical; print out steps}
 
 \item{random.sample}{If a random subset of files in a directory are desired specify a value, otherwise 'NA'}
 }
+\value{
+If write.table.output=TRUE writes a .txt file for each sound file with detections
+
+If write.table.output=TRUE writes a .txt file for each sound file with detections
+}
 \description{
 This function identifies sound events using band-limited energy summation and then classifies the sound events using a trained support vector machine or random forest algorithm.
 }
 \examples{
-caret
-
+\donttest{MFCCFunction(input.dir = "FocalRecordings",min.freq = 400,max.freq=2500)}
 }
