@@ -41,3 +41,6 @@ gibbonID(
 \description{
 Function that extracts MFCCs as features from .wav files and plots them using UMAP. Points can be colored using affinity propagation clustering or by class labels. With the option to overlay spectrogram images.
 }
+\examples{
+gibbonID(input.dir="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/",output.dir="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/Thumbnails/",win.avg='standard',add.spectrograms=TRUE,min.freq=400,max.freq=1600,class='no.clustering')
+}

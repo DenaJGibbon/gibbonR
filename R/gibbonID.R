@@ -13,7 +13,8 @@
 #' @return
 #' @export
 #'
-#' @examples
+#' @examples gibbonID(input.dir="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/",output.dir="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/Thumbnails/",win.avg='standard',add.spectrograms=TRUE,min.freq=400,max.freq=1600,class='no.clustering')
+
 gibbonID <- function(input.dir,output.dir,min.freq,max.freq,pattern = '.wav',
                                           add.spectrograms=FALSE,
                                       class='fixed', q.fixed=0.1,win.avg='standard')
