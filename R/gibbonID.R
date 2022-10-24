@@ -102,7 +102,7 @@ gibbonID <- function(input.dir.Focal,output.dir.Focal,min.freq,max.freq,main,pat
     geom_point(size = 3) +
     scale_color_manual(values = matlab::jet.colors (length(unique(plot.for.AcousticSignals$class)))) +
     theme_bw() + ggtitle(main) + xlab('UMAP: Dim 1')+ylab('UMAP: Dim 2')+ theme(legend.position = "none")+
-    ggtitle(paste('N Clusters =', length(AcousticSignalsAP@exemplars)))+
+    ggtitle(paste('N Clusters =', length(AcousticSignalsMFCCs$class)))+
     theme(axis.text.x=element_blank(), #remove x axis labels
           axis.ticks.x=element_blank(), #remove x axis ticks
           axis.text.y=element_blank(),  #remove y axis labels
