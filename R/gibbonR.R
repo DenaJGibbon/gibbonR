@@ -1,5 +1,5 @@
-#' This function identifies sound events using band-limited energy summation and then classifies the sound events using a trained support vector machine or random forest algorithm.
-#'
+#' gibbonR
+#' @description This function identifies sound events using band-limited energy summation and then classifies the sound events using a trained support vector machine or random forest algorithm.
 #' @param input Either full path to directory containing .wav files, a list of .wav files, or a the path to a single .wav file
 #' @param feature.df Data frame of features from labeled sound files; first column must be class labels
 #' @param tune Logical; if want to use 'tune' function for SVM; NOTE: for large datasets adds significant computing time
@@ -35,8 +35,10 @@
 #' @import seewave
 #' @import tuneR
 #' @import stringr
-#' @examples caret
-#'
+#' @return If write.table.output=TRUE writes a .txt file for each sound file with detections
+#' @return If write.table.output=TRUE writes a .txt file for each sound file with detections
+#' @examples
+#' \donttest{MFCCFunction(input.dir = "FocalRecordings",min.freq = 400,max.freq=2500)}
 
 
 
@@ -68,8 +70,6 @@ gibbonR <- function(input, input.type='list', feature.df,model.type.list=c("SVM"
 
   if ((wav.output == "TRUE" & output.dir == ""))
     stop("Specify output directory")
-
-  contains.wav <- str_detect(input, '.wav')
 
 
   if(typeof(input)=='list' ){

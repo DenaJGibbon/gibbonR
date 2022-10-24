@@ -90,7 +90,7 @@ print(ml.model.rf)
 # Specify the folder where the training data will be saved
 TrainingDataFolderLocation <- "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/TrainingDataFromRavenSelectionTables/"
   
-TrainingDataMFCC <- MFCCFunction(input.dir= TrainingDataFolderLocation, min.freq = 400, max.freq = 1600,win.avg="TRUE")
+TrainingDataMFCC <- MFCCFunction(input.dir= TrainingDataFolderLocation, min.freq = 400, max.freq = 1600,win.avg="standard")
   
 TrainingDataMFCC$class <- as.factor(TrainingDataMFCC$class)
 
@@ -103,7 +103,7 @@ TrainingDataMFCC$class <- as.factor(TrainingDataMFCC$class)
   
   OutputDirectory <-  "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/DetectAndClassifyOutput"
   
-  DetectAndClassify(input=TestFileDirectory,
+  gibbonR(input=TestFileDirectory,
                     feature.df=TrainingDataMFCC,
                     model.type.list=c('SVM','RF'),
                     tune = TRUE,
@@ -145,7 +145,7 @@ gibbonID(input.dir="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/Multi
 library(gibbonR)
 library(ggpubr)
 library(apcluster)
-gibbonID(input.dir="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/",output.dir="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/Thumbnails/",win.avg='standard',class='affinity.fixed', q.fixed=0.1,add.spectrograms=TRUE,min.freq=400,max.freq=1600,)
+gibbonID(input.dir="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/",output.dir="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/Thumbnails/",win.avg='standard',class='affinity.fixed', q.fixed=0.1,add.spectrograms=TRUE,min.freq=400,max.freq=1600)
   
 ```
 

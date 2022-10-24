@@ -5,18 +5,17 @@
 #' @param max.freq Maximum frequency (Hz) of signal of interest
 #' @param pattern.split Pattern to find and remove to create file name; currently set to ".rda"
 #' @param output Either 'spectro', 'table' or 'wav'
-#' @param noise.quantile.val
-#' @param spectrogram.window
-#' @param subsample.dur
-#' @param training.label
-#' @param min.signal.dur
-#' @param max.sound.event.dur
-#' @param file.type
+#' @param noise.quantile.val A quantile value between 0 to 1 for the band energy summation
+#' @param spectrogram.window Window length for spectrogram analysis (input to spectro fuction from 'seewave')
+#' @param subsample.dur Duration (s) to divide longer sound file to increase processing efficiency
+#' @param training.label Label to append to saved .wav files
+#' @param min.signal.dur The minimum duration (s) sound events must be to be considered sound events
+#' @param max.sound.event.dur The maximum duration (s) sound events must be to be considered sound events
 #' @param wav.output
 #' @param swift.time
 #' @param time.start
 #' @param time.stop
-#' @param write.csv.output
+#' @param write.table.output
 #' @param verbose
 #' @param random.sample
 #' @param output.dir Specified output directory; set to current working directory
@@ -40,39 +39,31 @@ DetectBLED <- function(input,
                        subsample.dur =300,
                        training.label='noise',
                        pattern.split = ".wav", min.signal.dur = 1,
-                       max.sound.event.dur = 6, output = "wav",
-                       file.type='list',
+                       max.sound.event.dur = 6,
                        wav.output = "TRUE", output.dir = getwd(),
                        swift.time=TRUE,time.start=18,time.stop=23,
-                       write.csv.output=TRUE,verbose=TRUE,
+                       write.table.output=TRUE,verbose=TRUE,
                        random.sample=100) {
 
 
-  if ((wav.output == "TRUE" & output.dir == "")){
+  if (wav.output == "TRUE" & output.dir == "") {
     stop("Specify output directory")
   }
 
-
-  contains.wav <- str_detect(input, '.wav')
-
-  contains.wav <- str_detect(input, '.wav')
-
-
-  if(file.type=='list' ){
+  if(typeof(input)=='list' ){
     list.file.input <- unlist(input)
     nslash <- str_count(input,pattern = '/') +1
     list.file.input.short <- str_split_fixed(input,pattern = '/',nslash)[,nslash]
   }
 
-  if(file.type=='directory'){
+  if(dir.exists(input)==TRUE){
     list.file.input <- list.files(input, full.names = TRUE, recursive = T)
     list.file.input.short <- list.files(input, full.names = FALSE, recursive = T)
   }
 
-  if(file.type=='wav'){
+  if(file.exists(input) && !dir.exists(input)==TRUE){
     list.file.input <- input
   }
-
 
   if(swift.time==TRUE){
     number.of.slash <- str_count(list.file.input, pattern = "/")[1]
@@ -169,6 +160,7 @@ DetectBLED <- function(input,
                                                    xunit = c("time"),plot=F,output="Wave"))
 
         if( j==1){
+          if(wav.output == "TRUE")
           lapply(1:length(subsamps),
                  function(i) writeWave(subsamps[[i]],
                                        filename = paste(output.dir,training.label, '_',
@@ -179,6 +171,7 @@ DetectBLED <- function(input,
         }
 
         if( j > 1){
+          if(wav.output == "TRUE")
           lapply(1:length(subsamps),
                  function(i) writeWave(subsamps[[i]],
                                        filename =  paste(output.dir,training.label,'_',
@@ -186,10 +179,7 @@ DetectBLED <- function(input,
                                                         (swift.spectro$t[min(call.timing.list[[i]])]+(subsample.dur* (j-1) )),
                                                         (swift.spectro$t[max(call.timing.list[[i]])]+(subsample.dur* (j-1) )),
                                                         '.wav',sep='_'), sep=''),extensible=FALSE))
-        } else{
-          print('No sound events detected')
         }
-
 
         timing.df <- lapply(1:length(call.timing.list),
                             function(i) cbind.data.frame(swift.spectro$t[min(call.timing.list[[i]])],
@@ -224,20 +214,19 @@ DetectBLED <- function(input,
 
         RavenSelectionTableDF <- rbind.data.frame(RavenSelectionTableDF,timing.df.temp)
         RavenSelectionTableDF$Selection <- seq(1, nrow(RavenSelectionTableDF),1)
-        if(write.csv.output==TRUE){
+        if(write.table.output==TRUE){
           csv.file.name <- paste(output.dir, '/', temp.name,'_timing.df.txt',sep='')
           write.table(x = RavenSelectionTableDF, sep = "\t", file = csv.file.name,
                       row.names = FALSE, quote = FALSE)
-          print(timing.df)
+          print(RavenSelectionTableDF)
         }
-
-        rm(timing.df)
-        rm(swift.spectro)
         rm(subsamps)
-        rm(temp.wav)
       }
     }
   }
+  rm(timing.df)
+  rm(swift.spectro)
+  rm(temp.wav)
 }
 
 

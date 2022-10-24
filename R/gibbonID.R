@@ -1,5 +1,5 @@
-#' gibbonID Function that extracts MFCCs as features from .wav files and plots them using UMAP. Points can be colored using affinity propagation clustering or by class labels.
-#' with the option to overlay spectrogram images.
+#' gibbonID
+#' @description Function that extracts MFCCs as features from .wav files and plots them using UMAP. Points can be colored using affinity propagation clustering or by class labels. With the option to overlay spectrogram images.
 #' @param input.dir Directory where the .wav file clips are location
 #' @param output.dir Directory to save the spectrogram thumbnails.
 #' @param min.freq Minimum frequency (Hz) of signals of interest

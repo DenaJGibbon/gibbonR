@@ -1,5 +1,5 @@
-#' Function to calculate Mel-frequency cepstral coefficents over a list of focal recordings
-#'
+#' MFCCFunction
+#' @description Function to calculate Mel-frequency cepstral coefficents over a directory of focal recordings
 #' @param input.dir where the .wav files are stored
 #' @param min.freq the minimum frequency (Hz) of the signal of interest
 #' @param max.freq the maximum frequency (Hz) of the signal of interest
@@ -7,10 +7,7 @@
 #' @param win.avg Option of 'false','mean.sd' or 'standard'; whether to return MFCCs for each non-overlapping time window, calculate mean and SD over each MFCC or calculated MFCCs for a set number of time windows.
 #' @param win.hop.time If win.avg='standard' the specified window size.
 #' @param num.cep the number of cepstra to calculate for each time window
-#'
 #' @return a data frame with a row of MFCCs for each .wav file
-#' @export
-#'
 #' @examples
 #' \donttest{MFCCFunction(input.dir = "FocalRecordings",min.freq = 400,max.freq=2500)}
 
@@ -92,8 +89,6 @@ MFCCFunction <-
     if(win.avg=='standard'){
       mfcc.vector.list <- list()
       for(x in 1:length(subsamps)){
-        print(paste("processing sound event", x, 'out of',length(subsamps) ))
-
         short.wav <- subsamps[[x]]
         wav.dur <- duration(short.wav)
         win.time <- wav.dur/n.windows
