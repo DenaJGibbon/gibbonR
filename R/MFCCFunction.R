@@ -90,6 +90,7 @@ MFCCFunction <-
     }
 
     if(win.avg=='standard'){
+      mfcc.vector.list <- list()
       for(x in 1:length(subsamps)){
         print(paste("processing sound event", x, 'out of',length(subsamps) ))
 
