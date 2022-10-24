@@ -6,11 +6,11 @@
 \usage{
 MFCCFunction(
   input.dir,
-  min.freq = 200,
-  max.freq = 10000,
+  min.freq = 400,
+  max.freq = 2000,
   n.windows = 9,
   num.cep = 12,
-  win.avg = "TRUE",
+  win.avg = "standard",
   win.hop.time = 0.25
 )
 }
@@ -24,13 +24,17 @@ MFCCFunction(
 \item{n.windows}{the number of time windows to divide the signal by}
 
 \item{num.cep}{the number of cepstra to calculate for each time window}
+
+\item{win.avg}{Option of 'false','mean.sd' or 'standard'; whether to return MFCCs for each non-overlapping time window, calculate mean and SD over each MFCC or calculated MFCCs for a set number of time windows.}
+
+\item{win.hop.time}{If win.avg='standard' the specified window size.}
 }
 \value{
-a datframe with a row for each .wav file
+a data frame with a row of MFCCs for each .wav file
 }
 \description{
 Function to calculate Mel-frequency cepstral coefficents over a list of focal recordings
 }
 \examples{
-\donttest{MFCCFunction(input.dir = "FocalRecordings",min.freq = 200,max.freq=10000)}
+\donttest{MFCCFunction(input.dir = "FocalRecordings",min.freq = 400,max.freq=2500)}
 }

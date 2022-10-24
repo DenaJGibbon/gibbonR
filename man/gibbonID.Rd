@@ -13,7 +13,8 @@ gibbonID(
   pattern = ".wav",
   add.spectrograms = FALSE,
   class = "fixed",
-  q.fixed = 0.1
+  q.fixed = 0.1,
+  win.avg = "standard"
 )
 }
 \arguments{
@@ -32,6 +33,8 @@ gibbonID(
 \item{class}{Option of 'affinity.adaptive', 'fixed.affinity' or 'no.clustering'; Specifies whether to do adaptive or fixed 'q' affinity propagation clustering, or to color points by class label.}
 
 \item{q.fixed}{If class=='fixed.affinity' specify value of 'q'. See ??apcluster for more details.}
+
+\item{win.avg}{Option of 'false','mean.sd' or 'standard'; whether to return MFCCs for each non-overlapping time window, calculate mean and SD over each MFCC or calculated MFCCs for a set number of time windows.}
 }
 \value{
 

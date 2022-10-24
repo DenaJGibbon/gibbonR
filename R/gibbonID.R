@@ -8,6 +8,7 @@
 #' @param add.spectrograms Logical; overlay spectrogram images
 #' @param class Option of 'affinity.adaptive', 'fixed.affinity' or 'no.clustering'; Specifies whether to do adaptive or fixed 'q' affinity propagation clustering, or to color points by class label.
 #' @param q.fixed If class=='fixed.affinity' specify value of 'q'. See ??apcluster for more details.
+#' @param win.avg Option of 'false','mean.sd' or 'standard'; whether to return MFCCs for each non-overlapping time window, calculate mean and SD over each MFCC or calculated MFCCs for a set number of time windows.
 #'
 #' @return
 #' @export
@@ -15,7 +16,7 @@
 #' @examples
 gibbonID <- function(input.dir,output.dir,min.freq,max.freq,pattern = '.wav',
                                           add.spectrograms=FALSE,
-                                      class='fixed', q.fixed=0.1)
+                                      class='fixed', q.fixed=0.1,win.avg='standard')
 {
 
 
@@ -25,7 +26,7 @@ gibbonID <- function(input.dir,output.dir,min.freq,max.freq,pattern = '.wav',
   print('Step 1 Calculating MFCCs')
   AcousticSignalsMFCCs <- MFCCFunction(input.dir=input.dir,
                                              min.freq = min.freq, max.freq = max.freq,
-                                             num.cep = 12)
+                                             num.cep = 12,win.avg=win.avg)
 
   if(class=='affinity.adaptive'){
     print('Step 2 Computing unsupervised clustering')
