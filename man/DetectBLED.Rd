@@ -67,6 +67,3 @@ DetectBLED(
 \description{
 Function to do band-limited energy summation to find sound events. This function only identifies sound events based on frequency and duration so is not expected to have high precision.
 }
-\examples{
-\donttest {DetectBLED(input=input.dir,min.freq = 400, max.freq = 1600,noise.quantile.val=0.3,spectrogram.window =512,pattern.split = ".wav", min.signal.dur = 3,max.sound.event.dur = 12, wav.output = "TRUE", output.dir = TrainingDataFolderLocation,swift.time=TRUE,time.start=06,time.stop=11,write.table.output=TRUE,verbose=TRUE,random.sample=FALSE)}
-}
