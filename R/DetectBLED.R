@@ -26,7 +26,6 @@
 #' @import tuneR
 #' @import stringr
 #' @examples
-#' \donttest {DetectBLED(input=input.dir,min.freq = 400, max.freq = 1600,noise.quantile.val=0.3,spectrogram.window =512,pattern.split = ".wav", min.signal.dur = 3,max.sound.event.dur = 12, wav.output = "TRUE", output.dir = TrainingDataFolderLocation,swift.time=TRUE,time.start=06,time.stop=11,write.table.output=TRUE,verbose=TRUE,random.sample=FALSE)}
 
 DetectBLED <- function(input,
                        min.freq = 200, max.freq = 6000,
