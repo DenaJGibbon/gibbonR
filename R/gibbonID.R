@@ -78,6 +78,7 @@ gibbonID <- function(input.dir,output.dir,min.freq,max.freq,pattern = '.wav',
   }
 
   if(class=='no.clustering'){
+    print('Step 2 Using class labels for clustering')
     AcousticSignalsMFCCs$class <- AcousticSignalsMFCCs$class
   }
 

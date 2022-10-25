@@ -259,8 +259,6 @@ gibbonR <- function(input, input.type='list', feature.df,model.type.list=c("SVM"
         for(x in 1:length(subsamps)){
           for(y in 1:length(target.signal)){
 
-
-
             calltimes.subset <- calltimes[[x]]
 
             start.time <- calltimes.subset$from
@@ -292,7 +290,7 @@ gibbonR <- function(input, input.type='list', feature.df,model.type.list=c("SVM"
             mfcc.vector <- as.data.frame(t(mfcc.vector))
 
             if( length(colnames(mfcc.vector)) != length(colnames(feature.df[, 2:ncol(feature.df)])) ){
-              print('Training dataset columns do not match test dataset')
+              print('Training dataset columns do not match test dataset; check MFCC settings')
               break
             }
 
