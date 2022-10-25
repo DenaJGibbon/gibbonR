@@ -3,7 +3,7 @@
 #' @param input Either full path to directory containing .wav files, a list of .wav files, or a the path to a single .wav file
 #' @param feature.df Data frame of features from labeled sound files; first column must be class labels
 #' @param tune Logical; if want to use 'tune' function for SVM; NOTE: for large datasets adds significant computing time
-#' @param target.signal Labeled signal of interest from training data (feature.df)
+#' @param target.signal Labeled signal(s) of interest from training data (feature.df); can include multiple classes.
 #' @param min.freq Minimum frequency (Hz) of signal of interest
 #' @param max.freq Maximum frequency (Hz) of signal of interest
 #' @param n.windows Number of time windows to calculate for MFCCs

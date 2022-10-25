@@ -50,6 +50,14 @@ https://denajgibbon.github.io/gibbonR-tutorial/
 # devtools::install_github("DenaJGibbon/gibbonR")
 
 library(gibbonR)
+
+# This function will download the data from github
+utils::download.file("https://github.com/DenaJGibbon/BorneoExampleData/blob/master/data/S11_20180219_060002_1800sto3600s.rda",
+                     destfile = 'data/S11_20180219_060002_1800sto3600s.rda')
+
+load(file='data/S11_20180219_060002_1800sto3600s.rda')
+writeWave(S11_20180219_060002_1800sto3600s,'data/S11_20180219_060002_1800sto3600s.wav',extensible = F)
+
 ```
 
 
