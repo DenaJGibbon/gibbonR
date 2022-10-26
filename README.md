@@ -51,7 +51,6 @@ R for anyone interested in using bioacoustics in their research.
 ``` r
 # install.packages("devtools")
 # devtools::install_github("DenaJGibbon/gibbonR")
-
 library(gibbonR)
 #> Loading required package: stringr
 #> Loading required package: e1071
@@ -62,13 +61,77 @@ library(gibbonR)
 #> Loading required package: seewave
 ```
 
+```
+# You need to tell R where to store the zip files on your computer.
+destination.file.path.zip <-
+  "/Users/denaclink/Downloads/BorneoExampleData.zip"
+
+# You also need to tell R where to save the unzipped files
+destination.file.path <- "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/"
+
+# This function will download the data from github
+
+utils::download.file("https://github.com/DenaJGibbon/BorneoExampleData/archive/master.zip",
+                     destfile = destination.file.path.zip)
+
+# This function will unzip the file
+utils::unzip(zipfile = destination.file.path.zip,
+             exdir = destination.file.path)
+
+# Examine the contents
+list.of.sound.files <- list.files(paste(destination.file.path,
+                                        "BorneoExampleData-master", "data", sep =
+                                          "/"),
+                                  full.names = T)
+list.of.sound.files
+```
+
+Use this function to read in the .RDA file and save it as an R object
+from
+<https://stackoverflow.com/questions/5577221/how-can-i-load-an-object-into-a-variable-name-that-i-specify-from-an-r-data-file>
+
+``` r
+loadRData <- function(fileName) {
+  #loads an RData file, and returns it
+  load(fileName)
+  get(ls()[ls() != "fileName"])
+}
+```
+
+This function will load the entire list of r data files
+
+``` r
+list.rda.files <- list()
+for(x in 1:length(list.of.sound.files)){
+  list.rda.files[[x]] <-  loadRData(list.of.sound.files[[x]])
+}
+```
+
+Assign each rda an informative name
+
+``` r
+multi.class.list <- list.rda.files[[1]]
+S11_20180219_060002_1800sto3600s <- list.rda.files[[2]]
+```
+
+Now we create a directory with the training .wav files
+
+``` r
+TrainingDataDirectory <- "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/BorneoMultiClass"
+
+for(a in 1:length(multi.class.list)){
+  Temp.element <- multi.class.list[[a]]
+  writeWave(Temp.element[[2]], paste(TrainingDataDirectory,Temp.element[[1]],sep='/'))
+}
+```
+
 # Part 1. Training Data with Labeled .wav clips
 
 ### Read in clips and calculate MFCCs
 
 ``` r
 TrainingWavFilesDir <- 
-  "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/"
+  "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/BorneoMultiClass/"
 
 trainingdata <- gibbonR::MFCCFunction(input.dir=TrainingWavFilesDir, min.freq = 400, max.freq = 1600,win.avg='standard')
 
@@ -100,13 +163,13 @@ print(ml.model.rf)
 #>                      Number of trees: 500
 #> No. of variables tried at each split: 13
 #> 
-#>         OOB estimate of  error rate: 16%
+#>         OOB estimate of  error rate: 10.67%
 #> Confusion matrix:
 #>               female.gibbon leaf.monkey noise solo.gibbon class.error
-#> female.gibbon            17           0     1           2   0.1500000
+#> female.gibbon            18           0     1           1   0.1000000
 #> leaf.monkey               0          11     4           0   0.2666667
-#> noise                     0           1    17           2   0.1500000
-#> solo.gibbon               0           1     1          18   0.1000000
+#> noise                     0           0    19           1   0.0500000
+#> solo.gibbon               0           0     1          19   0.0500000
 ```
 
 # Part 2. Run the detector/classifier
@@ -175,7 +238,7 @@ gibbonID(input.dir="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/Multi
 #> [1] "Adding Spectrograms to Plot Step 3 of 3"
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
 
 ## Part 3b. Create a UMAP plot colored by affinity propagation clustering
 
@@ -196,7 +259,7 @@ gibbonID(input.dir="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/Multi
 #> [1] "Adding Spectrograms to Plot Step 3 of 3"
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
 
 ### How to cite
 
