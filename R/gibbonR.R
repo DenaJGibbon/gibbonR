@@ -106,7 +106,7 @@ gibbonR <-
         list.files(input, full.names = FALSE, recursive = T)
     }
 
-    if (file.exists(input) && !dir.exists(input) == TRUE) {
+    if (length(input)==1 && !dir.exists(input) == TRUE) {
       list.file.input <- input
     }
 
