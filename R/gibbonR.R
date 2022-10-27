@@ -99,7 +99,7 @@ gibbonR <-
         str_split_fixed(input, pattern = '/', nslash)[, nslash]
     }
 
-    if (dir.exists(input) == TRUE) {
+    if (typeof(input) == "character") {
       list.file.input <-
         list.files(input, full.names = TRUE, recursive = T)
       list.file.input.short <-
