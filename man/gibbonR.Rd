@@ -4,36 +4,22 @@
 \alias{gibbonR}
 \title{gibbonR}
 \usage{
-gibbonR(
-  input,
-  input.type = "list",
-  feature.df,
-  model.type.list = c("SVM"),
-  tune = FALSE,
-  target.signal = "female.gibbon",
-  short.wav.duration = 300,
-  min.freq = 400,
-  max.freq = 2000,
-  noise.quantile.val = 0.5,
-  minimum.separation = 5,
-  n.windows = 9,
-  num.cep = 12,
-  spectrogram.window = 1600,
-  pattern.split = ".wav",
-  min.signal.dur = 4,
-  maximum.separation = 1,
-  max.sound.event.dur = 12,
-  probability.thresh.svm = 0.75,
-  probability.thresh.rf = 0.75,
-  wav.output = "TRUE",
-  output.dir = getwd(),
-  swift.time = TRUE,
-  time.start = 6,
-  time.stop = 12,
-  write.table.output = TRUE,
-  verbose = TRUE,
-  random.sample = "NA"
-)
+{input, input.type='list', feature.df,model.type.list=c("SVM"), tune = FALSE, target.signal = "female.gibbon",
+short.wav.duration=300,
+min.freq = 400, max.freq = 2000,
+noise.quantile.val=0.5,
+minimum.separation =5,
+n.windows = 9, num.cep = 12,
+spectrogram.window =1600,
+pattern.split = ".wav", min.signal.dur = 4,
+maximum.separation =1,
+max.sound.event.dur = 12,
+probability.thresh.svm = 0.75,
+probability.thresh.rf = 0.75,
+wav.output = "TRUE", output.dir = getwd(),
+swift.time=TRUE,time.start=6,time.stop=12,
+write.table.output=TRUE,verbose=TRUE,
+random.sample='NA'}
 }
 \arguments{
 \item{input}{Either full path to directory containing .wav files, a list of .wav files, or a the path to a single .wav file}
@@ -44,7 +30,7 @@ gibbonR(
 
 \item{tune}{Logical; if want to use 'tune' function for SVM; NOTE: for large datasets adds significant computing time}
 
-\item{target.signal}{Labeled signal of interest from training data (feature.df)}
+\item{target.signal}{Labeled signal(s) of interest from training data (feature.df); can include multiple classes.}
 
 \item{short.wav.duration}{Duration (s) to divide longer sound file to increase processing efficiency}
 
@@ -62,7 +48,7 @@ gibbonR(
 
 \item{spectrogram.window}{Window length for spectrogram analysis (input to spectro fuction from 'seewave')}
 
-\item{pattern.split}{Pattern to find and remove to create file name; currently set to ".wav"}
+\item{pattern.split}{Pattern to find and remove to create full sound file name; currently set to ".wav"}
 
 \item{min.signal.dur}{The minimum duration (s) sound events must be to be considered sound events}
 

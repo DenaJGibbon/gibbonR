@@ -20,6 +20,8 @@ MFCCFunction <-
            num.cep = 12,
            win.avg = 'standard',
            win.hop.time = 0.25) {
+
+
     call.timing.list <-
       list.files(input.dir, full.names = T, pattern = '.wav')
 
@@ -50,9 +52,11 @@ MFCCFunction <-
         )
 
         melfcc.output <- as.data.frame(melfcc.output)
+
         class <-
           rep(stringr::str_split_fixed(wav.name, pattern = '_', n = 2)[, 1],
               nrow(melfcc.output))
+
         melfcc.output <- cbind.data.frame(class, melfcc.output)
 
         mfcc.output.df <-
@@ -136,6 +140,7 @@ MFCCFunction <-
       }
 
       mfcc.output <- mfcc.vector.list
+
       class <-
         stringr::str_split_fixed(call.timing.list.short, pattern = '_', n = 2)[, 1]
 
