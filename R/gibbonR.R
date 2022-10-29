@@ -7,6 +7,7 @@
 #' probability.thresh.svm = 0.75, probability.thresh.rf = 0.75, wav.output = "TRUE", output.dir = getwd(),
 #' swift.time=TRUE,time.start=6,time.stop=12, write.table.output=TRUE,verbose=TRUE, random.sample='NA'}
 #' @param input Either full path to directory containing .wav files, a list of .wav files, or a the path to a single .wav file
+#' @param input.type Either 'directory', 'list' or 'wav'
 #' @param feature.df Data frame of features from labeled sound files; first column must be class labels
 #' @param tune Logical; if want to use 'tune' function for SVM; NOTE: for large datasets adds significant computing time
 #' @param target.signal Labeled signal(s) of interest from training data (feature.df); can include multiple classes.
@@ -92,21 +93,21 @@ gibbonR <-
       stop("Specify output directory")
 
 
-    if (typeof(input) == 'list') {
+    if (input.type == 'list') {
       list.file.input <- unlist(input)
       nslash <- str_count(input, pattern = '/') + 1
       list.file.input.short <-
         str_split_fixed(input, pattern = '/', nslash)[, nslash]
     }
 
-    if (typeof(input) == "character") {
+    if (input.type == "directory") {
       list.file.input <-
         list.files(input, full.names = TRUE, recursive = T)
       list.file.input.short <-
         list.files(input, full.names = FALSE, recursive = T)
     }
 
-    if (length(input)==1 && !dir.exists(input) == TRUE) {
+    if (input.type == "wav") {
       list.file.input <- input
     }
 

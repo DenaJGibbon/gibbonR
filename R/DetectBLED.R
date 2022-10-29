@@ -1,6 +1,7 @@
 #' DetectBLED
 #' @description Function to do band-limited energy summation to find sound events. This function only identifies sound events based on frequency and duration so is not expected to have high precision.
 #' @param input Either full path to directory containing .wav files or a list with file name as first element and .wav as second element
+#' @param input.type Either 'directory', 'list' or 'wav'
 #' @param min.freq Minimum frequency (Hz) of signal of interest
 #' @param max.freq Maximum frequency (Hz) of signal of interest
 #' @param pattern.split Pattern to find and remove to create file name; currently set to ".rda"
@@ -27,7 +28,7 @@
 #' @import stringr
 #' @examples
 
-DetectBLED <- function(input,
+DetectBLED <- function(input,input.type ='wav',
                        min.freq = 200,
                        max.freq = 6000,
                        noise.quantile.val = 0.75,
@@ -49,21 +50,21 @@ DetectBLED <- function(input,
     stop("Specify output directory")
   }
 
-  if (typeof(input) == 'list') {
+  if (input.type == 'list') {
     list.file.input <- unlist(input)
     nslash <- str_count(input, pattern = '/') + 1
     list.file.input.short <-
       str_split_fixed(input, pattern = '/', nslash)[, nslash]
   }
 
-  if (typeof(input) == "character") {
+  if (input.type == "directory") {
     list.file.input <-
       list.files(input, full.names = TRUE, recursive = T)
     list.file.input.short <-
       list.files(input, full.names = FALSE, recursive = T)
   }
 
-  if (length(input)==1 && !dir.exists(input) == TRUE) {
+  if (input.type == "wav") {
     list.file.input <- input
   }
 
