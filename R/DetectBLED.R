@@ -56,16 +56,17 @@ DetectBLED <- function(input,
       str_split_fixed(input, pattern = '/', nslash)[, nslash]
   }
 
-  if (dir.exists(input) == TRUE) {
+  if (typeof(input) == "character") {
     list.file.input <-
       list.files(input, full.names = TRUE, recursive = T)
     list.file.input.short <-
       list.files(input, full.names = FALSE, recursive = T)
   }
 
-  if (file.exists(input) && !dir.exists(input) == TRUE) {
+  if (length(input)==1 && !dir.exists(input) == TRUE) {
     list.file.input <- input
   }
+
 
   if (swift.time == TRUE) {
     number.of.slash <- str_count(list.file.input, pattern = "/")[1]
