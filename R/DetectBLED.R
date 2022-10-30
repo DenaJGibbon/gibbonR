@@ -80,7 +80,7 @@ DetectBLED <- function(input,input.type ='wav',
     times <- str_split_fixed(temp.name.all, pattern = '_', n = 3)[, 3]
     times <- as.numeric(substr(times, start = 1, stop = 2))
     list.file.input <-
-      list.file.input[which(times > time.start & times < time.stop)]
+      list.file.input[which(times >= time.start & times <= time.stop)]
   }
 
   if (length(list.file.input) == 0) {
@@ -314,7 +314,7 @@ DetectBLED <- function(input,input.type ='wav',
           seq(1, nrow(RavenSelectionTableDF), 1)
         if (write.table.output == TRUE) {
           csv.file.name <-
-            paste(output.dir, '/', temp.name, '_timing.df.txt', sep = '')
+            paste(output.dir, '/', temp.name, 'BLED.txt', sep = '')
           write.table(
             x = RavenSelectionTableDF,
             sep = "\t",

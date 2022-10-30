@@ -712,7 +712,7 @@ gibbonR <-
                   paste(output.dir,
                         '/',
                         temp.name,
-                        '_timing.df.txt',
+                        'gibbonRresults.txt',
                         sep = '')
                 write.table(
                   x = RavenSelectionTableDF,
