@@ -211,6 +211,7 @@ gibbonR <-
     model.results.list <- list()
 
     for (i in 1:length(list.file.input)) {
+      model.results.list <- list()
       tryCatch({
         start_time <- Sys.time()
         contains.slash <- str_detect(list.file.input[i], pattern = "/")
