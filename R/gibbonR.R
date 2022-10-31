@@ -208,10 +208,10 @@ gibbonR <-
 
     print(paste("Classifying for target signal", c(target.signal)))
 
-    model.results.list <- list()
 
     for (i in 1:length(list.file.input)) {
       model.results.list <- list()
+      RavenSelectionTableDF <- data.frame()
       tryCatch({
         start_time <- Sys.time()
         contains.slash <- str_detect(list.file.input[i], pattern = "/")
@@ -604,7 +604,7 @@ gibbonR <-
             timing.df <-  do.call(rbind.data.frame, model.results.list)
 
 
-            RavenSelectionTableDF <- data.frame()
+
             # Add minimum separation
             for (k in 1:length(model.type.list)) {
               timing.df.subset <-
