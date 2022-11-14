@@ -166,7 +166,7 @@ gibbonR <-
             kernel = "radial",
             gamma = tune.rad$best.parameters$gamma,
             cost = tune.rad$best.parameters$cost,
-            cross = 5,
+            cross = 25,
             probability = TRUE
           )
 
