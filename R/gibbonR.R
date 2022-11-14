@@ -80,11 +80,11 @@ gibbonR <-
            verbose = TRUE,
            random.sample = 'NA') {
 
-    target.signal.in.training <-
-      as.factor(target.signal) %in% feature.df$class
+    TrainingMatch <- match( c("hornbill.rhino","hornbill.helmeted","long.argus","short.argus","female.gibbon"),unique(MFCCsTraining$class) )
 
-    if (length(unique(target.signal.in.training)) > 1 |
-        unique(target.signal.in.training) %in% FALSE) {
+    any(is.na(TrainingMatch))
+
+    if (any(is.na(TrainingMatch)) %in% TRUE) {
       print("Training data does not contain target signal")
     }
 
