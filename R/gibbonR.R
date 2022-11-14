@@ -80,9 +80,8 @@ gibbonR <-
            verbose = TRUE,
            random.sample = 'NA') {
 
-    TrainingMatch <- match( c("hornbill.rhino","hornbill.helmeted","long.argus","short.argus","female.gibbon"),unique(MFCCsTraining$class) )
+    TrainingMatch <- match( target.signal,unique(MFCCsTraining$class) )
 
-    any(is.na(TrainingMatch))
 
     if (any(is.na(TrainingMatch)) %in% TRUE) {
       print("Training data does not contain target signal")
@@ -359,8 +358,10 @@ gibbonR <-
             mfcc.list <- list()
             temp.model.results.list.svm <- list()
             temp.model.results.list.rf <- list()
+            for (y in 1:length(target.signal)) {
             for (x in 1:length(subsamps)) {
-              for (y in 1:length(target.signal)) {
+
+
                 calltimes.subset <- calltimes[[x]]
 
                 start.time <- calltimes.subset$from
@@ -464,7 +465,7 @@ gibbonR <-
                         "start.time",
                         "end.time"
                       )
-                    temp.model.results.list.svm[[x]] <- temp.df
+                    temp.model.results.list.svm[[ length(temp.model.results.list.svm)+1 ]] <- temp.df
                   }
 
                 }
@@ -522,7 +523,7 @@ gibbonR <-
                         "start.time",
                         "end.time"
                       )
-                    temp.model.results.list.rf[[x]] <- temp.df
+                    temp.model.results.list.rf[[ length(temp.model.results.list.rf)+1]] <- temp.df
                   }
 
                 }
@@ -602,8 +603,6 @@ gibbonR <-
             print('Creating datasheet')
 
             timing.df <-  do.call(rbind.data.frame, model.results.list)
-
-
 
             # Add minimum separation
             for (k in 1:length(model.type.list)) {
@@ -723,13 +722,13 @@ gibbonR <-
                   quote = FALSE
                 )
                 print(paste(
-                  "'Here are results for soundfile",
+                  "Saving Sound Files",
                   temp.name,
                   i,
                   'out of',
                   length(list.file.input)
                 ))
-                print(RavenSelectionTableDF)
+               # print(RavenSelectionTableDF)
 
 
               }
