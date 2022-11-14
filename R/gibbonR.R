@@ -22,7 +22,7 @@
 #' @param short.wav.duration Duration (s) to divide longer sound file to increase processing efficiency
 #' @param noise.quantile.val A quantile value between 0 to 1 for the band energy summation
 #' @param minimum.separation The minimum number of consecutive time windows that signals must be separated by to be considered a separate sound event
-#' @param maximum.separation The minimum number of consecutive time windows that signals must be separated by to be considered a separate sound event
+#' @param maximum.separation The maximum number of consecutive time windows that signals must be separated by to be considered a separate sound event
 #' @param spectrogram.window Window length for spectrogram analysis (input to spectro fuction from 'seewave')
 #' @param min.signal.dur The minimum duration (s) sound events must be to be considered sound events
 #' @param max.sound.event.dur The maximum duration (s) sound events must be to be considered sound events; NOTE this only happens when writing text file
@@ -80,7 +80,7 @@ gibbonR <-
            verbose = TRUE,
            random.sample = 'NA') {
 
-    TrainingMatch <- match( target.signal,unique(MFCCsTraining$class) )
+    TrainingMatch <- match( target.signal,unique(feature.df$class) )
 
 
     if (any(is.na(TrainingMatch)) %in% TRUE) {
@@ -604,7 +604,7 @@ gibbonR <-
 
             timing.df <-  do.call(rbind.data.frame, model.results.list)
 
-            # Add minimum separation
+            # Add maximum separation
             for (k in 1:length(model.type.list)) {
               timing.df.subset <-
                 subset(timing.df, model.type == model.type.list[[k]])
