@@ -105,7 +105,7 @@ MFCCFunction <-
         # Ensure only same number of time windows are used for MFCC and delta coefficients Also append .wav duration
         mfcc.vector <-
           c(mfcc.mean, mfcc.sd, delta.mean, delta.sd, wav.dur)
-        mfcc.vector.list[x] <- mfcc.vector
+        mfcc.vector.list[[x]] <- mfcc.vector
       }
 
       mfcc.output <- mfcc.vector.list
@@ -145,7 +145,7 @@ MFCCFunction <-
         # Ensure only same number of time windows are used for MFCC and delta coefficients Also append .wav duration
         mfcc.vector <-
           c(as.vector(t(melfcc.output[1:(n.windows - 1), 2:num.cep])), as.vector(t(deltas.output[1:(n.windows - 1), 2:num.cep])), wav.dur)
-        mfcc.vector.list[x] <- mfcc.vector
+        mfcc.vector.list[[x]] <- mfcc.vector
       }
 
       mfcc.output <- mfcc.vector.list
