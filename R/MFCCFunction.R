@@ -21,17 +21,25 @@ MFCCFunction <-
            win.avg = 'standard',
            win.hop.time = 0.25) {
 
+    if (is.list(input.dir) == 'TRUE') {
+      subsamps <- input.dir
+      class <- 'NA'
 
-    call.timing.list <-
-      list.files(input.dir, full.names = T, pattern = '.wav')
+    } else{
+      call.timing.list <-
+        list.files(input.dir, full.names = T, pattern = '.wav')
 
-    call.timing.list.short <-
-      list.files(input.dir, full.names = F, pattern = '.wav')
+      call.timing.list.short <-
+        list.files(input.dir, full.names = F, pattern = '.wav')
 
-    subsamps <- lapply(1:length(call.timing.list),
-                       function(i)
-                         readWave(call.timing.list[[i]]))
+      subsamps <- lapply(1:length(call.timing.list),
+                         function(i)
+                           readWave(call.timing.list[[i]]))
 
+      class <-
+        stringr::str_split_fixed(call.timing.list.short, pattern = '_', n = 2)[, 1]
+
+    }
     if (win.avg == "false") {
       mfcc.output.df <- data.frame()
       ####Loop to calculate MFCC for each .wav file in the directory
@@ -67,40 +75,40 @@ MFCCFunction <-
     }
 
     if (win.avg == "mean.sd") {
-      mfcc.vector.list <- list()
-      #Class <- stringr::str_split_fixed(call.timing.list.short,pattern = '_',n=2)[,1]
-      Class <-
-        stringr::str_split_fixed(call.timing.list.short, pattern = '_', n = 3)[, 2]
+      mfcc.vector.list <- vector("list", 10000)
+
       for (x in 1:length(subsamps)) {
-        #print(paste("processing sound event", x, 'out of',length(subsamps) ))
+        print(paste("processing sound event", x, 'out of',length(subsamps) ))
 
         short.wav <- subsamps[[x]]
         wav.dur <- seewave::duration(short.wav)
-        win.time <- wav.dur / n.windows
-
         # Calculate MFCCs
-        melfcc.output <- tuneR::melfcc(
-          short.wav,
-          minfreq = min.freq,
-          hoptime = win.time,
-          maxfreq = max.freq,
-          numcep = num.cep,
-          wintime = win.time
-        )
+        melfcc.output <-
+          tuneR::melfcc(
+            short.wav,
+            minfreq = min.freq,
+            maxfreq = max.freq,
+            numcep = num.cep
+          )
 
         # Calculate delta cepstral coefficients
-        deltas.output <- tuneR::deltas(melfcc.output)
+        deltas.output <- as.data.frame(tuneR::deltas(melfcc.output))
+
+
+        melfcc.output <- as.data.frame(melfcc.output)
+
+        mfcc.mean <- colMeans(melfcc.output)
+        mfcc.sd <- apply(melfcc.output, 2, sd)
+        delta.mean <- colMeans(deltas.output)
+        delta.sd <- apply(deltas.output, 2, sd)
 
         # Ensure only same number of time windows are used for MFCC and delta coefficients Also append .wav duration
         mfcc.vector <-
-          c(as.vector(t(melfcc.output[1:(n.windows - 1), 2:num.cep])), as.vector(t(deltas.output[1:(n.windows - 1), 2:num.cep])), wav.dur)
-        mfcc.vector.list[[x]] <- mfcc.vector
+          c(mfcc.mean, mfcc.sd, delta.mean, delta.sd, wav.dur)
+        mfcc.vector.list[x] <- mfcc.vector
       }
 
       mfcc.output <- mfcc.vector.list
-      class <-
-        stringr::str_split_fixed(call.timing.list.short, pattern = '_', n = 2)[, 1]
-
 
       mfcc.output.df <- do.call(rbind.data.frame, mfcc.output)
       colnames(mfcc.output.df) <-
@@ -113,8 +121,9 @@ MFCCFunction <-
     }
 
     if (win.avg == 'standard') {
-      mfcc.vector.list <- list()
+      mfcc.vector.list <- vector("list", 10000)
       for (x in 1:length(subsamps)) {
+        print(paste("processing sound event", x, 'out of',length(subsamps) ))
         short.wav <- subsamps[[x]]
         wav.dur <- duration(short.wav)
         win.time <- wav.dur / n.windows
@@ -136,14 +145,10 @@ MFCCFunction <-
         # Ensure only same number of time windows are used for MFCC and delta coefficients Also append .wav duration
         mfcc.vector <-
           c(as.vector(t(melfcc.output[1:(n.windows - 1), 2:num.cep])), as.vector(t(deltas.output[1:(n.windows - 1), 2:num.cep])), wav.dur)
-        mfcc.vector.list[[x]] <- mfcc.vector
+        mfcc.vector.list[x] <- mfcc.vector
       }
 
       mfcc.output <- mfcc.vector.list
-
-      class <-
-        stringr::str_split_fixed(call.timing.list.short, pattern = '_', n = 2)[, 1]
-
 
       mfcc.output.df <- do.call(rbind.data.frame, mfcc.output)
       colnames(mfcc.output.df) <-
