@@ -9,6 +9,7 @@
 #' @param class Option of 'affinity.adaptive', 'fixed.affinity' or 'no.clustering'; Specifies whether to do adaptive or fixed 'q' affinity propagation clustering, or to color points by class label.
 #' @param q.fixed If class=='fixed.affinity' specify value of 'q'. See ??apcluster for more details.
 #' @param win.avg Option of 'false','mean.sd' or 'standard'; whether to return MFCCs for each non-overlapping time window, calculate mean and SD over each MFCC or calculated MFCCs for a set number of time windows.
+#' @param spec.ratio Value to scale the spectrograms.
 #'
 #' @return
 #' @export
@@ -24,7 +25,8 @@ gibbonID <-
            add.spectrograms = FALSE,
            class = 'fixed',
            q.fixed = 0.1,
-           win.avg = 'standard')
+           win.avg = 'standard',
+           spec.ratio=40)
   {
     Focal.exemplars <-
       list.files(input.dir, full.names = T, pattern = pattern)
@@ -192,10 +194,10 @@ gibbonID <-
       col.index <- unique(plot.for.AcousticSignals$class)
       xrange <-
         (abs(range(plot.for.AcousticSignals$Dim.1)[1]) + abs(range(plot.for.AcousticSignals$Dim.1)[2])) /
-        40
+        spec.ratio
       yrange <-
         (abs(range(plot.for.AcousticSignals$Dim.2)[1]) + abs(range(plot.for.AcousticSignals$Dim.2)[2])) /
-        40
+        spec.ratio
       color.vals <-
         matlab::jet.colors (length(unique(plot.for.AcousticSignals$class)))
 
