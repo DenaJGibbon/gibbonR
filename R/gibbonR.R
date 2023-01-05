@@ -165,7 +165,7 @@ gibbonR <-
             kernel = "radial",
             gamma = tune.rad$best.parameters$gamma,
             cost = tune.rad$best.parameters$cost,
-            cross = 25,
+            cross = 20,
             probability = TRUE
           )
 
@@ -321,6 +321,7 @@ gibbonR <-
           }
 
           # Calculate minimum signal duration to be considered signal
+          if( length(which(swift.spectro$time > 1))>0){
           number.time.windows.1sec <- min(which(swift.spectro$time > 1))
           signal.dur <- number.time.windows.1sec * min.signal.dur
 
@@ -335,7 +336,9 @@ gibbonR <-
             call.timing.list <-
               call.timing.list[which(sapply(call.timing.list, length) < sound.event.index.max)]
           }
-
+          } else{
+  call.timing.list <- list()
+}
 
           if (length(call.timing.list) >= 1) {
             subsamps <- lapply(1:length(call.timing.list),

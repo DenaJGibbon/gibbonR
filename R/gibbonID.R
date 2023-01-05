@@ -134,7 +134,7 @@ gibbonID <-
       scale_color_manual(values = matlab::jet.colors (length(
         unique(plot.for.AcousticSignals$class)
       ))) +
-      theme_bw() + xlab('UMAP: Dim 1') + ylab('UMAP: Dim 2') + theme(legend.position = "none") +
+      theme_bw() + xlab('UMAP: Dim 1') + ylab('UMAP: Dim 2') +
       ggtitle(paste('N Clusters =', length(unique(
         AcousticSignalsMFCCs$class
       )))) +
@@ -146,7 +146,7 @@ gibbonID <-
         axis.text.y = element_blank(),
         #remove y axis labels
         axis.ticks.y = element_blank()  #remove y axis ticks
-      )
+      )+labs(color="Cluster")
 
     if (add.spectrograms == TRUE) {
       print('Step 3 Creating Spectrograms ')

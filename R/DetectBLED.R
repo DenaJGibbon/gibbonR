@@ -131,6 +131,7 @@ DetectBLED <- function(input,input.type ='wav',
 
     sound_length <-
       round(length(temp.wav@left) / temp.wav@samp.rate, 2)
+
     cutwave.list <-
       c(seq(
         from = 1,
@@ -181,20 +182,24 @@ DetectBLED <- function(input,input.type ='wav',
       call.timing <-
         split(list.sub, cumsum(c(1, diff(list.sub)) != 1))
 
-      # Calculate minimum number of consecutive values above threshold to be considered signal
-      number.time.windows.1sec <- min(which(swift.spectro$time > 1))
-      signal.dur <- number.time.windows.1sec * min.signal.dur
+      # Calculate minimum signal duration to be considered signal
+      if( length(which(swift.spectro$time > 1))>0){
+        number.time.windows.1sec <- min(which(swift.spectro$time > 1))
+        signal.dur <- number.time.windows.1sec * min.signal.dur
 
-      # Combine all potential sound events into a list
-      call.timing.list <-
-        as.list(call.timing[which(sapply(call.timing, length) > signal.dur)])
-
-      # If user indicated maximum duration create list of sound events under certain duration
-      if (max.sound.event.dur != 'NULL') {
-        sound.event.index.max <-
-          which.min(abs(swift.spectro$t - max.sound.event.dur))
+        # Combine all potential sound events into a list
         call.timing.list <-
-          call.timing.list[which(sapply(call.timing.list, length) < sound.event.index.max)]
+          as.list(call.timing[which(sapply(call.timing, length) > signal.dur)])
+
+        # If user indicated maximum duration create list of sound events under certain duration
+        if (max.sound.event.dur != 'NULL') {
+          sound.event.index.max <-
+            which.min(abs(swift.spectro$time - max.sound.event.dur))
+          call.timing.list <-
+            call.timing.list[which(sapply(call.timing.list, length) < sound.event.index.max)]
+        }
+      } else{
+        call.timing.list <- list()
       }
 
       if (length(call.timing.list) >= 1) {
