@@ -226,8 +226,8 @@ DetectBLED <- function(input,input.type ='wav',
                          '_',
                          paste(
                            temp.name,
-                           swift.spectro$t[min(call.timing.list[[i]])],
-                           swift.spectro$t[max(call.timing.list[[i]])],
+                           round(swift.spectro$t[min(call.timing.list[[i]])],2),
+                           round(swift.spectro$t[max(call.timing.list[[i]])],2),
                            '.wav',
                            sep = '_'
                          ),
@@ -249,10 +249,10 @@ DetectBLED <- function(input,input.type ='wav',
                          '_',
                          paste(
                            temp.name,
-                           (swift.spectro$t[min(call.timing.list[[i]])] +
-                              (subsample.dur * (j - 1))),
-                           (swift.spectro$t[max(call.timing.list[[i]])] +
-                              (subsample.dur * (j - 1))),
+                          round( (swift.spectro$t[min(call.timing.list[[i]])] +
+                              (subsample.dur * (j - 1))),2) ,
+                           round((swift.spectro$t[max(call.timing.list[[i]])] +
+                              (subsample.dur * (j - 1))),2),
                            '.wav',
                            sep = '_'
                          ),

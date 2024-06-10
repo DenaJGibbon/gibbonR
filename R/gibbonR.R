@@ -1,6 +1,6 @@
 #' gibbonR
 #' @description This function identifies sound events using band-limited energy summation and then classifies the sound events using a trained support vector machine or random forest algorithm.
-#' @usage input, input.type='list', feature.df,model.type.list=c("SVM"), tune = FALSE, target.signal = "female.gibbon",
+#' @usage {input, input.type='list', feature.df,model.type.list=c("SVM"), tune = FALSE, target.signal = "female.gibbon",
 #' short.wav.duration=300,min.freq = 400, max.freq = 2000,
 #' noise.quantile.val=0.5, minimum.separation =5, n.windows = 9, num.cep = 12, spectrogram.window =1600,
 #' pattern.split = ".wav", min.signal.dur = 4, maximum.separation =1,max.sound.event.dur = 12,
@@ -46,8 +46,6 @@
 #' @return If write.table.output=TRUE writes a .txt file for each sound file with detections
 #' @examples
 #' \donttest{MFCCFunction(input.dir = "FocalRecordings",min.freq = 400,max.freq=2500)}
-
-
 
 
 gibbonR <-
@@ -251,7 +249,7 @@ gibbonR <-
             by = short.wav.duration
           ), sound_length)
 
-        short.sound.files <- lapply(1:(length(cutwave.list) - 1),
+        short.sound.files <- lapply( 1:(length(cutwave.list) - 1),
                                     function(i)
                                       extractWave(
                                         temp.wav,

@@ -178,7 +178,7 @@ print(ml.model.rf)
 # Specify the folder where the training data will be saved
 TrainingDataFolderLocation <- "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/TrainingDataFromRavenSelectionTables/"
   
-TrainingDataMFCC <- MFCCFunction(input.dir= TrainingDataFolderLocation, min.freq = 400, max.freq = 1600,win.avg="TRUE")
+TrainingDataMFCC <- MFCCFunction(input.dir= TrainingDataFolderLocation, min.freq = 400, max.freq = 1600,win.avg="standard")
   
   TrainingDataMFCC$class <- as.factor(TrainingDataMFCC$class)
 ```

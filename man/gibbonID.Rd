@@ -13,7 +13,8 @@ gibbonID(
   add.spectrograms = FALSE,
   class = "fixed",
   q.fixed = 0.1,
-  win.avg = "standard"
+  win.avg = "standard",
+  spec.ratio = 40
 )
 }
 \arguments{
@@ -34,9 +35,8 @@ gibbonID(
 \item{q.fixed}{If class=='fixed.affinity' specify value of 'q'. See ??apcluster for more details.}
 
 \item{win.avg}{Option of 'false','mean.sd' or 'standard'; whether to return MFCCs for each non-overlapping time window, calculate mean and SD over each MFCC or calculated MFCCs for a set number of time windows.}
-}
-\value{
 
+\item{spec.ratio}{Value to scale the spectrograms.}
 }
 \description{
 Function that extracts MFCCs as features from .wav files and plots them using UMAP. Points can be colored using affinity propagation clustering or by class labels. With the option to overlay spectrogram images.

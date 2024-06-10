@@ -6,6 +6,7 @@
 \usage{
 DetectBLED(
   input,
+  input.type = "wav",
   min.freq = 200,
   max.freq = 6000,
   noise.quantile.val = 0.75,
@@ -27,6 +28,8 @@ DetectBLED(
 }
 \arguments{
 \item{input}{Either full path to directory containing .wav files or a list with file name as first element and .wav as second element}
+
+\item{input.type}{Either 'directory', 'list' or 'wav'}
 
 \item{min.freq}{Minimum frequency (Hz) of signal of interest}
 

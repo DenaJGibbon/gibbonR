@@ -5,24 +5,16 @@
 \title{gibbonR}
 \usage{
 {input, input.type='list', feature.df,model.type.list=c("SVM"), tune = FALSE, target.signal = "female.gibbon",
-short.wav.duration=300,
-min.freq = 400, max.freq = 2000,
-noise.quantile.val=0.5,
-minimum.separation =5,
-n.windows = 9, num.cep = 12,
-spectrogram.window =1600,
-pattern.split = ".wav", min.signal.dur = 4,
-maximum.separation =1,
-max.sound.event.dur = 12,
-probability.thresh.svm = 0.75,
-probability.thresh.rf = 0.75,
-wav.output = "TRUE", output.dir = getwd(),
-swift.time=TRUE,time.start=6,time.stop=12,
-write.table.output=TRUE,verbose=TRUE,
-random.sample='NA'}
+short.wav.duration=300,min.freq = 400, max.freq = 2000,
+noise.quantile.val=0.5, minimum.separation =5, n.windows = 9, num.cep = 12, spectrogram.window =1600,
+pattern.split = ".wav", min.signal.dur = 4, maximum.separation =1,max.sound.event.dur = 12,
+probability.thresh.svm = 0.75, probability.thresh.rf = 0.75, wav.output = "TRUE", output.dir = getwd(),
+swift.time=TRUE,time.start=6,time.stop=12, write.table.output=TRUE,verbose=TRUE, random.sample='NA'}
 }
 \arguments{
 \item{input}{Either full path to directory containing .wav files, a list of .wav files, or a the path to a single .wav file}
+
+\item{input.type}{Either 'directory', 'list' or 'wav'}
 
 \item{feature.df}{Data frame of features from labeled sound files; first column must be class labels}
 
@@ -52,7 +44,7 @@ random.sample='NA'}
 
 \item{min.signal.dur}{The minimum duration (s) sound events must be to be considered sound events}
 
-\item{maximum.separation}{The minimum number of consecutive time windows that signals must be separated by to be considered a separate sound event}
+\item{maximum.separation}{The maximum number of consecutive time windows that signals must be separated by to be considered a separate sound event}
 
 \item{max.sound.event.dur}{The maximum duration (s) sound events must be to be considered sound events; NOTE this only happens when writing text file}
 

@@ -4,7 +4,7 @@
 #' @param min.freq the minimum frequency (Hz) of the signal of interest
 #' @param max.freq the maximum frequency (Hz) of the signal of interest
 #' @param n.windows the number of time windows to divide the signal by
-#' @param win.avg Option of 'false','mean.sd' or 'standard'; whether to return MFCCs for each non-overlapping time window, calculate mean and SD over each MFCC or calculated MFCCs for a set number of time windows.
+#' @param win.avg Option of 'no.avg','mean.sd' or 'standard'; whether to return MFCCs for each non-overlapping time window, calculate mean and SD over each MFCC or calculated MFCCs for a set number of time windows.
 #' @param win.hop.time If win.avg='standard' the specified window size.
 #' @param num.cep the number of cepstra to calculate for each time window
 #' @export
@@ -27,10 +27,10 @@ MFCCFunction <-
 
     } else{
       call.timing.list <-
-        list.files(input.dir, full.names = T, pattern = '.wav')
+        list.files(input.dir, full.names = T, pattern = '.wav', recursive = T)
 
       call.timing.list.short <-
-        list.files(input.dir, full.names = F, pattern = '.wav')
+        basename(call.timing.list)
 
       subsamps <- lapply(1:length(call.timing.list),
                          function(i)
@@ -40,7 +40,8 @@ MFCCFunction <-
         stringr::str_split_fixed(call.timing.list.short, pattern = '_', n = 2)[, 1]
 
     }
-    if (win.avg == "false") {
+
+    if (win.avg == "no.avg") {
       mfcc.output.df <- data.frame()
       ####Loop to calculate MFCC for each .wav file in the directory
       for (j in 1:length(subsamps)) {
@@ -121,7 +122,9 @@ MFCCFunction <-
     }
 
     if (win.avg == 'standard') {
+
       mfcc.vector.list <- vector("list", 10000)
+
       for (x in 1:length(subsamps)) {
         print(paste("processing sound event", x, 'out of',length(subsamps) ))
         short.wav <- subsamps[[x]]

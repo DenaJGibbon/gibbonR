@@ -23,13 +23,14 @@ gibbonID <-
            max.freq,
            pattern = '.wav',
            add.spectrograms = FALSE,
-           class = 'fixed',
+           class = 'affinity.fixed',
            q.fixed = 0.1,
            win.avg = 'standard',
            spec.ratio=40)
   {
+
     Focal.exemplars <-
-      list.files(input.dir, full.names = T, pattern = pattern)
+      list.files(input.dir, full.names = T, pattern = pattern,recursive = T)
 
 
     print('Step 1 Calculating MFCCs')
@@ -161,7 +162,8 @@ gibbonID <-
           #print(b)
           short.wav <- tuneR::readWave(Focal.exemplars[[b]])
 
-          png(filename = paste(output.dir, b, 'Focal.png', sep = ''),
+
+          png(filename = paste(output.dir,str_replace_all( basename(Focal.exemplars[[b]]),'/','_'), b, 'Focal.png', sep = ''),
               width = 1000)
           temp.spec <-
             signal::specgram(
@@ -185,8 +187,34 @@ gibbonID <-
         }
       } else {
         print(paste(output.dir, 'already exists'))
-      }
 
+        for (b in 1:length(Focal.exemplars)) {
+          #print(b)
+          short.wav <- tuneR::readWave(Focal.exemplars[[b]])
+
+          png(filename = paste(output.dir,str_replace_all( basename(Focal.exemplars[[b]]),'/','_'), b, 'Focal.png', sep = ''),
+              width = 1000)
+          temp.spec <-
+            signal::specgram(
+              short.wav@left,
+              Fs = short.wav@samp.rate,
+              n = 1024,
+              overlap = 0
+            )
+          plot(
+            temp.spec,
+            xlab = "",
+            ylab = "",
+            ylim = c(min.freq, max.freq),
+            rev(gray(0:512 / 512)),
+            axes = F,
+            useRaster = TRUE
+          )
+
+          graphics.off()
+
+      }
+}
 
 
       print('Adding Spectrograms to Plot Step 3 of 3')
@@ -203,9 +231,11 @@ gibbonID <-
 
       for (y in 1:length(Focal.exemplars)) {
         #print(y, 'out of', length(Focal.exemplars))
+
+        PathSearch <- paste(output.dir,str_replace_all( basename(Focal.exemplars[[y]]),'/','_'), y, 'Focal.png', sep = '')
+
         figure1.png <-
-          magick::image_trim(magick::image_read(paste(output.dir, y, 'Focal.png', sep =
-                                                        '')))
+          magick::image_trim(magick::image_read(PathSearch))
         figure1.png <-
           magick::image_modulate(figure1.png, brightness = 300)
 
@@ -225,13 +255,13 @@ gibbonID <-
       }
     }
     ggsave(
-      "DetectionsAffinityPlot.png",
+      paste(output.dir,"/DetectionsAffinityPlot.png",sep=''),
       my_plot_AcousticSignals,
       width = 4.25,
       height = 3.25,
       dpi = 1200
     )
 
-
+print( paste('plot saved at',paste(output.dir,"/DetectionsAffinityPlot.png",sep='')))
     return(my_plot_AcousticSignals)
   }
