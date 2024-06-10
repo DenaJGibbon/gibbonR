@@ -25,7 +25,7 @@ MFCCFunction(
 
 \item{num.cep}{the number of cepstra to calculate for each time window}
 
-\item{win.avg}{Option of 'false','mean.sd' or 'standard'; whether to return MFCCs for each non-overlapping time window, calculate mean and SD over each MFCC or calculated MFCCs for a set number of time windows.}
+\item{win.avg}{Option of 'no.avg','mean.sd' or 'standard'; whether to return MFCCs for each non-overlapping time window, calculate mean and SD over each MFCC or calculated MFCCs for a set number of time windows.}
 
 \item{win.hop.time}{If win.avg='standard' the specified window size.}
 }
