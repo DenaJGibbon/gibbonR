@@ -11,7 +11,8 @@ Depends: R (>= 3.4.2),
     seewave,
     ggpubr,
     apcluster,
-    umap
+    umap,
+    matlab
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
