@@ -2,23 +2,23 @@ gibbonR: An R package for the automated detection and classification of
 female gibbon calls from long-term acoustic recordings
 ================
 
--   [Authors](#authors)
--   [Package description](#package-description)
--   [Tutorial](#tutorial)
--   [Quick start guide](#quick-start-guide)
-    -   [You can install the development version from GitHub
-        with:](#you-can-install-the-development-version-from-github-with)
--   [Part 1. Training Data with Labeled .wav
-    clips](#part-1-training-data-with-labeled-wav-clips)
--   [Part 2. Run the
-    detector/classifier](#part-2-run-the-detectorclassifier)
-    -   [Part 2a. Feature extraction](#part-2a-feature-extraction)
-    -   [Part 2b. Run DetectClassify](#part-2b-run-detectclassify)
--   [Part 3. Data visualization](#part-3-data-visualization)
-    -   [Part 3a. Create a UMAP plot colored by
-        class](#part-3a-create-a-umap-plot-colored-by-class)
-    -   [Part 3b. Create a UMAP plot colored by affinity propagation
-        clustering](#part-3b-create-a-umap-plot-colored-by-affinity-propagation-clustering)
+- [Authors](#authors)
+- [Package description](#package-description)
+- [Tutorial](#tutorial)
+- [Quick start guide](#quick-start-guide)
+  - [You can install the development version from GitHub
+    with:](#you-can-install-the-development-version-from-github-with)
+- [Part 1. Training Data with Labeled .wav
+  clips](#part-1-training-data-with-labeled-wav-clips)
+- [Part 2. Run the
+  detector/classifier](#part-2-run-the-detectorclassifier)
+  - [Part 2a. Feature extraction](#part-2a-feature-extraction)
+  - [Part 2b. Run DetectClassify](#part-2b-run-detectclassify)
+- [Part 3. Data visualization](#part-3-data-visualization)
+  - [Part 3a. Create a UMAP plot colored by
+    class](#part-3a-create-a-umap-plot-colored-by-class)
+  - [Part 3b. Create a UMAP plot colored by affinity propagation
+    clustering](#part-3b-create-a-umap-plot-colored-by-affinity-propagation-clustering)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -38,8 +38,6 @@ the creation of this package was to make commonly used signal processing
 techniques and various machine learning algorithms readily available in
 R for anyone interested in using bioacoustics in their research.
 
-*Planned release of updated package October 31, 2022*
-
 # Tutorial
 
 <https://denajgibbon.github.io/gibbonR-tutorial/>
@@ -52,22 +50,15 @@ R for anyone interested in using bioacoustics in their research.
 # install.packages("devtools")
 # devtools::install_github("DenaJGibbon/gibbonR")
 library(gibbonR)
-#> Loading required package: stringr
-#> Loading required package: e1071
-#> Loading required package: randomForest
-#> randomForest 4.7-1
-#> Type rfNews() to see new features/changes/bug fixes.
-#> Loading required package: tuneR
-#> Loading required package: seewave
 ```
 
 ```
 # You need to tell R where to store the zip files on your computer.
 destination.file.path.zip <-
-  "/Users/denaclink/Downloads/BorneoExampleData.zip"
+  "dataBorneoExampleData.zip"
 
 # You also need to tell R where to save the unzipped files
-destination.file.path <- "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/"
+destination.file.path <- "data/gibbonR/data/"
 
 # This function will download the data from github
 
@@ -117,7 +108,7 @@ S11_20180219_060002_1800sto3600s <- list.rda.files[[2]]
 Now we create a directory with the training .wav files
 
 ``` r
-TrainingDataDirectory <- "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/BorneoMultiClass"
+TrainingDataDirectory <- "data/gibbonR/data/BorneoMultiClass"
 
 for(a in 1:length(multi.class.list)){
   Temp.element <- multi.class.list[[a]]
@@ -131,7 +122,7 @@ for(a in 1:length(multi.class.list)){
 
 ``` r
 TrainingWavFilesDir <- 
-  "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/BorneoMultiClass/"
+  "data/gibbonR/data/BorneoMultiClass/"
 
 trainingdata <- gibbonR::MFCCFunction(input.dir=TrainingWavFilesDir, min.freq = 400, max.freq = 1600,win.avg='standard')
 
@@ -149,27 +140,12 @@ ml.model.svm <- e1071::svm(trainingdata[, 2:ncol(trainingdata)], trainingdata$cl
                            probability = TRUE)
 
 print(paste('SVM accuracy',ml.model.svm$tot.accuracy))
-#> [1] "SVM accuracy 88"
 
 
 ml.model.rf <- randomForest::randomForest(x=trainingdata[, 2:ncol(trainingdata)], y = trainingdata$class)
 
 
 print(ml.model.rf)
-#> 
-#> Call:
-#>  randomForest(x = trainingdata[, 2:ncol(trainingdata)], y = trainingdata$class) 
-#>                Type of random forest: classification
-#>                      Number of trees: 500
-#> No. of variables tried at each split: 13
-#> 
-#>         OOB estimate of  error rate: 10.67%
-#> Confusion matrix:
-#>               female.gibbon leaf.monkey noise solo.gibbon class.error
-#> female.gibbon            18           0     1           1   0.1000000
-#> leaf.monkey               0          11     4           0   0.2666667
-#> noise                     0           0    19           1   0.0500000
-#> solo.gibbon               0           0     1          19   0.0500000
 ```
 
 # Part 2. Run the detector/classifier
@@ -178,7 +154,7 @@ print(ml.model.rf)
 
 ``` r
 # Specify the folder where the training data will be saved
-TrainingDataFolderLocation <- "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/TrainingDataFromRavenSelectionTables/"
+TrainingDataFolderLocation <- "data/gibbonR/data/TrainingDataFromRavenSelectionTables/"
   
 TrainingDataMFCC <- MFCCFunction(input.dir= TrainingDataFolderLocation, min.freq = 400, max.freq = 1600,win.avg="standard")
   
@@ -190,7 +166,7 @@ TrainingDataMFCC$class <- as.factor(TrainingDataMFCC$class)
 ``` r
   TestFileDirectory <- '/Users/denaclink/Library/CloudStorage/Box-Box/gibbonRSampleFiles/GibbonTestFiles'
   
-  OutputDirectory <-  "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/DetectAndClassifyOutput"
+  OutputDirectory <-  "data/gibbonR/data/DetectAndClassifyOutput"
   
   gibbonR(input=TestFileDirectory,
                     feature.df=TrainingDataMFCC,
@@ -214,7 +190,6 @@ TrainingDataMFCC$class <- as.factor(TrainingDataMFCC$class)
                     swift.time=TRUE,time.start=5,time.stop=10,
                     write.table.output=FALSE,verbose=TRUE,
                     random.sample='NA')
-  
 ```
 
 # Part 3. Data visualization
@@ -224,21 +199,8 @@ TrainingDataMFCC$class <- as.factor(TrainingDataMFCC$class)
 ``` r
 library(gibbonR)
 library(ggpubr)
-#> Loading required package: ggplot2
-#> 
-#> Attaching package: 'ggplot2'
-#> The following object is masked from 'package:randomForest':
-#> 
-#>     margin
-gibbonID(input.dir="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/",output.dir="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/Thumbnails/",win.avg='standard',add.spectrograms=TRUE,min.freq=400,max.freq=1600,class='no.clustering')
-#> [1] "Step 1 Calculating MFCCs"
-#> [1] "Step 2 Using class labels for clustering"
-#> [1] "Step 3 Creating Spectrograms "
-#> [1] "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/Thumbnails/ already exists"
-#> [1] "Adding Spectrograms to Plot Step 3 of 3"
+gibbonID(input.dir="data/gibbonR/data/MultipleSoundClasses/",output.dir="data/gibbonR/data/MultipleSoundClasses/Thumbnails/",win.avg='standard',add.spectrograms=TRUE,min.freq=400,max.freq=1600,class='no.clustering')
 ```
-
-<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
 
 ## Part 3b. Create a UMAP plot colored by affinity propagation clustering
 
@@ -246,20 +208,8 @@ gibbonID(input.dir="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/Multi
 library(gibbonR)
 library(ggpubr)
 library(apcluster)
-#> 
-#> Attaching package: 'apcluster'
-#> The following object is masked from 'package:stats':
-#> 
-#>     heatmap
-gibbonID(input.dir="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/",output.dir="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/Thumbnails/",win.avg='standard',class='affinity.fixed', q.fixed=0.1,add.spectrograms=TRUE,min.freq=400,max.freq=1600)
-#> [1] "Step 1 Calculating MFCCs"
-#> [1] "Step 2 Computing unsupervised clustering with fixed q"
-#> [1] "Step 3 Creating Spectrograms "
-#> [1] "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/Thumbnails/ already exists"
-#> [1] "Adding Spectrograms to Plot Step 3 of 3"
+gibbonID(input.dir="data/gibbonR/data/MultipleSoundClasses/",output.dir="data/gibbonR/data/MultipleSoundClasses/Thumbnails/",win.avg='standard',class='affinity.fixed', q.fixed=0.1,add.spectrograms=TRUE,min.freq=400,max.freq=1600)
 ```
-
-<img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
 
 ### How to cite
 

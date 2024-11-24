@@ -29,7 +29,7 @@ In 'gibbonR' there are two ways that you can format your training data. The firs
 ### Read in clips and calculate MFCCs
 ```{r eval=FALSE, echo = T, results = 'hide' }
 TrainingWavFilesDir <- 
-  "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/"
+  "data/MultipleSoundClasses/"
 
 trainingdata <- gibbonR::MFCCFunction(input.dir=TrainingWavFilesDir, min.freq = 400, max.freq = 1600,win.avg="TRUE")
 
