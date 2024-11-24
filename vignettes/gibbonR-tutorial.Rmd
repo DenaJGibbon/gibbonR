@@ -6,7 +6,7 @@ output:
     toc_depth: 2
 ---
 
-```{r, include = FALSE}
+```{r eval=FALSE,, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 
 # Getting started
 ## You can install the development version from [GitHub](https://github.com/DenaJGibbon) with:
-```{r, echo=T,warning=FALSE, results='hide'}
+```{r eval=FALSE,, echo=T,warning=FALSE, results='hide'}
 # install.packages("devtools")
 # devtools::install_github("DenaJGibbon/gibbonR")
 
@@ -27,7 +27,7 @@ In 'gibbonR' there are two ways that you can format your training data. The firs
 
 ## Part 1A. Training Data with Labeled .wav clips
 ### Read in clips and calculate MFCCs
-```{r echo = T, results = 'hide' }
+```{r eval=FALSE, echo = T, results = 'hide' }
 TrainingWavFilesDir <- 
   "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/"
 
@@ -38,7 +38,7 @@ trainingdata$class <- as.factor(trainingdata$class)
 ```
 
 ### Compare Random Forest and Support Vector Machine for Supervised Classification
-```{r }
+```{r eval=FALSE, }
 
 trainingdata$class <- as.factor(trainingdata$class)
 
@@ -58,7 +58,7 @@ print(ml.model.rf)
 
 ## Part 1B. Training Data with Raven Selection Tables
 ### Prepare training data from labeled annotations
-```{r,eval=F }
+```{r eval=FALSE,,eval=F }
 # Specify the folder where the training data will be saved
 TrainingDataFolderLocation <- "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/TrainingDataFromRavenSelectionTables"
 
@@ -100,7 +100,7 @@ for(i in 1: length(AnnotatedSelectionTables)){
 ```
 
 ### Prepare noise training data from files without target signal
-```{r eval=F}
+```{r eval=FALSE, eval=F}
 # Specify the folder where the training data will be saved
 TrainingDataFolderLocation <- "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/TrainingDataFromRavenSelectionTables/"
 
@@ -139,7 +139,7 @@ for(i in 1:length(NoiseSelectionTables)){
 ```
 
 ### Now read in clips based on Raven Selection tables and calculate MFCCs
-```{r echo = T, results = 'hide' }
+```{r eval=FALSE, echo = T, results = 'hide' }
 
 TrainingWavFilesDir <- 
   "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/TrainingDataFromRavenSelectionTables/"
@@ -151,7 +151,7 @@ trainingdata$class <- as.factor(trainingdata$class)
 ```
 
 ### Compare Random Forest and Support Vector Machine for Supervised Classification
-```{r }
+```{r eval=FALSE, }
 
 trainingdata$class <- as.factor(trainingdata$class)
 
@@ -174,7 +174,7 @@ print(ml.model.rf)
 # Part 2. Run the detector/classifier
 
 ## Part 2a. Feature extraction
-```{r }
+```{r eval=FALSE, }
 # Specify the folder where the training data will be saved
 TrainingDataFolderLocation <- "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/TrainingDataFromRavenSelectionTables/"
   
@@ -184,7 +184,7 @@ TrainingDataMFCC <- MFCCFunction(input.dir= TrainingDataFolderLocation, min.freq
 ```
   
 ## Part 2b. Run DetectClassify  
-```{r }
+```{r eval=FALSE, }
 
   TestFileDirectory <- '/Users/denaclink/Library/CloudStorage/Box-Box/gibbonRSampleFiles/GibbonTestFiles'
   
@@ -220,7 +220,7 @@ TrainingDataMFCC <- MFCCFunction(input.dir= TrainingDataFolderLocation, min.freq
 # Part 3. Calculate performance metrics
 
 ## Part 3a. Prepare data for performance metrics
-```{r }
+```{r eval=FALSE, }
 # Set location of test file selection tables
 input.dir.text.files <- "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/SelectionTables/GibbonTestSelectionTables"
 
@@ -253,7 +253,7 @@ for(x in 1:length(Annotatedfiles)){
 ```
 
 ## Part 3b. Identify true and false positives
-```{r }
+```{r eval=FALSE, }
   OutputDirectory <-  "/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/DetectAndClassifyOutput"
     
   all.combinedprecision.recall.randomiter <- data.frame()
@@ -324,7 +324,7 @@ for(x in 1:length(Annotatedfiles)){
 ```
 ## Part 3c. Calculate and plot performance metrics using 'ROCR'
 
-```{r }
+```{r eval=FALSE, }
 library(ROCR)
 
 auc.df <- data.frame()
@@ -376,14 +376,14 @@ plot(perf,
 
 # Part 4. Unsupervised clustering 
 ## Part 4a. Create a UMAP plot colored by class
-```{r }
+```{r eval=FALSE, }
 library(gibbonR)
 library(ggpubr)
 UMAPBiplotAddSpectrograms(input.dir.Focal="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/",output.dir.Focal="/Users/denaclink/Desktop/RStudio Projects/gibbonR/data/MultipleSoundClasses/Thumbnails/",add.spectrograms=TRUE,min.freq=400,max.freq=1600,main="UMAP Plot")
   
 ```
 ## Part 4b. Create a UMAP plot colored by affinity propagation clustering
-```{r }
+```{r eval=FALSE, }
 library(gibbonR)
 library(ggpubr)
 library(apcluster)
