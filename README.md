@@ -213,7 +213,7 @@ gibbonID(input.dir="data/gibbonR/data/MultipleSoundClasses/",output.dir="data/gi
 
 ### How to cite
 
-This package is currently in development, with submission to rOpenSci
+This package is currently in development, with submission to JOSS
 planned shortly. In the interim, please cite the arXiv preprint:
 
 Clink, D. J. & H. Klinck. (2019). gibbonR: An R package for the

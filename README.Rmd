@@ -211,7 +211,7 @@ gibbonID(input.dir="data/gibbonR/data/MultipleSoundClasses/",output.dir="data/gi
 
 ### How to cite
 
-This package is currently in development, with submission to rOpenSci planned shortly. In the interim, please cite the arXiv preprint:
+This package is currently in development, with submission to JOSS planned shortly. In the interim, please cite the arXiv preprint:
 
 Clink, D. J. & H. Klinck. (2019). gibbonR: An R package for the detection and classification of acoustic signals using machine learning. arXiv, 1906.02572.
 https://doi.org/10.48550/arXiv.1906.02572
